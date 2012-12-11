@@ -47,6 +47,7 @@ public class JavaDocGenerateAction extends AnAction {
             return;
         }
         PsiElement element = getJavaElement(PsiUtilCore.getElementAtOffset(file, offset));
+        @SuppressWarnings("unchecked")
         PsiDocComment javaDoc = getGenerator(element.getClass()).generate(element, true);
         writer.write(javaDoc, element);
     }

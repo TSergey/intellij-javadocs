@@ -21,14 +21,21 @@ public class MethodJavaDocGenerator implements JavaDocGenerator<PsiMethod> {
         PsiParameterList parameterList = element.getParameterList();
         PsiType returnType = element.getReturnType();
         PsiClassType[] throwsList = element.getThrowsList().getReferencedTypes();
+        boolean isConstructor = element.isConstructor();
 
         StringBuilder result = new StringBuilder();
         result
                 .append("/**\n")
                 .append("* The ")
-                .append(name)
-                .append(" method\n")
-                .append("*\n");
+                .append(name);
+
+        if (isConstructor) {
+            result.append(" constructor\n");
+        } else {
+            result.append(" method\n");
+        }
+
+        result.append("*\n");
         if (parameterList.getParametersCount() > 0) {
             for (PsiParameter parameter : parameterList.getParameters()) {
                 String paramType = parameter.getType().getCanonicalText();
