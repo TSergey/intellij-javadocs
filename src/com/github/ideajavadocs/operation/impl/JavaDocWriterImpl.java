@@ -3,13 +3,10 @@ package com.github.ideajavadocs.operation.impl;
 import com.github.ideajavadocs.operation.JavaDocWriter;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.application.RunResult;
-import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler.OperationStatus;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.javadoc.PsiDocComment;
 
@@ -49,6 +46,10 @@ public class JavaDocWriterImpl implements JavaDocWriter {
 
         @Override
         protected void run(Result result) throws Throwable {
+            if(javaDoc == null) {
+                // TODO create result object
+                return;
+            }
             if (element.getFirstChild() instanceof PsiDocComment) {
                 element.getFirstChild().replace(javaDoc);
             } else {
