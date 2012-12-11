@@ -1,4 +1,4 @@
 ideajavadocs
 ============
 
-Intellij idea javadocs generator
+Intellij idea javadocs generator plugin
