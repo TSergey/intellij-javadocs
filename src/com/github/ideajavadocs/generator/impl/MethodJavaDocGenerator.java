@@ -30,9 +30,9 @@ public class MethodJavaDocGenerator implements JavaDocGenerator<PsiMethod> {
                 .append(name);
 
         if (isConstructor) {
-            result.append(" constructor.");
+            result.append(" constructor.\n");
         } else {
-            result.append(" method.");
+            result.append(" method.\n");
         }
         result.append("*\n");
         if (parameterList.getParametersCount() > 0) {
