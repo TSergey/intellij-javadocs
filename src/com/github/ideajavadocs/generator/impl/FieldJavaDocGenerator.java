@@ -29,6 +29,7 @@ public class FieldJavaDocGenerator implements JavaDocGenerator<PsiField> {
                 .append(" field ")
                 .append("of type: ")
                 .append(type.getCanonicalText())
+                .append(".\n")
                 .append("*/");
 
         PsiElementFactory psiElementFactory = PsiElementFactory.SERVICE.getInstance(element.getProject());

@@ -25,6 +25,7 @@ public class ClassJavaDocGenerator implements JavaDocGenerator<PsiClass> {
                 .append("/**\n")
                 .append("* The class of type ")
                 .append(name)
+                .append(".\n")
                 .append("*/");
 
         PsiElementFactory psiElementFactory = PsiElementFactory.SERVICE.getInstance(element.getProject());
