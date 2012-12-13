@@ -1,5 +1,7 @@
 package com.github.ideajavadocs.model;
 
+import com.github.ideajavadocs.transformation.JavaDocBuilder;
+import com.github.ideajavadocs.transformation.JavaDocConverter;
 import com.intellij.psi.javadoc.PsiDocComment;
 
 import java.util.List;
@@ -16,11 +18,13 @@ public class JavaDoc {
     private Map<String, JavaDocTag> tags;
 
     public JavaDoc(PsiDocComment docComment) {
-        // TODO setup fields from docComment
+        JavaDocConverter converter = new JavaDocConverter(docComment);
+        JavaDoc javaDoc = converter.convertJavaDoc();
+        description = javaDoc.getDescription();
+        tags = javaDoc.getTags();
     }
 
     public JavaDoc(List<String> description, Map<String, JavaDocTag> tags) {
-        super();
         this.description = description;
         this.tags = tags;
     }
@@ -31,6 +35,10 @@ public class JavaDoc {
 
     public Map<String, JavaDocTag> getTags() {
         return tags;
+    }
+
+    public String getJavaDoc() {
+        return new JavaDocBuilder(this).build();
     }
 
 }

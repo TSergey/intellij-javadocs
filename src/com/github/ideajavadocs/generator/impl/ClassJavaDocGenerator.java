@@ -8,7 +8,9 @@ import com.intellij.psi.javadoc.PsiDocComment;
 public class ClassJavaDocGenerator extends AbstractJavaDocGenerator<PsiClass> {
 
     @Override
-    public PsiDocComment generate(PsiClass element, boolean replace) {
+    protected JavaDoc generate(PsiClass element) {
+        // TODO implement
+
         String name = element.getName();
 
         StringBuilder result = new StringBuilder();
@@ -19,13 +21,7 @@ public class ClassJavaDocGenerator extends AbstractJavaDocGenerator<PsiClass> {
                 .append(".\n")
                 .append("*/");
 
-        PsiElementFactory psiElementFactory = PsiElementFactory.SERVICE.getInstance(element.getProject());
-        return psiElementFactory.createDocCommentFromText(result.toString());
-    }
 
-    @Override
-    protected JavaDoc generate(PsiClass element) {
-        // TODO implement
         return null;
     }
 

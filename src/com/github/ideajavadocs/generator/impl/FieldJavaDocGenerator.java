@@ -9,7 +9,10 @@ import com.intellij.psi.javadoc.PsiDocComment;
 public class FieldJavaDocGenerator extends AbstractJavaDocGenerator<PsiField> {
 
     @Override
-    public PsiDocComment generate(PsiField element, boolean replace) {
+    protected JavaDoc generate(PsiField element) {
+        // TODO implement
+
+
         String name = element.getName();
         PsiType type = element.getType();
 
@@ -23,13 +26,6 @@ public class FieldJavaDocGenerator extends AbstractJavaDocGenerator<PsiField> {
                 .append(".\n")
                 .append("*/");
 
-        PsiElementFactory psiElementFactory = PsiElementFactory.SERVICE.getInstance(element.getProject());
-        return psiElementFactory.createDocCommentFromText(result.toString());
-    }
-
-    @Override
-    protected JavaDoc generate(PsiField element) {
-        // TODO implement
         return null;
     }
 }

@@ -7,7 +7,10 @@ import com.intellij.psi.javadoc.PsiDocComment;
 public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> {
 
     @Override
-    public PsiDocComment generate(PsiMethod element, boolean replace) {
+    protected JavaDoc generate(PsiMethod element) {
+        // TODO
+
+
         String name = element.getName();
         PsiParameterList parameterList = element.getParameterList();
         PsiType returnType = element.getReturnType();
@@ -51,13 +54,8 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
 
         result.append("*/\n");
 
-        PsiElementFactory psiElementFactory = PsiElementFactory.SERVICE.getInstance(element.getProject());
-        return psiElementFactory.createDocCommentFromText(result.toString());
-    }
 
-    @Override
-    protected JavaDoc generate(PsiMethod element) {
-        // TODO
+
         return null;
     }
 

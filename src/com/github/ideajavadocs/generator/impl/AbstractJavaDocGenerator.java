@@ -9,8 +9,7 @@ import com.intellij.psi.javadoc.PsiDocComment;
 public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements JavaDocGenerator<T> {
 
     @Override
-    // TODO mark this method as final
-    public PsiDocComment generate(T element, boolean replace) {
+    public final PsiDocComment generate(T element, boolean replace) {
         PsiDocComment oldDocComment = null;
         if (element.getFirstChild() instanceof PsiDocComment) {
             oldDocComment = (PsiDocComment) element.getFirstChild();
@@ -20,8 +19,7 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
             JavaDoc oldJavaDoc = new JavaDoc(oldDocComment);
             newJavaDoc = mergeJavaDocs(oldJavaDoc, newJavaDoc);
         }
-        // TODO convert newJavaDoc to string representation
-        String javaDoc = "";
+        String javaDoc = newJavaDoc.getJavaDoc();
         PsiElementFactory psiElementFactory = PsiElementFactory.SERVICE.getInstance(element.getProject());
         return psiElementFactory.createDocCommentFromText(javaDoc);
     }

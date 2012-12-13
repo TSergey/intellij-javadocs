@@ -24,7 +24,6 @@ public class JavaDocTag {
     }
 
     public JavaDocTag(String refParam, String value, List<String> description) {
-        super();
         this.refParam = refParam;
         this.value = value;
         this.description = description;
