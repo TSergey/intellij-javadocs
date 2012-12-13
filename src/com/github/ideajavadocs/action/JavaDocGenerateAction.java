@@ -14,6 +14,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilCore;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,11 +50,12 @@ public class JavaDocGenerateAction extends AnAction {
         }
         PsiElement element = getJavaElement(PsiUtilCore.getElementAtOffset(file, offset));
         @SuppressWarnings("unchecked")
-        PsiDocComment javaDoc = getGenerator(element.getClass()).generate(element, true);
+        PsiDocComment javaDoc = getGenerator(element.getClass()).generate(element, false);
         writer.write(javaDoc, element);
     }
 
-    private PsiElement getJavaElement(PsiElement element) {
+    @NotNull
+    private PsiElement getJavaElement(@NotNull PsiElement element) {
         PsiElement result = null;
         PsiField field = PsiTreeUtil.getParentOfType(element, PsiField.class);
         PsiMethod method = PsiTreeUtil.getParentOfType(element, PsiMethod.class);
@@ -68,7 +70,8 @@ public class JavaDocGenerateAction extends AnAction {
         return result;
     }
 
-    private JavaDocGenerator getGenerator(Class<? extends PsiElement> clazz) {
+    @NotNull
+    private JavaDocGenerator getGenerator(@NotNull Class<? extends PsiElement> clazz) {
         JavaDocGenerator generator = null;
         for (Class<? extends PsiElement> elementClass : gen.keySet()) {
             if (elementClass.isAssignableFrom(clazz)) {

@@ -9,13 +9,14 @@ import com.intellij.openapi.vfs.ReadonlyStatusHandler.OperationStatus;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.javadoc.PsiDocComment;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
 public class JavaDocWriterImpl implements JavaDocWriter {
 
     @Override
-    public void write(final PsiDocComment javaDoc, final PsiElement beforeElement) {
+    public void write(@NotNull PsiDocComment javaDoc, @NotNull PsiElement beforeElement) {
         OperationStatus status = ReadonlyStatusHandler.getInstance(beforeElement.getProject()).
                 ensureFilesWritable(Arrays.asList(beforeElement.getContainingFile().getVirtualFile()));
         if (status.hasReadonlyFiles()) {
@@ -34,7 +35,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         private PsiDocComment javaDoc;
         private PsiElement element;
 
-        public WriteCommandActionImpl(PsiDocComment javaDoc, PsiElement element) {
+        public WriteCommandActionImpl(@NotNull PsiDocComment javaDoc, @NotNull PsiElement element) {
             super(
                     element.getProject(),
                     WRITE_JAVADOC_COMMAND_NAME,

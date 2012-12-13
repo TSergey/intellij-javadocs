@@ -1,42 +1,33 @@
 package com.github.ideajavadocs.model;
 
-import com.intellij.psi.javadoc.PsiDocTag;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-// oldDocComment.getTags()[12].getDataElements()
 public class JavaDocTag {
 
-    // Priority :0
-    // PsiDocParamRef
-    // PsiDocMethodOrFieldRef
     private String refParam;
-    // Priority :1
-    // PsiDocTagValue
     private String value;
-    // Priority :2
-    // PsiDocToken, each token is a new line string
     private List<String> description;
 
-    public JavaDocTag(PsiDocTag docTag) {
-        // TODO setup fields from docTag
-
-    }
-
-    public JavaDocTag(String refParam, String value, List<String> description) {
+    public JavaDocTag(@Nullable String refParam, @Nullable String value, @NotNull List<String> description) {
         this.refParam = refParam;
         this.value = value;
         this.description = description;
     }
 
+    @Nullable
     public String getRefParam() {
         return refParam;
     }
 
+    @Nullable
     public String getValue() {
         return value;
     }
 
+    @NotNull
     public List<String> getDescription() {
         return description;
     }

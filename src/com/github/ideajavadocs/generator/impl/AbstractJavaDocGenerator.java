@@ -2,34 +2,33 @@ package com.github.ideajavadocs.generator.impl;
 
 import com.github.ideajavadocs.generator.JavaDocGenerator;
 import com.github.ideajavadocs.model.JavaDoc;
+import com.github.ideajavadocs.transformation.JavaDocUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.javadoc.PsiDocComment;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements JavaDocGenerator<T> {
 
     @Override
-    public final PsiDocComment generate(T element, boolean replace) {
+    @NotNull
+    public final PsiDocComment generate(@NotNull T element, boolean replace) {
         PsiDocComment oldDocComment = null;
-        if (element.getFirstChild() instanceof PsiDocComment) {
-            oldDocComment = (PsiDocComment) element.getFirstChild();
+        PsiElement firstElement = element.getFirstChild();
+        if (firstElement instanceof PsiDocComment) {
+            oldDocComment = (PsiDocComment) firstElement;
         }
         JavaDoc newJavaDoc = generate(element);
-        if (!replace) {
-            JavaDoc oldJavaDoc = new JavaDoc(oldDocComment);
-            newJavaDoc = mergeJavaDocs(oldJavaDoc, newJavaDoc);
+        if (!replace && oldDocComment != null) {
+            JavaDoc oldJavaDoc = JavaDocUtil.createJavaDoc(oldDocComment);
+            newJavaDoc = JavaDocUtil.mergeJavaDocs(oldJavaDoc, newJavaDoc);
         }
-        String javaDoc = newJavaDoc.getJavaDoc();
+        String javaDoc = newJavaDoc.toJavaDoc();
         PsiElementFactory psiElementFactory = PsiElementFactory.SERVICE.getInstance(element.getProject());
         return psiElementFactory.createDocCommentFromText(javaDoc);
     }
 
-    protected abstract JavaDoc generate(T element);
-
-    private JavaDoc mergeJavaDocs(JavaDoc oldJavaDoc, JavaDoc newJavaDoc) {
-        // TODO implement code to merge javadocs
-
-        return oldJavaDoc;
-    }
+    @NotNull
+    protected abstract JavaDoc generate(@NotNull T element);
 
 }

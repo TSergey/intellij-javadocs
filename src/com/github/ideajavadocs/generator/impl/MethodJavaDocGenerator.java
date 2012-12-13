@@ -3,11 +3,13 @@ package com.github.ideajavadocs.generator.impl;
 import com.github.ideajavadocs.model.JavaDoc;
 import com.intellij.psi.*;
 import com.intellij.psi.javadoc.PsiDocComment;
+import org.jetbrains.annotations.NotNull;
 
 public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> {
 
     @Override
-    protected JavaDoc generate(PsiMethod element) {
+    @NotNull
+    protected JavaDoc generate(@NotNull PsiMethod element) {
         // TODO
 
 
