@@ -1,22 +1,13 @@
 package com.github.ideajavadocs.generator.impl;
 
-import com.github.ideajavadocs.generator.JavaDocGenerator;
+import com.github.ideajavadocs.model.JavaDoc;
 import com.intellij.psi.*;
 import com.intellij.psi.javadoc.PsiDocComment;
 
-public class MethodJavaDocGenerator implements JavaDocGenerator<PsiMethod> {
+public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> {
 
     @Override
     public PsiDocComment generate(PsiMethod element, boolean replace) {
-        PsiDocComment oldDocComment = null;
-        if (element.getFirstChild() instanceof PsiDocComment) {
-            oldDocComment = (PsiDocComment) element.getFirstChild();
-        }
-        if (oldDocComment != null) {
-
-            // TODO merge or replace javadoc
-        }
-
         String name = element.getName();
         PsiParameterList parameterList = element.getParameterList();
         PsiType returnType = element.getReturnType();
@@ -61,9 +52,13 @@ public class MethodJavaDocGenerator implements JavaDocGenerator<PsiMethod> {
         result.append("*/\n");
 
         PsiElementFactory psiElementFactory = PsiElementFactory.SERVICE.getInstance(element.getProject());
-        PsiDocComment docElement = psiElementFactory.createDocCommentFromText(result.toString());
+        return psiElementFactory.createDocCommentFromText(result.toString());
+    }
 
-        return docElement;
+    @Override
+    protected JavaDoc generate(PsiMethod element) {
+        // TODO
+        return null;
     }
 
 }

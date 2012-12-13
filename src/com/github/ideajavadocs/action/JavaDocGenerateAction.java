@@ -22,6 +22,7 @@ public class JavaDocGenerateAction extends AnAction {
 
     private static final Map<Class<? extends PsiElement>, JavaDocGenerator> gen =
             new HashMap<Class<? extends PsiElement>, JavaDocGenerator>();
+
     static {
         gen.put(PsiClass.class, new ClassJavaDocGenerator());
         gen.put(PsiMethod.class, new MethodJavaDocGenerator());
@@ -36,7 +37,7 @@ public class JavaDocGenerateAction extends AnAction {
 
     public void actionPerformed(AnActionEvent e) {
         Editor editor = DataKeys.EDITOR.getData(e.getDataContext());
-        if(editor == null) {
+        if (editor == null) {
             // TODO show message
             return;
         }

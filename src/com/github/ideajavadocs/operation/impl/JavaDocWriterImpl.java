@@ -46,7 +46,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
 
         @Override
         protected void run(Result result) throws Throwable {
-            if(javaDoc == null) {
+            if (javaDoc == null) {
                 // TODO create result object
                 return;
             }

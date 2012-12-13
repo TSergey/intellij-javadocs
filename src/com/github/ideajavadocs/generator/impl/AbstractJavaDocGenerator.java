@@ -6,10 +6,11 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.javadoc.PsiDocComment;
 
-public abstract class AbstractJavaDocGenerator implements JavaDocGenerator {
+public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements JavaDocGenerator<T> {
 
     @Override
-    public PsiDocComment generate(PsiElement element, boolean replace) {
+    // TODO mark this method as final
+    public PsiDocComment generate(T element, boolean replace) {
         PsiDocComment oldDocComment = null;
         if (element.getFirstChild() instanceof PsiDocComment) {
             oldDocComment = (PsiDocComment) element.getFirstChild();
@@ -25,7 +26,7 @@ public abstract class AbstractJavaDocGenerator implements JavaDocGenerator {
         return psiElementFactory.createDocCommentFromText(javaDoc);
     }
 
-    protected abstract JavaDoc generate(PsiElement element);
+    protected abstract JavaDoc generate(T element);
 
     private JavaDoc mergeJavaDocs(JavaDoc oldJavaDoc, JavaDoc newJavaDoc) {
         // TODO implement code to merge javadocs
