@@ -56,7 +56,7 @@ public class JavaDocGenerateAction extends AnAction {
 
     @NotNull
     private PsiElement getJavaElement(@NotNull PsiElement element) {
-        PsiElement result = null;
+        PsiElement result = element;
         PsiField field = PsiTreeUtil.getParentOfType(element, PsiField.class);
         PsiMethod method = PsiTreeUtil.getParentOfType(element, PsiMethod.class);
         PsiClass clazz = PsiTreeUtil.getParentOfType(element, PsiClass.class);
