@@ -26,34 +26,9 @@ public class JavaDocUtil {
     @NotNull
     public static String convertJavaDoc(@NotNull JavaDoc javadoc) {
         // TODO
-        StringBuilder builder = new StringBuilder();
-        builder.append(JavaDocElements.STARTING_ASTERISK.getPresentation());
-        for (String description : javadoc.getDescription()) {
-            builder.append(JavaDocElements.NEW_LINE.getPresentation());
-            builder.append(JavaDocElements.LINE_START.getPresentation());
-            builder.append(description);
-        }
-        builder.append(JavaDocElements.NEW_LINE.getPresentation());
-        builder.append(JavaDocElements.LINE_START.getPresentation());
-        for (Entry<String, JavaDocTag> entry : javadoc.getTags().entrySet()) {
-            builder.append(JavaDocElements.NEW_LINE.getPresentation());
-            builder.append(JavaDocElements.LINE_START.getPresentation());
-            builder.append(JavaDocElements.TAG_START.getPresentation());
-            builder.append(entry.getKey());
-            builder.append(" ");
-            if (StringUtils.isNotBlank(entry.getValue().getRefParam())) {
-                builder.append(entry.getValue().getRefParam());
-            } else if (StringUtils.isNotBlank(entry.getValue().getValue())) {
-                builder.append(entry.getValue().getValue());
-            }
-            builder.append(" ");
-            for (String description : entry.getValue().getDescription()) {
-                builder.append(description);
-            }
-        }
-        builder.append(JavaDocElements.NEW_LINE.getPresentation());
-        builder.append(JavaDocElements.ENDING_ASTERISK.getPresentation());
-        return builder.toString();
+        JavaDocBuilder builder = new JavaDocBuilder();
+        builder.createDefaultJavaDoc(javadoc);
+        return builder.build();
     }
 
     @NotNull

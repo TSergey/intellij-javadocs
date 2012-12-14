@@ -8,7 +8,8 @@ public enum JavaDocElements {
     ENDING_ASTERISK("*/"),
     NEW_LINE("\n"),
     TAG_START("@"),
-    LINE_START("*");
+    LINE_START("*"),
+    WHITE_SPACE(" ");
 
     private String presentation;
 
