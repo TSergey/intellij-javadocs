@@ -20,18 +20,18 @@ public class JavaDocBuilder {
     }
 
     public JavaDocBuilder openJavaDoc() {
-        builder.append(JavaDocElements.STARTING_ASTERISK);
+        builder.append(JavaDocElements.STARTING_ASTERISK.getPresentation());
         return this;
     }
 
     public JavaDocBuilder closeJavaDoc() {
-        builder.append(JavaDocElements.ENDING_ASTERISK);
+        builder.append(JavaDocElements.ENDING_ASTERISK.getPresentation());
         return this;
     }
 
     public JavaDocBuilder addNewLine() {
-        builder.append(JavaDocElements.NEW_LINE);
-        builder.append(JavaDocElements.LINE_START);
+        builder.append(JavaDocElements.NEW_LINE.getPresentation());
+        builder.append(JavaDocElements.LINE_START.getPresentation());
         return this;
     }
 

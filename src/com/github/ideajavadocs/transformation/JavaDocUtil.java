@@ -25,7 +25,6 @@ public class JavaDocUtil {
 
     @NotNull
     public static String convertJavaDoc(@NotNull JavaDoc javadoc) {
-        // TODO
         JavaDocBuilder builder = new JavaDocBuilder();
         builder.createDefaultJavaDoc(javadoc);
         return builder.build();
