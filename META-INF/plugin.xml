@@ -25,15 +25,24 @@
   -->
 
   <application-components>
-    <!-- Add your application components here -->
+      <component>
+          <interface-class>com.github.ideajavadocs.operation.JavaDocWriter</interface-class>
+          <implementation-class>com.github.ideajavadocs.operation.impl.JavaDocWriterImpl</implementation-class>
+      </component>
+      <component>
+          <interface-class>com.github.ideajavadocs.template.TemplateProcessor</interface-class>
+          <implementation-class>com.github.ideajavadocs.template.impl.TemplateProcessorImpl</implementation-class>
+      </component>
   </application-components>
 
   <project-components>
-    <!-- Add your project components here -->
+      <component>
+          <interface-class>com.github.ideajavadocs.template.TemplateManager</interface-class>
+          <implementation-class>com.github.ideajavadocs.template.impl.TemplateManagerImpl</implementation-class>
+      </component>
   </project-components>
 
   <actions>
-    <!-- Add your actions here -->
       <action id="com.github.ideajavadocs.action.JavaDocGenerateAction" class="com.github.ideajavadocs.action.JavaDocGenerateAction" text="Generate javadoc" description="com.plugin.JavaDocGen: generate javadoc">
           <add-to-group group-id="GenerateGroup" anchor="last"/>
           <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>

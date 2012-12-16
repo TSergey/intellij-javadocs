@@ -1,64 +1,43 @@
 package com.github.ideajavadocs.generator.impl;
 
 import com.github.ideajavadocs.model.JavaDoc;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
-import com.intellij.psi.javadoc.PsiDocComment;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> {
 
-    @Override
+    public MethodJavaDocGenerator(Project project) {
+        super(project);
+    }
+
     @NotNull
-    protected JavaDoc generate(@NotNull PsiMethod element) {
-        // TODO
+    @Override
+    protected String getTemplate(@NotNull PsiMethod element) {
+        return getTemplateManager().getMethodTemplate(element);
 
+    }
 
+    @NotNull
+    @Override
+    protected Map<String, String> getParams(@NotNull PsiMethod element) {
+        Map<String, String> params = new HashMap<String, String>();
         String name = element.getName();
-        PsiParameterList parameterList = element.getParameterList();
-        PsiType returnType = element.getReturnType();
-        PsiClassType[] throwsList = element.getThrowsList().getReferencedTypes();
-        boolean isConstructor = element.isConstructor();
+        String[] description = StringUtils.splitByCharacterTypeCamelCase(name);
+        params.put("description", StringUtils.join(description, " "));
+        params.put("name", name);
+        return params;
 
-        StringBuilder result = new StringBuilder();
-        result
-                .append("/**\n")
-                .append("* The ")
-                .append(name);
+    }
 
-        if (isConstructor) {
-            result.append(" constructor.\n");
-        } else {
-            result.append(" method.\n");
-        }
-        result.append("*\n");
-        if (parameterList.getParametersCount() > 0) {
-            for (PsiParameter parameter : parameterList.getParameters()) {
-                String paramType = parameter.getType().getCanonicalText();
-                result.append("* @param ")
-                        .append(parameter.getName())
-                        .append(" the ")
-                        .append(paramType)
-                        .append("\n");
-            }
-        }
-        if (returnType != null && !returnType.isAssignableFrom(PsiType.VOID)) {
-            result.append("* @return ")
-                    .append(returnType.getCanonicalText())
-                    .append("\n");
-        }
-        if (throwsList.length > 0) {
-            for (PsiClassType throwsType : throwsList) {
-                result.append("* @throws")
-                        .append(throwsType.getCanonicalText())
-                        .append("\n");
-            }
-        }
-
-        result.append("*/\n");
-
-
-
-        return null;
+    @Override
+    protected JavaDoc enrichJavaDoc(@NotNull JavaDoc newJavaDoc) {
+        // TODO process tags, exceptions and return value
+        return newJavaDoc;
     }
 
 }

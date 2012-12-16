@@ -58,6 +58,8 @@ public class JavaDocUtil {
 
     @NotNull
     public static JavaDoc mergeJavaDocs(@NotNull JavaDoc oldJavaDoc, @NotNull JavaDoc newJavaDoc) {
+        // TODO improve merge code to fix errors when tags appear removed
+
         List<String> description = oldJavaDoc.getDescription();
         if (CollectionUtils.isEmpty(description)) {
             description = newJavaDoc.getDescription();

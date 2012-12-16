@@ -4,6 +4,7 @@ import com.github.ideajavadocs.operation.JavaDocWriter;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.application.RunResult;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler.OperationStatus;
 import com.intellij.psi.PsiElement;
@@ -13,7 +14,24 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class JavaDocWriterImpl implements JavaDocWriter {
+public class JavaDocWriterImpl implements JavaDocWriter, ApplicationComponent {
+
+    public static final String COMPONENT_NAME = "JavaDocWriter";
+
+    @Override
+    public void initComponent() {
+    }
+
+    @Override
+    public void disposeComponent() {
+    }
+
+    @NotNull
+    @Override
+    public String getComponentName() {
+        return COMPONENT_NAME;
+
+    }
 
     @Override
     public void write(@NotNull PsiDocComment javaDoc, @NotNull PsiElement beforeElement) {

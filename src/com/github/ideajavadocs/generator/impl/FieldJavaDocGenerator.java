@@ -1,33 +1,36 @@
 package com.github.ideajavadocs.generator.impl;
 
 import com.github.ideajavadocs.model.JavaDoc;
-import com.intellij.psi.PsiElementFactory;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiType;
-import com.intellij.psi.javadoc.PsiDocComment;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FieldJavaDocGenerator extends AbstractJavaDocGenerator<PsiField> {
 
-    @Override
-    @NotNull
-    protected JavaDoc generate(@NotNull PsiField element) {
-        // TODO implement
-
-
-        String name = element.getName();
-        PsiType type = element.getType();
-
-        StringBuilder result = new StringBuilder();
-        result
-                .append("/** The ")
-                .append(name)
-                .append(" field ")
-                .append("of type: ")
-                .append(type.getCanonicalText())
-                .append(".\n")
-                .append("*/");
-
-        return null;
+    public FieldJavaDocGenerator(Project project) {
+        super(project);
     }
+
+    @NotNull
+    @Override
+    protected String getTemplate(@NotNull PsiField element) {
+        return getTemplateManager().getFieldTemplate(element);
+    }
+
+    @NotNull
+    @Override
+    protected Map<String, String> getParams(@NotNull PsiField element) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("name", element.getName());
+        return params;
+    }
+
+    @Override
+    protected JavaDoc enrichJavaDoc(@NotNull JavaDoc newJavaDoc) {
+        return newJavaDoc;
+    }
+
 }
