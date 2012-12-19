@@ -2,6 +2,7 @@ package com.github.ideajavadocs.operation;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.javadoc.PsiDocComment;
+
 import org.jetbrains.annotations.NotNull;
 
 public interface JavaDocWriter {

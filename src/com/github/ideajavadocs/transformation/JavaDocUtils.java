@@ -1,15 +1,16 @@
 package com.github.ideajavadocs.transformation;
 
 import com.github.ideajavadocs.model.JavaDoc;
-import com.github.ideajavadocs.model.JavaDocElements;
 import com.github.ideajavadocs.model.JavaDocTag;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.impl.source.javadoc.PsiDocMethodOrFieldRef;
 import com.intellij.psi.impl.source.javadoc.PsiDocParamRef;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.javadoc.PsiDocTag;
 import com.intellij.psi.javadoc.PsiDocTagValue;
 import com.intellij.psi.javadoc.PsiDocToken;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class JavaDocUtil {
+public class JavaDocUtils {
 
     @NotNull
     public static String convertJavaDoc(@NotNull JavaDoc javadoc) {
@@ -143,4 +144,9 @@ public class JavaDocUtil {
         return descriptions;
     }
 
+    @NotNull
+    public static JavaDoc toJavaDoc(@NotNull String javaDocText, @NotNull PsiElementFactory psiElementFactory) {
+        PsiDocComment javaDocComment = psiElementFactory.createDocCommentFromText(javaDocText);
+        return createJavaDoc(javaDocComment);
+    }
 }

@@ -1,6 +1,7 @@
 package com.github.ideajavadocs.model;
 
-import com.github.ideajavadocs.transformation.JavaDocUtil;
+import com.github.ideajavadocs.transformation.JavaDocUtils;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class JavaDoc {
 
     @NotNull
     public String toJavaDoc() {
-        return JavaDocUtil.convertJavaDoc(this);
+        return JavaDocUtils.convertJavaDoc(this);
     }
 
 }

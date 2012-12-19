@@ -1,8 +1,11 @@
 package com.github.ideajavadocs.template;
 
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiParameter;
+
 import org.jetbrains.annotations.NotNull;
 
 public interface TemplateManager {
@@ -17,12 +20,9 @@ public interface TemplateManager {
     String getFieldTemplate(@NotNull PsiField fieldElement);
 
     @NotNull
-    String getParamTagTemplate(@NotNull PsiMethod fieldElement);
+    String getParamTagTemplate(@NotNull PsiParameter fieldElement);
 
     @NotNull
-    String getReturnTagTemplate(@NotNull PsiMethod fieldElement);
-
-    @NotNull
-    String getExceptionTagTemplate(@NotNull PsiMethod fieldElement);
+    String getExceptionTagTemplate(@NotNull PsiClassType fieldElement);
 
 }
