@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>com.github.ideajavadocs</id>
   <name>JavaDoc Generator</name>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <vendor email="s.timofiychuk@gmail.com" url="https://github.com/TSergey/ideajavadocs/wiki">YourCompany</vendor>
 
   <description><![CDATA[
@@ -10,7 +10,7 @@
 
   <change-notes><![CDATA[
           <ul>
-            <li>Initial implementation of "JavaDoc Generator" plugin</li>
+            <li>1.0.1: Initial implementation of "JavaDoc Generator" plugin</li>
           </ul>
       ]]>
   </change-notes>
