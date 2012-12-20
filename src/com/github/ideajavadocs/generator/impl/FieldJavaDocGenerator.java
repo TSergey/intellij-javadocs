@@ -10,8 +10,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Field java doc generator.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class FieldJavaDocGenerator extends AbstractJavaDocGenerator<PsiField> {
 
+    /**
+     * Instantiates a new Field java doc generator.
+     *
+     * @param project the Project
+     */
     public FieldJavaDocGenerator(@NotNull Project project) {
         super(project);
     }

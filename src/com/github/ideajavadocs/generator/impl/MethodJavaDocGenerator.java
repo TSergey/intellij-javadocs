@@ -19,8 +19,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * The type Method java doc generator.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> {
 
+    /**
+     * Instantiates a new Method java doc generator.
+     *
+     * @param project the Project
+     */
     public MethodJavaDocGenerator(@NotNull Project project) {
         super(project);
     }
@@ -33,7 +43,7 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
         String name = element.getName();
         String returnDescription = StringUtils.EMPTY;
         PsiTypeElement returnElement = element.getReturnTypeElement();
-        if(returnElement != null) {
+        if (returnElement != null) {
             returnDescription = returnElement.getText();
         }
         params.put("description", getDocTemplateProcessor().buildDescription(name));

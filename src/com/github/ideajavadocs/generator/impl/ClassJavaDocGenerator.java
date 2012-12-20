@@ -10,8 +10,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Class java doc generator.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class ClassJavaDocGenerator extends AbstractJavaDocGenerator<PsiClass> {
 
+    /**
+     * Instantiates a new Class java doc generator.
+     *
+     * @param project the Project
+     */
     public ClassJavaDocGenerator(@NotNull Project project) {
         super(project);
     }

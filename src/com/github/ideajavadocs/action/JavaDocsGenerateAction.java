@@ -9,26 +9,42 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiMethod;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiUtilCore;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The type Java docs generate action.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class JavaDocsGenerateAction extends AnAction {
 
     private JavaDocWriter writer;
 
+    /**
+     * Instantiates a new Java docs generate action.
+     */
     public JavaDocsGenerateAction() {
         writer = ServiceManager.getService(JavaDocWriter.class);
     }
 
+    /**
+     * Action performed.
+     *
+     * @param e the Event
+     */
     public void actionPerformed(AnActionEvent e) {
         PsiFile file = DataKeys.PSI_FILE.getData(e.getDataContext());
         if (file == null) {
@@ -48,6 +64,12 @@ public class JavaDocsGenerateAction extends AnAction {
         }
     }
 
+    /**
+     * Gets the classes.
+     *
+     * @param element the Element
+     * @return the Classes
+     */
     private List<PsiClass> getClasses(PsiElement element) {
         List<PsiClass> elements = new LinkedList<PsiClass>();
         List<PsiClass> classElements = PsiTreeUtil.getChildrenOfTypeAsList(element, PsiClass.class);
@@ -58,6 +80,12 @@ public class JavaDocsGenerateAction extends AnAction {
         return elements;
     }
 
+    /**
+     * Gets the generator.
+     *
+     * @param element the Element
+     * @return the Generator
+     */
     @Nullable
     private JavaDocGenerator getGenerator(@NotNull PsiElement element) {
         Project project = element.getProject();
@@ -72,6 +100,11 @@ public class JavaDocsGenerateAction extends AnAction {
         return generator;
     }
 
+    /**
+     * Process element.
+     *
+     * @param element the Element
+     */
     private void processElement(@NotNull PsiElement element) {
         JavaDocGenerator generator = getGenerator(element);
         if (generator != null) {

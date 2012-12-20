@@ -14,8 +14,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
+/**
+ * The type Java doc writer impl.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class JavaDocWriterImpl implements JavaDocWriter, ApplicationComponent {
 
+    /**
+     * The constant COMPONENT_NAME.
+     */
     public static final String COMPONENT_NAME = "JavaDocWriter";
 
     @Override
@@ -48,11 +56,22 @@ public class JavaDocWriterImpl implements JavaDocWriter, ApplicationComponent {
         // TODO check result and show warning if there was some errors
     }
 
+    /**
+     * The type Write command action impl.
+     *
+     * @author Sergey Timofiychuk
+     */
     private static class WriteCommandActionImpl extends WriteCommandAction {
 
         private PsiDocComment javaDoc;
         private PsiElement element;
 
+        /**
+         * Instantiates a new Write command action impl.
+         *
+         * @param javaDoc the Java doc
+         * @param element the Element
+         */
         public WriteCommandActionImpl(@NotNull PsiDocComment javaDoc, @NotNull PsiElement element) {
             super(
                     element.getProject(),

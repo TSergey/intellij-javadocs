@@ -11,12 +11,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+/**
+ * The type Doc template processor impl.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class DocTemplateProcessorImpl implements DocTemplateProcessor, ApplicationComponent {
 
-    public static final String COMPONENT_NAME = "DocTemplateProcessor";
-
     // TODO move the section to the configuration menu
-    public static final Map<String, String> REPLACE_TOKENS = new HashMap<String, String>();
+    private static final Map<String, String> REPLACE_TOKENS = new HashMap<String, String>();
     static {
         REPLACE_TOKENS.put("get", "Gets the");
         REPLACE_TOKENS.put("set", "Sets the");
@@ -27,6 +30,7 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, Applicati
 
     @Override
     public void initComponent() {
+        // TODO read REPLACE_TOKENS from config
     }
 
     @Override
@@ -40,12 +44,6 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, Applicati
 
     }
 
-    /**
-     * Merge.
-     *
-     * @param params the Params
-     * @return the String
-     */
     @NotNull
     @Override
     public String merge(@NotNull String template, @NotNull Map<String, String> params) {
@@ -90,8 +88,8 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, Applicati
         String[] parts = StringUtils.splitByCharacterTypeCamelCase(description);
         StringBuilder result = new StringBuilder();
         int firstElement = 0;
-        if(REPLACE_TOKENS.containsKey(parts[0])) {
-            firstElement ++;
+        if (REPLACE_TOKENS.containsKey(parts[0])) {
+            firstElement++;
         }
         for (int i = firstElement; i < parts.length; i++) {
             if (i == firstElement) {

@@ -13,12 +13,22 @@ import com.intellij.psi.javadoc.PsiDocComment;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The type Abstract java doc generator.
+ *
+ * @author Sergey Timofiychuk
+ */
 public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements JavaDocGenerator<T> {
 
     private DocTemplateManager docTemplateManager;
     private DocTemplateProcessor docTemplateProcessor;
     private PsiElementFactory psiElementFactory;
 
+    /**
+     * Instantiates a new Abstract java doc generator.
+     *
+     * @param project the Project
+     */
     public AbstractJavaDocGenerator(@NotNull Project project) {
         docTemplateManager = ServiceManager.getService(project, DocTemplateManager.class);
         docTemplateProcessor = ServiceManager.getService(DocTemplateProcessor.class);
@@ -43,21 +53,42 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
         return psiElementFactory.createDocCommentFromText(javaDoc);
     }
 
+    /**
+     * Gets the doc template manager.
+     *
+     * @return the Doc template manager
+     */
     @NotNull
     public DocTemplateManager getDocTemplateManager() {
         return docTemplateManager;
     }
 
+    /**
+     * Gets the doc template processor.
+     *
+     * @return the Doc template processor
+     */
     @NotNull
     public DocTemplateProcessor getDocTemplateProcessor() {
         return docTemplateProcessor;
     }
 
+    /**
+     * Gets the psi element factory.
+     *
+     * @return the Psi element factory
+     */
     @NotNull
     public PsiElementFactory getPsiElementFactory() {
         return psiElementFactory;
     }
 
+    /**
+     * Generate java doc.
+     *
+     * @param element the Element
+     * @return the Java doc
+     */
     @NotNull
     protected abstract JavaDoc generateJavaDoc(@NotNull T element);
 

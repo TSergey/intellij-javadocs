@@ -17,31 +17,31 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+/**
+ * The type Doc template manager impl.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class DocTemplateManagerImpl implements DocTemplateManager, ProjectComponent {
-
-    public static final String COMPONENT_NAME = "DocTemplateManager";
 
     // TODO add more templates for different cases
 
     /*     */
-    private static final String CLASS_TEMPLATE =
-            "/**\n" +
-            " * The ${type} ${name}.\n" +
-            " */";
+    private static final String CLASS_TEMPLATE = "/**\n"
+            + " * The ${type} ${name}.\n"
+            + " */";
     private static final Map<String, String> CLASS_TEMPLATES = new LinkedHashMap<String, String>();
     static {
         CLASS_TEMPLATES.put(".+", CLASS_TEMPLATE);
     }
 
     /*     */
-    private static final String FIELD_TEMPLATE =
-            "/**\n" +
-            " * The ${name}.\n" +
-            " */";
-    private static final String CONSTANT_TEMPLATE =
-            "/**\n" +
-            " * The constant ${name}.\n" +
-            " */";
+    private static final String FIELD_TEMPLATE = "/**\n"
+            + " * The ${name}.\n"
+            + " */";
+    private static final String CONSTANT_TEMPLATE = "/**\n"
+            + " * The constant ${name}.\n"
+            + " */";
     private static final Map<String, String> FIELD_TEMPLATES = new LinkedHashMap<String, String>();
     static {
         FIELD_TEMPLATES.put(".+", CONSTANT_TEMPLATE);
@@ -49,20 +49,17 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     }
 
     /*     */
-    private static final String METHOD_GETTER_TEMPLATE =
-            "/**\n" +
-            " * ${description}.\n" +
-            " * @return the ${return_by_name}\n" +
-            " */";
-    private static final String METHOD_VOID_TEMPLATE =
-            "/**\n" +
-            " * ${description}.\n" +
-            " */";
-    private static final String METHOD_TEMPLATE =
-            "/**\n" +
-            " * ${description}.\n" +
-            " * @return the ${return_description}" +
-            " */";
+    private static final String METHOD_GETTER_TEMPLATE = "/**\n"
+            + " * ${description}.\n"
+            + " * @return the ${return_by_name}\n"
+            + " */";
+    private static final String METHOD_VOID_TEMPLATE = "/**\n"
+            + " * ${description}.\n"
+            + " */";
+    private static final String METHOD_TEMPLATE = "/**\n"
+            + " * ${description}.\n"
+            + " * @return the ${return_description}"
+            + " */";
     private static final Map<String, String> METHOD_TEMPLATES = new LinkedHashMap<String, String>();
     static {
         METHOD_TEMPLATES.put(".*get.+", METHOD_GETTER_TEMPLATE);
@@ -71,37 +68,31 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     }
 
     /*     */
-    private static final String CONSTRUCTOR_TEMPLATE =
-            "/**\n" +
-            " * Instantiates a new ${description}.\n" +
-            " */";
+    private static final String CONSTRUCTOR_TEMPLATE = "/**\n"
+            + " * Instantiates a new ${description}.\n"
+            + " */";
     private static final Map<String, String> CONSTRUCTOR_TEMPLATES = new LinkedHashMap<String, String>();
     static {
         CONSTRUCTOR_TEMPLATES.put(".+", CONSTRUCTOR_TEMPLATE);
     }
 
     /*     */
-    private static final String PARAM_TAG_TEMPLATE =
-            "/**\n" +
-            " * @param ${name} the ${description}\n" +
-            " */";
+    private static final String PARAM_TAG_TEMPLATE = "/**\n"
+            + " * @param ${name} the ${description}\n"
+            + " */";
     private static final Map<String, String> PARAM_TAG_TEMPLATES = new LinkedHashMap<String, String>();
     static {
         PARAM_TAG_TEMPLATES.put(".+", PARAM_TAG_TEMPLATE);
     }
 
     /*     */
-    private static final String THROWS_TAG_TEMPLATE =
-            "/**\n" +
-            " * @throws ${name} the ${description}\n" +
-            " */";
+    private static final String THROWS_TAG_TEMPLATE = "/**\n"
+            + " * @throws ${name} the ${description}\n"
+            + " */";
     private static final Map<String, String> THROWS_TAG_TEMPLATES = new LinkedHashMap<String, String>();
     static {
         THROWS_TAG_TEMPLATES.put(".+", THROWS_TAG_TEMPLATE);
     }
-
-    // TODO setup access to the system settings where templates will be placed
-    // TODO read template from file or app settings
 
     @Override
     public void projectOpened() {
@@ -113,6 +104,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
 
     @Override
     public void initComponent() {
+        // TODO read template from file or app settings
     }
 
     @Override
@@ -142,7 +134,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         }
         String signature = methodElement.getText();
         PsiCodeBlock methodBody = methodElement.getBody();
-        if(methodBody != null) {
+        if (methodBody != null) {
             signature = signature.replace(methodBody.getText(), "");
         }
         return getMatchingTemplate(signature, templates);
@@ -174,7 +166,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     private String getMatchingTemplate(@NotNull String elementText, @NotNull Map<String, String> templates) {
         String result = StringUtils.EMPTY;
         for (Entry<String, String> entry : templates.entrySet()) {
-            if (Pattern.compile(entry.getKey(), Pattern.DOTALL  | Pattern.MULTILINE).matcher(elementText).matches()) {
+            if (Pattern.compile(entry.getKey(), Pattern.DOTALL | Pattern.MULTILINE).matcher(elementText).matches()) {
                 result = entry.getValue();
                 break;
             }

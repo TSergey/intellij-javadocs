@@ -13,10 +13,20 @@ public enum JavaDocElements {
 
     private String presentation;
 
+    /**
+     * Instantiates a new Java doc elements.
+     *
+     * @param s the S
+     */
     JavaDocElements(String s) {
         presentation = s;
     }
 
+    /**
+     * Gets the presentation.
+     *
+     * @return the Presentation
+     */
     @NotNull
     public String getPresentation() {
         return presentation;

@@ -22,8 +22,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * The type Java doc utils.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class JavaDocUtils {
 
+    /**
+     * Convert java doc.
+     *
+     * @param javadoc the Javadoc
+     * @return the String
+     */
     @NotNull
     public static String convertJavaDoc(@NotNull JavaDoc javadoc) {
         JavaDocBuilder builder = new JavaDocBuilder();
@@ -31,6 +42,13 @@ public class JavaDocUtils {
         return builder.build();
     }
 
+    /**
+     * Merge java docs.
+     *
+     * @param oldJavaDoc the Old java doc
+     * @param newJavaDoc the New java doc
+     * @return the Java doc
+     */
     @NotNull
     public static JavaDoc mergeJavaDocs(@NotNull JavaDoc oldJavaDoc, @NotNull JavaDoc newJavaDoc) {
         // TODO improve merge code to fix errors when tags appear removed
@@ -71,6 +89,13 @@ public class JavaDocUtils {
         return new JavaDoc(description, tags);
     }
 
+    /**
+     * Merge java doc tag.
+     *
+     * @param oldJavaDocTag the Old java doc tag
+     * @param newJavaDocTag the New java doc tag
+     * @return the Java doc tag
+     */
     @NotNull
     public static JavaDocTag mergeJavaDocTag(@NotNull JavaDocTag oldJavaDocTag, @NotNull JavaDocTag newJavaDocTag) {
         List<String> description = oldJavaDocTag.getDescription();
@@ -80,6 +105,12 @@ public class JavaDocUtils {
         return new JavaDocTag(oldJavaDocTag.getRefParam(), oldJavaDocTag.getValue(), description);
     }
 
+    /**
+     * Creates the java doc tag.
+     *
+     * @param docTag the Doc tag
+     * @return the Java doc tag
+     */
     @NotNull
     public static JavaDocTag createJavaDocTag(@NotNull PsiDocTag docTag) {
         return new JavaDocTag(
@@ -88,6 +119,12 @@ public class JavaDocUtils {
                 findDocTagDescription(docTag));
     }
 
+    /**
+     * Creates the java doc.
+     *
+     * @param docComment the Doc comment
+     * @return the Java doc
+     */
     @NotNull
     public static JavaDoc createJavaDoc(@NotNull PsiDocComment docComment) {
         return new JavaDoc(
@@ -95,6 +132,12 @@ public class JavaDocUtils {
                 findDocTags(docComment));
     }
 
+    /**
+     * Find java doc description.
+     *
+     * @param docComment the Doc comment
+     * @return the description
+     */
     @NotNull
     public static List<String> findDocDescription(@NotNull PsiDocComment docComment) {
         List<String> descriptions = new LinkedList<String>();
@@ -105,6 +148,12 @@ public class JavaDocUtils {
         return descriptions;
     }
 
+    /**
+     * Find doc tags.
+     *
+     * @param docComment the Doc comment
+     * @return the javadoc tags
+     */
     @NotNull
     public static Map<String, List<JavaDocTag>> findDocTags(@NotNull PsiDocComment docComment) {
         Map<String, List<JavaDocTag>> tags = new LinkedHashMap<String, List<JavaDocTag>>();
@@ -119,6 +168,12 @@ public class JavaDocUtils {
         return tags;
     }
 
+    /**
+     * Find doc tag ref param.
+     *
+     * @param docTag the Doc tag
+     * @return the javadoc's tag ref parameter
+     */
     @Nullable
     public static String findDocTagRefParam(@NotNull PsiDocTag docTag) {
         String refParam = null;
@@ -132,6 +187,12 @@ public class JavaDocUtils {
         return refParam;
     }
 
+    /**
+     * Find doc tag value.
+     *
+     * @param docTag the Doc tag
+     * @return the javadoc's tag value
+     */
     @Nullable
     public static String findDocTagValue(@NotNull PsiDocTag docTag) {
         String value = null;
@@ -144,6 +205,12 @@ public class JavaDocUtils {
         return value;
     }
 
+    /**
+     * Find doc tag description.
+     *
+     * @param docTag the Doc tag
+     * @return the javadoc's tag descriptions
+     */
     @NotNull
     public static List<String> findDocTagDescription(@NotNull PsiDocTag docTag) {
         List<String> descriptions = new LinkedList<String>();
@@ -155,6 +222,13 @@ public class JavaDocUtils {
         return descriptions;
     }
 
+    /**
+     * Converts string to java doc.
+     *
+     * @param javaDocText       the Java doc text
+     * @param psiElementFactory the Psi element factory
+     * @return the Java doc
+     */
     @NotNull
     public static JavaDoc toJavaDoc(@NotNull String javaDocText, @NotNull PsiElementFactory psiElementFactory) {
         PsiDocComment javaDocComment = psiElementFactory.createDocCommentFromText(javaDocText);

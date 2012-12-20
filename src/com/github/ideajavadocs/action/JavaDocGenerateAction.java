@@ -18,14 +18,27 @@ import com.intellij.psi.util.PsiUtilCore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * The type Java doc generate action.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class JavaDocGenerateAction extends AnAction {
 
     private JavaDocWriter writer;
 
+    /**
+     * Instantiates a new Java doc generate action.
+     */
     public JavaDocGenerateAction() {
         writer = ServiceManager.getService(JavaDocWriter.class);
     }
 
+    /**
+     * Action performed.
+     *
+     * @param e the Event
+     */
     public void actionPerformed(AnActionEvent e) {
         Editor editor = DataKeys.EDITOR.getData(e.getDataContext());
         if (editor == null) {
@@ -47,6 +60,12 @@ public class JavaDocGenerateAction extends AnAction {
         }
     }
 
+    /**
+     * Gets the java element.
+     *
+     * @param element the Element
+     * @return the Java element
+     */
     @NotNull
     private PsiElement getJavaElement(@NotNull PsiElement element) {
         PsiElement result = element;
@@ -63,6 +82,12 @@ public class JavaDocGenerateAction extends AnAction {
         return result;
     }
 
+    /**
+     * Gets the generator.
+     *
+     * @param element the Element
+     * @return the Generator
+     */
     @Nullable
     private JavaDocGenerator getGenerator(@NotNull PsiElement element) {
         Project project = element.getProject();
