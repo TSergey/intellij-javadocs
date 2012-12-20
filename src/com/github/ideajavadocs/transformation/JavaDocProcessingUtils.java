@@ -4,6 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * JavaDocProcessingUtils.
  *
@@ -11,20 +14,35 @@ import org.jetbrains.annotations.Nullable;
  */
 public class JavaDocProcessingUtils {
 
+    public static final String GET = "get";
+    public static final String SET = "set";
+    public static final String CREATE = "create";
+
+    public static final List<String> REMOVE_TOKENS = Arrays.asList(GET, SET, CREATE);
+
     @NotNull
     public static String simpleDescription(@Nullable String description) {
         if (StringUtils.isBlank(description)) {
             return StringUtils.EMPTY;
         }
+        int firstElement = 0;
+        // Detect if first element should be removed
         String[] parts = StringUtils.splitByCharacterTypeCamelCase(description);
-        for (int i = 0; i < parts.length; i++) {
-            if (i == 0) {
-                parts[i] = StringUtils.capitalize(parts[i]);
+        if (REMOVE_TOKENS.contains(parts[0])) {
+            firstElement  ++;
+        }
+        StringBuilder result = new StringBuilder();
+        for (int i = firstElement; i < parts.length; i++) {
+            if (i == firstElement) {
+                result.append(StringUtils.capitalize(parts[i]));
             } else {
-                parts[i] = StringUtils.lowerCase(parts[i]);
+                result.append(StringUtils.lowerCase(parts[i]));
+            }
+            if (i < parts.length - 1) {
+                result.append(" ");
             }
         }
-        return StringUtils.join(parts, " ");
+        return result.toString();
     }
 
 }

@@ -4,6 +4,7 @@ import com.github.ideajavadocs.template.DocTemplateManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassType;
+import com.intellij.psi.PsiCodeBlock;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
@@ -68,8 +69,8 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
             " */";
     private static final Map<String, String> METHOD_TEMPLATES = new LinkedHashMap<String, String>();
     static {
-        METHOD_TEMPLATES.put("", METHOD_GETTER_TEMPLATE);
-        METHOD_TEMPLATES.put("", METHOD_SETTER_TEMPLATE);
+        METHOD_TEMPLATES.put(".*get.+", METHOD_GETTER_TEMPLATE);
+        METHOD_TEMPLATES.put(".*set.+", METHOD_SETTER_TEMPLATE);
         METHOD_TEMPLATES.put(".*void\\s.+", METHOD_VOID_TEMPLATE);
         METHOD_TEMPLATES.put(".+", METHOD_TEMPLATE);
     }
@@ -144,7 +145,8 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         } else {
             templates = METHOD_TEMPLATES;
         }
-        return getMatchingTemplate(methodElement.getText(), templates);
+        String signature = StringUtils.split(methodElement.getText(), "\n")[0];
+        return getMatchingTemplate(signature, templates);
 
     }
 
