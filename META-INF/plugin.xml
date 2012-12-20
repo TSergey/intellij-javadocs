@@ -1,17 +1,17 @@
 <idea-plugin version="2">
   <id>com.github.ideajavadocs</id>
-  <name>Idea JavaDoc Generator</name>
+  <name>JavaDoc Generator</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="s.timofiychuk@gmail.com" url="https://github.com/TSergey/ideajavadocs/wiki">YourCompany</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <small>most HTML tags may be used</small>
+      Plugin that generates java docs on java class elements, like field, method, etc.
       ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <small>most HTML tags may be used</small>
+          <ul>
+            <li>Initial implementation of "JavaDoc Generator" plugin</li>
+          </ul>
       ]]>
   </change-notes>
 
