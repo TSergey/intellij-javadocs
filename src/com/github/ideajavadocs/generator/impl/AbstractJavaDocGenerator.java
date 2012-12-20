@@ -2,8 +2,8 @@ package com.github.ideajavadocs.generator.impl;
 
 import com.github.ideajavadocs.generator.JavaDocGenerator;
 import com.github.ideajavadocs.model.JavaDoc;
-import com.github.ideajavadocs.template.TemplateManager;
-import com.github.ideajavadocs.template.TemplateProcessor;
+import com.github.ideajavadocs.template.DocTemplateManager;
+import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
@@ -15,13 +15,13 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements JavaDocGenerator<T> {
 
-    private TemplateManager templateManager;
-    private TemplateProcessor templateProcessor;
+    private DocTemplateManager docTemplateManager;
+    private DocTemplateProcessor docTemplateProcessor;
     private PsiElementFactory psiElementFactory;
 
     public AbstractJavaDocGenerator(@NotNull Project project) {
-        templateManager = ServiceManager.getService(project, TemplateManager.class);
-        templateProcessor = ServiceManager.getService(TemplateProcessor.class);
+        docTemplateManager = ServiceManager.getService(project, DocTemplateManager.class);
+        docTemplateProcessor = ServiceManager.getService(DocTemplateProcessor.class);
         psiElementFactory = PsiElementFactory.SERVICE.getInstance(project);
     }
 
@@ -44,13 +44,13 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
     }
 
     @NotNull
-    public TemplateManager getTemplateManager() {
-        return templateManager;
+    public DocTemplateManager getDocTemplateManager() {
+        return docTemplateManager;
     }
 
     @NotNull
-    public TemplateProcessor getTemplateProcessor() {
-        return templateProcessor;
+    public DocTemplateProcessor getDocTemplateProcessor() {
+        return docTemplateProcessor;
     }
 
     @NotNull

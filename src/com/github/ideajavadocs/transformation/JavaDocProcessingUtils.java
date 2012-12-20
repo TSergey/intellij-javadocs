@@ -24,7 +24,7 @@ public class JavaDocProcessingUtils {
                 parts[i] = StringUtils.lowerCase(parts[i]);
             }
         }
-        return StringUtils.join(parts, " ") + ".";
+        return StringUtils.join(parts, " ");
     }
 
 }

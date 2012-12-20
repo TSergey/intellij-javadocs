@@ -8,7 +8,7 @@ import com.intellij.psi.PsiParameter;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface TemplateManager {
+public interface DocTemplateManager {
 
     @NotNull
     String getClassTemplate(@NotNull PsiClass classElement);

@@ -30,15 +30,15 @@
           <implementation-class>com.github.ideajavadocs.operation.impl.JavaDocWriterImpl</implementation-class>
       </component>
       <component>
-          <interface-class>com.github.ideajavadocs.template.TemplateProcessor</interface-class>
-          <implementation-class>com.github.ideajavadocs.template.impl.TemplateProcessorImpl</implementation-class>
+          <interface-class>com.github.ideajavadocs.template.DocTemplateProcessor</interface-class>
+          <implementation-class>com.github.ideajavadocs.template.impl.DocTemplateProcessorImpl</implementation-class>
       </component>
   </application-components>
 
   <project-components>
       <component>
-          <interface-class>com.github.ideajavadocs.template.TemplateManager</interface-class>
-          <implementation-class>com.github.ideajavadocs.template.impl.TemplateManagerImpl</implementation-class>
+          <interface-class>com.github.ideajavadocs.template.DocTemplateManager</interface-class>
+          <implementation-class>com.github.ideajavadocs.template.impl.DocTemplateManagerImpl</implementation-class>
       </component>
   </project-components>
 

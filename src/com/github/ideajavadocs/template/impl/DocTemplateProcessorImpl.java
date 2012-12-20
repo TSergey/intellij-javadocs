@@ -1,6 +1,6 @@
 package com.github.ideajavadocs.template.impl;
 
-import com.github.ideajavadocs.template.TemplateProcessor;
+import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.intellij.openapi.components.ApplicationComponent;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-public class TemplateProcessorImpl implements TemplateProcessor, ApplicationComponent {
+public class DocTemplateProcessorImpl implements DocTemplateProcessor, ApplicationComponent {
 
-    public static final String COMPONENT_NAME = "TemplateProcessor";
+    public static final String COMPONENT_NAME = "DocTemplateProcessor";
 
     @Override
     public void initComponent() {

@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public interface TemplateProcessor {
+public interface DocTemplateProcessor {
 
     @NotNull
     String process(@NotNull String template, @NotNull Map<String, String> params);
