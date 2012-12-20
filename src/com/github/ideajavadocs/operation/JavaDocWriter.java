@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface JavaDocWriter {
 
-    String WRITE_JAVADOC_COMMAND_NAME = "com.github.ideajavadocs.operation.JavaDocWriter";
+    String WRITE_JAVADOC_COMMAND_NAME = "JavaDocWriter";
     String WRITE_JAVADOC_COMMAND_GROUP = "com.github.ideajavadocs.operation";
 
     void write(@NotNull PsiDocComment javaDoc, @NotNull PsiElement beforeElement);
