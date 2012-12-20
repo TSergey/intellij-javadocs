@@ -10,9 +10,9 @@ import java.util.Map;
 public class JavaDoc {
 
     private List<String> description;
-    private Map<String, JavaDocTag> tags;
+    private Map<String, List<JavaDocTag>> tags;
 
-    public JavaDoc(@NotNull List<String> description, @NotNull Map<String, JavaDocTag> tags) {
+    public JavaDoc(@NotNull List<String> description, @NotNull Map<String, List<JavaDocTag>> tags) {
         this.description = description;
         this.tags = tags;
     }
@@ -23,7 +23,7 @@ public class JavaDoc {
     }
 
     @NotNull
-    public Map<String, JavaDocTag> getTags() {
+    public Map<String, List<JavaDocTag>> getTags() {
         return tags;
     }
 

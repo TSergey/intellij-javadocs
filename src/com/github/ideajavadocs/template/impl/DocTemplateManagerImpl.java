@@ -51,12 +51,8 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     /*     */
     private static final String METHOD_GETTER_TEMPLATE =
             "/**\n" +
-            " * Gets the ${getter_description}.\n" +
-            " * @return the ${getter_description}\n" +
-            " */";
-    private static final String METHOD_SETTER_TEMPLATE =
-            "/**\n" +
-            " * Sets the ${setter_description}.\n" +
+            " * ${description}.\n" +
+            " * @return the ${return_by_name}\n" +
             " */";
     private static final String METHOD_VOID_TEMPLATE =
             "/**\n" +
@@ -70,7 +66,6 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     private static final Map<String, String> METHOD_TEMPLATES = new LinkedHashMap<String, String>();
     static {
         METHOD_TEMPLATES.put(".*get.+", METHOD_GETTER_TEMPLATE);
-        METHOD_TEMPLATES.put(".*set.+", METHOD_SETTER_TEMPLATE);
         METHOD_TEMPLATES.put(".*void\\s.+", METHOD_VOID_TEMPLATE);
         METHOD_TEMPLATES.put(".+", METHOD_TEMPLATE);
     }
@@ -145,7 +140,11 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         } else {
             templates = METHOD_TEMPLATES;
         }
-        String signature = StringUtils.split(methodElement.getText(), "\n")[0];
+        String signature = methodElement.getText();
+        PsiCodeBlock methodBody = methodElement.getBody();
+        if(methodBody != null) {
+            signature = signature.replace(methodBody.getText(), "");
+        }
         return getMatchingTemplate(signature, templates);
 
     }

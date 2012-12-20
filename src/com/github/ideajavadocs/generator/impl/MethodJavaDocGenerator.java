@@ -2,7 +2,6 @@ package com.github.ideajavadocs.generator.impl;
 
 import com.github.ideajavadocs.model.JavaDoc;
 import com.github.ideajavadocs.model.JavaDocTag;
-import com.github.ideajavadocs.transformation.JavaDocProcessingUtils;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClassType;
@@ -15,7 +14,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> {
 
@@ -34,44 +36,53 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
         if(returnElement != null) {
             returnDescription = returnElement.getText();
         }
-        params.put("description", JavaDocProcessingUtils.simpleDescription(name));
-        params.put("getter_description", JavaDocProcessingUtils.simpleDescription(name));
-        params.put("setter_description", JavaDocProcessingUtils.simpleDescription(name));
-        params.put("return_description", JavaDocProcessingUtils.simpleDescription(returnDescription));
+        params.put("description", getDocTemplateProcessor().buildDescription(name));
+        params.put("return_by_name", getDocTemplateProcessor().buildRawDescription(name));
+        params.put("return_description", getDocTemplateProcessor().buildDescription(returnDescription));
 
-        String javaDocText = getDocTemplateProcessor().process(template, params);
+        String javaDocText = getDocTemplateProcessor().merge(template, params);
         JavaDoc newJavaDoc = JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());
 
-        Map<String, JavaDocTag> tags = new LinkedHashMap<String, JavaDocTag>();
+        Map<String, List<JavaDocTag>> tags = new LinkedHashMap<String, List<JavaDocTag>>();
         tags.putAll(newJavaDoc.getTags());
         processParamTags(element, tags);
         processExceptionTags(element, tags);
         return new JavaDoc(newJavaDoc.getDescription(), tags);
     }
 
-    private void processExceptionTags(@NotNull PsiMethod element, @NotNull Map<String, JavaDocTag> tags) {
+    private void processExceptionTags(@NotNull PsiMethod element, @NotNull Map<String, List<JavaDocTag>> tags) {
         for (PsiClassType psiClassType : element.getThrowsList().getReferencedTypes()) {
             String template = getDocTemplateManager().getExceptionTagTemplate(psiClassType);
             Map<String, String> params = new HashMap<String, String>();
             String name = psiClassType.getClassName();
             params.put("name", name);
-            params.put("description", JavaDocProcessingUtils.simpleDescription(name));
+            params.put("description", getDocTemplateProcessor().buildDescription(name));
             JavaDoc javaDocEnrichment = JavaDocUtils.toJavaDoc(
-                    getDocTemplateProcessor().process(template, params), getPsiElementFactory());
-            tags.putAll(javaDocEnrichment.getTags());
+                    getDocTemplateProcessor().merge(template, params), getPsiElementFactory());
+            addTags(javaDocEnrichment, tags);
         }
     }
 
-    private void processParamTags(@NotNull PsiMethod element, @NotNull Map<String, JavaDocTag> tags) {
+    private void processParamTags(@NotNull PsiMethod element, @NotNull Map<String, List<JavaDocTag>> tags) {
         for (PsiParameter psiParameter : element.getParameterList().getParameters()) {
             String template = getDocTemplateManager().getParamTagTemplate(psiParameter);
             Map<String, String> params = new HashMap<String, String>();
             String name = psiParameter.getName();
             params.put("name", name);
-            params.put("description", JavaDocProcessingUtils.simpleDescription(name));
+            params.put("description", getDocTemplateProcessor().buildDescription(name));
             JavaDoc javaDocEnrichment = JavaDocUtils.toJavaDoc(
-                    getDocTemplateProcessor().process(template, params), getPsiElementFactory());
-            tags.putAll(javaDocEnrichment.getTags());
+                    getDocTemplateProcessor().merge(template, params), getPsiElementFactory());
+            addTags(javaDocEnrichment, tags);
+        }
+    }
+
+    private void addTags(JavaDoc javaDocEnrichment, Map<String, List<JavaDocTag>> tags) {
+        for (Entry<String, List<JavaDocTag>> tagEntries : javaDocEnrichment.getTags().entrySet()) {
+            String tagName = tagEntries.getKey();
+            if (!tags.containsKey(tagName)) {
+                tags.put(tagName, new LinkedList<JavaDocTag>());
+            }
+            tags.get(tagName).addAll(tagEntries.getValue());
         }
     }
 

@@ -39,26 +39,33 @@ public class JavaDocUtils {
         if (CollectionUtils.isEmpty(description)) {
             description = newJavaDoc.getDescription();
         }
-        Map<String, JavaDocTag> tags = new LinkedHashMap<String, JavaDocTag>();
-        Map<String, JavaDocTag> oldTags = oldJavaDoc.getTags();
-        Map<String, JavaDocTag> newTags = newJavaDoc.getTags();
-        for (Entry<String, JavaDocTag> entry : newTags.entrySet()) {
-            String name = entry.getKey();
-            JavaDocTag tag = entry.getValue();
-            if (oldTags.containsKey(name)) {
-                // the case when old tag exists
-                JavaDocTag oldTag = oldTags.get(name);
-                if (StringUtils.isBlank(oldTag.getValue()) &&
-                        StringUtils.isBlank(oldTag.getRefParam())) {
-                    // the case when old tag has been broken and should be restored
-                    tags.put(name, tag);
-                } else {
-                    // the case when old tag is ok
-                    tags.put(name, mergeJavaDocTag(oldTag, tag));
+        Map<String, List<JavaDocTag>> tags = new LinkedHashMap<String, List<JavaDocTag>>();
+        Map<String, List<JavaDocTag>> oldTags = oldJavaDoc.getTags();
+        Map<String, List<JavaDocTag>> newTags = newJavaDoc.getTags();
+        for (Entry<String, List<JavaDocTag>> newTagsEntry : newTags.entrySet()) {
+            String name = newTagsEntry.getKey();
+            List<JavaDocTag> tagsEntry = newTagsEntry.getValue();
+            for (JavaDocTag tag : tagsEntry) {
+                if (!tags.containsKey(name)) {
+                    tags.put(name, new LinkedList<JavaDocTag>());
                 }
-            } else {
-                // the case when old tag has been removed
-                tags.put(name, tag);
+                if (oldTags.containsKey(name)) {
+                    // the case when old tag exists
+                    List<JavaDocTag> oldTagsEntry = oldTags.get(name);
+                    for (JavaDocTag oldTag : oldTagsEntry) {
+                        if (StringUtils.isBlank(oldTag.getValue()) &&
+                                StringUtils.isBlank(oldTag.getRefParam())) {
+                            // the case when old tag has been broken and should be restored
+                            tags.get(name).add(tag);
+                        } else {
+                            // the case when old tag is ok
+                            tags.get(name).add(mergeJavaDocTag(oldTag, tag));
+                        }
+                    }
+                } else {
+                    // the case when old tag has been removed
+                    tags.get(name).add(tag);
+                }
             }
         }
         return new JavaDoc(description, tags);
@@ -99,11 +106,15 @@ public class JavaDocUtils {
     }
 
     @NotNull
-    public static Map<String, JavaDocTag> findDocTags(@NotNull PsiDocComment docComment) {
-        Map<String, JavaDocTag> tags = new LinkedHashMap<String, JavaDocTag>();
+    public static Map<String, List<JavaDocTag>> findDocTags(@NotNull PsiDocComment docComment) {
+        Map<String, List<JavaDocTag>> tags = new LinkedHashMap<String, List<JavaDocTag>>();
         PsiDocTag[] docTags = docComment.getTags();
         for (PsiDocTag docTag : docTags) {
-            tags.put(docTag.getName(), createJavaDocTag(docTag));
+            String name = docTag.getName();
+            if (!tags.containsKey(name)) {
+                tags.put(name, new LinkedList<JavaDocTag>());
+            }
+            tags.get(name).add(createJavaDocTag(docTag));
         }
         return tags;
     }

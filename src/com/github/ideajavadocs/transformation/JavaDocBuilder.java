@@ -64,10 +64,13 @@ public class JavaDocBuilder {
         return this;
     }
 
-    public JavaDocBuilder addTags(@NotNull Map<String, JavaDocTag> tags) {
-        for (Entry<String, JavaDocTag> entry : tags.entrySet()) {
-            addTag(entry.getKey(), entry.getValue());
-            addNewLine();
+    public JavaDocBuilder addTags(@NotNull Map<String, List<JavaDocTag>> tags) {
+        for (Entry<String, List<JavaDocTag>> entry : tags.entrySet()) {
+            String name = entry.getKey();
+            for (JavaDocTag javaDocTag : entry.getValue()) {
+                addTag(name, javaDocTag);
+                addNewLine();
+            }
         }
         return this;
     }

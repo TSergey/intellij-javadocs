@@ -1,7 +1,6 @@
 package com.github.ideajavadocs.generator.impl;
 
 import com.github.ideajavadocs.model.JavaDoc;
-import com.github.ideajavadocs.transformation.JavaDocProcessingUtils;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
@@ -33,8 +32,8 @@ public class ClassJavaDocGenerator extends AbstractJavaDocGenerator<PsiClass> {
             type = "type";
         }
         params.put("type", type);
-        params.put("name", JavaDocProcessingUtils.simpleDescription(element.getName()));
-        String javaDocText = getDocTemplateProcessor().process(template, params);
+        params.put("name", getDocTemplateProcessor().buildDescription(element.getName()));
+        String javaDocText = getDocTemplateProcessor().merge(template, params);
         return JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());
     }
 

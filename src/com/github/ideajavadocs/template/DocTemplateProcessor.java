@@ -7,6 +7,12 @@ import java.util.Map;
 public interface DocTemplateProcessor {
 
     @NotNull
-    String process(@NotNull String template, @NotNull Map<String, String> params);
+    String merge(@NotNull String template, @NotNull Map<String, String> params);
+
+    @NotNull
+    String buildDescription(@NotNull String description);
+
+    @NotNull
+    String buildRawDescription(@NotNull String description);
 
 }
