@@ -2,21 +2,28 @@ package com.github.ideajavadocs.template.impl;
 
 import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.options.Configurable;
+import com.intellij.openapi.options.ConfigurationException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import javax.swing.*;
+
 /**
  * The type Doc template processor impl.
  *
  * @author Sergey Timofiychuk
  */
-public class DocTemplateProcessorImpl implements DocTemplateProcessor, ApplicationComponent {
+public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectComponent {
 
     // TODO move the section to the configuration menu
     private static final Map<String, String> REPLACE_TOKENS = new HashMap<String, String>();
@@ -29,8 +36,15 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, Applicati
     }
 
     @Override
+    public void projectOpened() {
+    }
+
+    @Override
+    public void projectClosed() {
+    }
+
+    @Override
     public void initComponent() {
-        // TODO read REPLACE_TOKENS from config
     }
 
     @Override
@@ -41,7 +55,6 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, Applicati
     @Override
     public String getComponentName() {
         return COMPONENT_NAME;
-
     }
 
     @NotNull

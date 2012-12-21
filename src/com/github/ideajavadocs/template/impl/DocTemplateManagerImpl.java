@@ -2,6 +2,8 @@ package com.github.ideajavadocs.template.impl;
 
 import com.github.ideajavadocs.template.DocTemplateManager;
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.options.Configurable;
+import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiCodeBlock;
@@ -10,12 +12,16 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
+
+import javax.swing.*;
 
 /**
  * The type Doc template manager impl.

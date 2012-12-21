@@ -29,16 +29,20 @@
           <interface-class>com.github.ideajavadocs.operation.JavaDocWriter</interface-class>
           <implementation-class>com.github.ideajavadocs.operation.impl.JavaDocWriterImpl</implementation-class>
       </component>
-      <component>
-          <interface-class>com.github.ideajavadocs.template.DocTemplateProcessor</interface-class>
-          <implementation-class>com.github.ideajavadocs.template.impl.DocTemplateProcessorImpl</implementation-class>
-      </component>
   </application-components>
 
   <project-components>
       <component>
           <interface-class>com.github.ideajavadocs.template.DocTemplateManager</interface-class>
           <implementation-class>com.github.ideajavadocs.template.impl.DocTemplateManagerImpl</implementation-class>
+      </component>
+      <component>
+          <interface-class>com.github.ideajavadocs.template.DocTemplateProcessor</interface-class>
+          <implementation-class>com.github.ideajavadocs.template.impl.DocTemplateProcessorImpl</implementation-class>
+      </component>
+      <component>
+          <interface-class>com.github.ideajavadocs.ui.component.JavaDocConfiguration</interface-class>
+          <implementation-class>com.github.ideajavadocs.ui.component.impl.JavaDocConfigurationImpl</implementation-class>
       </component>
   </project-components>
 
