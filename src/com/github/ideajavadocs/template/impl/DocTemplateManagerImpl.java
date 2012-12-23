@@ -50,8 +50,8 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
             + " */";
     private static final Map<String, String> FIELD_TEMPLATES = new LinkedHashMap<String, String>();
     static {
-        FIELD_TEMPLATES.put(".+", CONSTANT_TEMPLATE);
-        FIELD_TEMPLATES.put(".+static\\s.+", FIELD_TEMPLATE);
+        FIELD_TEMPLATES.put(".*static\\s.+", CONSTANT_TEMPLATE);
+        FIELD_TEMPLATES.put(".+", FIELD_TEMPLATE);
     }
 
     /*     */
@@ -150,7 +150,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     @NotNull
     @Override
     public String getFieldTemplate(@NotNull PsiField fieldElement) {
-        return getMatchingTemplate(fieldElement.getName(), FIELD_TEMPLATES);
+        return getMatchingTemplate(fieldElement.getText(), FIELD_TEMPLATES);
 
     }
 
