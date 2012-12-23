@@ -54,7 +54,7 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
 
         JavaDoc newJavaDoc = generateJavaDoc(element);
         if (newJavaDoc != null) {
-            Mode mode = settings.getConfiguration().getMode();
+            Mode mode = settings.getConfiguration().getGeneralSettings().getMode();
             if (mode != Mode.REPLACE && oldDocComment != null) {
                 JavaDoc oldJavaDoc = JavaDocUtils.createJavaDoc(oldDocComment);
                 if (mode == Mode.UPDATE) {
@@ -113,7 +113,7 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
 
     private boolean checkModifiers(PsiModifierList modifiers, String modifier, Visibility visibility) {
         return modifiers != null && modifiers.hasModifierProperty(modifier) &&
-                getSettings().getConfiguration().getVisibilities().contains(visibility);
+                getSettings().getConfiguration().getGeneralSettings().getVisibilities().contains(visibility);
     }
 
     /**

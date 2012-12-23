@@ -77,25 +77,8 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Nullable
     @Override
     public JComponent createComponent() {
-        if (!loadedStoredConfig) {
-            // setup default values
-            settings = new JavaDocSettings();
-            Set<Level> levels = new HashSet<Level>();
-            levels.add(Level.TYPE);
-            levels.add(Level.METHOD);
-            levels.add(Level.FIELD);
-
-            Set<Visibility> visibilities = new HashSet<Visibility>();
-            visibilities.add(Visibility.PUBLIC);
-            visibilities.add(Visibility.PROTECTED);
-
-            settings.setOverriddenMethods(Boolean.FALSE);
-            settings.setMode(Mode.UPDATE);
-            settings.setLevels(levels);
-            settings.setVisibilities(visibilities);
-        }
         if (configPanel == null) {
-            configPanel = new ConfigPanel(settings);
+            configPanel = new ConfigPanel(getSettings());
         }
         reset();
         return configPanel.getPanel();
@@ -125,7 +108,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Override
     public JavaDocSettings getConfiguration() {
         JavaDocSettings javaDocSettings = new JavaDocSettings();
-        XmlSerializerUtil.copyBean(settings, javaDocSettings);
+        XmlSerializerUtil.copyBean(getSettings(), javaDocSettings);
         return javaDocSettings;
     }
 
@@ -143,6 +126,27 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     public void loadState(Element javaDocSettings) {
         settings = new JavaDocSettings(javaDocSettings);
         loadedStoredConfig = true;
+    }
+
+    private JavaDocSettings getSettings() {
+        if (!loadedStoredConfig) {
+            // setup default values
+            settings = new JavaDocSettings();
+            Set<Level> levels = new HashSet<Level>();
+            levels.add(Level.TYPE);
+            levels.add(Level.METHOD);
+            levels.add(Level.FIELD);
+
+            Set<Visibility> visibilities = new HashSet<Visibility>();
+            visibilities.add(Visibility.PUBLIC);
+            visibilities.add(Visibility.PROTECTED);
+
+            settings.getGeneralSettings().setOverriddenMethods(Boolean.FALSE);
+            settings.getGeneralSettings().setMode(Mode.UPDATE);
+            settings.getGeneralSettings().setLevels(levels);
+            settings.getGeneralSettings().setVisibilities(visibilities);
+        }
+        return settings;
     }
 
 }

@@ -30,7 +30,7 @@ public class ClassJavaDocGenerator extends AbstractJavaDocGenerator<PsiClass> {
     @Nullable
     @Override
     protected JavaDoc generateJavaDoc(@NotNull PsiClass element) {
-        if (!getSettings().getConfiguration().getLevels().contains(Level.TYPE) ||
+        if (!getSettings().getConfiguration().getGeneralSettings().getLevels().contains(Level.TYPE) ||
                 !shouldGenerate(element.getModifierList())) {
             return null;
         }

@@ -43,24 +43,24 @@ public class ConfigPanel {
     public boolean isModified() {
         boolean result = false;
         if (generalModeKeepRadioButton.isSelected()) {
-            result = settings.getMode() != Mode.KEEP;
+            result = settings.getGeneralSettings().getMode() != Mode.KEEP;
         } else if (generalModeUpdateRadioButton.isSelected()) {
-            result = settings.getMode() != Mode.UPDATE;
+            result = settings.getGeneralSettings().getMode() != Mode.UPDATE;
         } else if (generalModeReplaceRadioButton.isSelected()) {
-            result = settings.getMode() != Mode.REPLACE;
+            result = settings.getGeneralSettings().getMode() != Mode.REPLACE;
         }
-        result = result || isCheckboxModified(generalLevelTypeCheckbox, settings.getLevels().contains(Level.TYPE));
-        result = result || isCheckboxModified(generalLevelMethodCheckbox, settings.getLevels().contains(Level.METHOD));
-        result = result || isCheckboxModified(generalLevelFieldCheckbox, settings.getLevels().contains(Level.FIELD));
+        result = result || isCheckboxModified(generalLevelTypeCheckbox, settings.getGeneralSettings().getLevels().contains(Level.TYPE));
+        result = result || isCheckboxModified(generalLevelMethodCheckbox, settings.getGeneralSettings().getLevels().contains(Level.METHOD));
+        result = result || isCheckboxModified(generalLevelFieldCheckbox, settings.getGeneralSettings().getLevels().contains(Level.FIELD));
         result = result || isCheckboxModified(
-                generalVisibilityPublicCheckbox, settings.getVisibilities().contains(Visibility.PUBLIC));
+                generalVisibilityPublicCheckbox, settings.getGeneralSettings().getVisibilities().contains(Visibility.PUBLIC));
         result = result || isCheckboxModified(
-                generalVisibilityProtectedCheckbox, settings.getVisibilities().contains(Visibility.PROTECTED));
+                generalVisibilityProtectedCheckbox, settings.getGeneralSettings().getVisibilities().contains(Visibility.PROTECTED));
         result = result || isCheckboxModified(
-                generalVisibilityDefaultCheckbox, settings.getVisibilities().contains(Visibility.DEFAULT));
+                generalVisibilityDefaultCheckbox, settings.getGeneralSettings().getVisibilities().contains(Visibility.DEFAULT));
         result = result || isCheckboxModified(
-                generalVisibilityPrivateCheckbox, settings.getVisibilities().contains(Visibility.PRIVATE));
-        result = result || isCheckboxModified(generalOtherOverriddenMethodsCheckbox, settings.isOverriddenMethods());
+                generalVisibilityPrivateCheckbox, settings.getGeneralSettings().getVisibilities().contains(Visibility.PRIVATE));
+        result = result || isCheckboxModified(generalOtherOverriddenMethodsCheckbox, settings.getGeneralSettings().isOverriddenMethods());
         return result;
     }
 
@@ -70,43 +70,43 @@ public class ConfigPanel {
 
     public void apply() {
         if (generalModeKeepRadioButton.isSelected()) {
-            settings.setMode(Mode.KEEP);
+            settings.getGeneralSettings().setMode(Mode.KEEP);
         } else if (generalModeUpdateRadioButton.isSelected()) {
-            settings.setMode(Mode.UPDATE);
+            settings.getGeneralSettings().setMode(Mode.UPDATE);
         } else if (generalModeReplaceRadioButton.isSelected()) {
-            settings.setMode(Mode.REPLACE);
+            settings.getGeneralSettings().setMode(Mode.REPLACE);
         }
 
-        settings.getLevels().clear();
+        settings.getGeneralSettings().getLevels().clear();
         if (generalLevelTypeCheckbox.isSelected()) {
-            settings.getLevels().add(Level.TYPE);
+            settings.getGeneralSettings().getLevels().add(Level.TYPE);
         }
         if (generalLevelMethodCheckbox.isSelected()) {
-            settings.getLevels().add(Level.METHOD);
+            settings.getGeneralSettings().getLevels().add(Level.METHOD);
         }
         if (generalLevelFieldCheckbox.isSelected()) {
-            settings.getLevels().add(Level.FIELD);
+            settings.getGeneralSettings().getLevels().add(Level.FIELD);
         }
 
-        settings.getVisibilities().clear();
+        settings.getGeneralSettings().getVisibilities().clear();
         if (generalVisibilityPublicCheckbox.isSelected()) {
-            settings.getVisibilities().add(Visibility.PUBLIC);
+            settings.getGeneralSettings().getVisibilities().add(Visibility.PUBLIC);
         }
         if (generalVisibilityProtectedCheckbox.isSelected()) {
-            settings.getVisibilities().add(Visibility.PROTECTED);
+            settings.getGeneralSettings().getVisibilities().add(Visibility.PROTECTED);
         }
         if (generalVisibilityDefaultCheckbox.isSelected()) {
-            settings.getVisibilities().add(Visibility.DEFAULT);
+            settings.getGeneralSettings().getVisibilities().add(Visibility.DEFAULT);
         }
         if (generalVisibilityPrivateCheckbox.isSelected()) {
-            settings.getVisibilities().add(Visibility.PRIVATE);
+            settings.getGeneralSettings().getVisibilities().add(Visibility.PRIVATE);
         }
 
-        settings.setOverriddenMethods(generalOtherOverriddenMethodsCheckbox.isSelected());
+        settings.getGeneralSettings().setOverriddenMethods(generalOtherOverriddenMethodsCheckbox.isSelected());
     }
 
     public void reset() {
-        switch (settings.getMode()) {
+        switch (settings.getGeneralSettings().getMode()) {
             case KEEP:
                 generalModeKeepRadioButton.setSelected(true);
                 break;
@@ -117,7 +117,7 @@ public class ConfigPanel {
                 generalModeReplaceRadioButton.setSelected(true);
                 break;
         }
-        for (Level level : settings.getLevels()) {
+        for (Level level : settings.getGeneralSettings().getLevels()) {
             switch (level) {
                 case TYPE:
                     generalLevelTypeCheckbox.setSelected(true);
@@ -130,7 +130,7 @@ public class ConfigPanel {
                     break;
             }
         }
-        for (Visibility visibility : settings.getVisibilities()) {
+        for (Visibility visibility : settings.getGeneralSettings().getVisibilities()) {
             switch (visibility) {
                 case PUBLIC:
                     generalVisibilityPublicCheckbox.setSelected(true);
@@ -146,7 +146,7 @@ public class ConfigPanel {
                     break;
             }
         }
-        generalOtherOverriddenMethodsCheckbox.setSelected(settings.isOverriddenMethods());
+        generalOtherOverriddenMethodsCheckbox.setSelected(settings.getGeneralSettings().isOverriddenMethods());
     }
 
     public void disposeUIResources() {

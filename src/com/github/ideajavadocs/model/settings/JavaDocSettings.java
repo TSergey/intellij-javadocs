@@ -20,59 +20,30 @@ public class JavaDocSettings implements Serializable {
     private static final String VISIBILITIES = "VISIBILITIES";
     private static final String VISIBILITY = "VISIBILITY";
     private static final String OVERRIDDEN_METHODS = "OVERRIDDEN_METHODS";
+    public static final String GENERAL = "GENERAL";
 
-    private Mode mode;
-    private Set<Level> levels;
-    private Set<Visibility> visibilities;
-    private boolean overriddenMethods;
+    private GeneralSettings generalSettings = new GeneralSettings();
 
     public JavaDocSettings() {
     }
 
     public JavaDocSettings(Element element) {
-        setMode(getValue(element, MODE, Mode.class));
-        setOverriddenMethods(Boolean.parseBoolean(element.getChild(OVERRIDDEN_METHODS).getValue()));
-        setLevels(getValues(element, LEVELS, LEVEL, Level.class));
-        setVisibilities(getValues(element, VISIBILITIES, VISIBILITY, Visibility.class));
-    }
-
-    public Mode getMode() {
-        return mode;
-    }
-
-    public void setMode(Mode mode) {
-        this.mode = mode;
-    }
-
-    public Set<Level> getLevels() {
-        return levels;
-    }
-
-    public void setLevels(Set<Level> levels) {
-        this.levels = levels;
-    }
-
-    public Set<Visibility> getVisibilities() {
-        return visibilities;
-    }
-
-    public void setVisibilities(Set<Visibility> visibilities) {
-        this.visibilities = visibilities;
-    }
-
-    public Boolean isOverriddenMethods() {
-        return overriddenMethods;
-    }
-
-    public void setOverriddenMethods(Boolean overriddenMethods) {
-        this.overriddenMethods = overriddenMethods;
+        Element general = element.getChild(GENERAL);
+        if (general != null) {
+            generalSettings.setMode(getValue(general, MODE, Mode.class));
+            generalSettings.setOverriddenMethods(Boolean.parseBoolean(general.getChild(OVERRIDDEN_METHODS).getValue()));
+            generalSettings.setLevels(getValues(general, LEVELS, LEVEL, Level.class));
+            generalSettings.setVisibilities(getValues(general, VISIBILITIES, VISIBILITY, Visibility.class));
+        }
     }
 
     public void addToDom(Element root) {
-        root.addContent(getElement(MODE, getMode().toString()));
-        root.addContent(getElement(OVERRIDDEN_METHODS, isOverriddenMethods().toString()));
-        root.addContent(getElement(LEVELS, LEVEL, getLevels()));
-        root.addContent(getElement(VISIBILITIES, VISIBILITY, getVisibilities()));
+        Element general = new Element(GENERAL);
+        root.addContent(general);
+        general.addContent(getElement(MODE, generalSettings.getMode().toString()));
+        general.addContent(getElement(OVERRIDDEN_METHODS, generalSettings.isOverriddenMethods().toString()));
+        general.addContent(getElement(LEVELS, LEVEL, generalSettings.getLevels()));
+        general.addContent(getElement(VISIBILITIES, VISIBILITY, generalSettings.getVisibilities()));
     }
 
     private Element getElement(String name, String value) {
@@ -112,6 +83,14 @@ public class JavaDocSettings implements Serializable {
             }
         }
         return result;
+    }
+
+    public GeneralSettings getGeneralSettings() {
+        return generalSettings;
+    }
+
+    public void setGeneralSettings(GeneralSettings generalSettings) {
+        this.generalSettings = generalSettings;
     }
 
 }
