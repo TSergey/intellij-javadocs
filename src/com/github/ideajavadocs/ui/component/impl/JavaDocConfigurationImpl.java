@@ -1,21 +1,23 @@
 package com.github.ideajavadocs.ui.component.impl;
 
-import com.github.ideajavadocs.model.JavaDocSettings;
+import com.github.ideajavadocs.model.settings.JavaDocSettings;
+import com.github.ideajavadocs.model.settings.Level;
+import com.github.ideajavadocs.model.settings.Mode;
+import com.github.ideajavadocs.model.settings.Visibility;
 import com.github.ideajavadocs.ui.ConfigPanel;
 import com.github.ideajavadocs.ui.component.JavaDocConfiguration;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
+import com.intellij.openapi.components.*;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-
+import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.jdom.Element;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The type Java doc configuration impl.
@@ -32,17 +34,11 @@ import javax.swing.*;
         }
 )
 public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectComponent, Configurable,
-        PersistentStateComponent<JavaDocSettings> {
+        PersistentStateComponent<Element> {
 
     private JavaDocSettings settings;
     private ConfigPanel configPanel;
-
-    /**
-     * Instantiates a new Java doc configuration impl.
-     */
-    public JavaDocConfigurationImpl() {
-        settings = new JavaDocSettings();
-    }
+    private boolean loadedStoredConfig = false;
 
     @Override
     public void initComponent() {
@@ -81,45 +77,72 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Nullable
     @Override
     public JComponent createComponent() {
+        if (!loadedStoredConfig) {
+            // setup default values
+            settings = new JavaDocSettings();
+            Set<Level> levels = new HashSet<Level>();
+            levels.add(Level.TYPE);
+            levels.add(Level.METHOD);
+            levels.add(Level.FIELD);
+
+            Set<Visibility> visibilities = new HashSet<Visibility>();
+            visibilities.add(Visibility.PUBLIC);
+            visibilities.add(Visibility.PROTECTED);
+
+            settings.setOverriddenMethods(Boolean.FALSE);
+            settings.setMode(Mode.UPDATE);
+            settings.setLevels(levels);
+            settings.setVisibilities(visibilities);
+        }
         if (configPanel == null) {
-            configPanel = new ConfigPanel();
+            configPanel = new ConfigPanel(settings);
         }
         reset();
-        return configPanel;
+        return configPanel.getPanel();
     }
 
     @Override
     public boolean isModified() {
-        return false;
+        return configPanel.isModified();
     }
 
     @Override
     public void apply() throws ConfigurationException {
+        configPanel.apply();
     }
 
     @Override
     public void reset() {
+        configPanel.reset();
     }
 
     @Override
     public void disposeUIResources() {
+        configPanel.disposeUIResources();
         configPanel = null;
     }
 
     @Override
     public JavaDocSettings getConfiguration() {
-        return getState();
+        JavaDocSettings javaDocSettings = new JavaDocSettings();
+        XmlSerializerUtil.copyBean(settings, javaDocSettings);
+        return javaDocSettings;
     }
 
     @Nullable
     @Override
-    public JavaDocSettings getState() {
-        return settings;
+    public Element getState() {
+        Element root = new Element("JAVA_DOC_SETTINGS_PLUGIN");
+        if (settings != null) {
+            settings.addToDom(root);
+        }
+        return root;
     }
 
     @Override
-    public void loadState(JavaDocSettings javaDocSettings) {
-        settings = javaDocSettings;
+    public void loadState(Element javaDocSettings) {
+        settings = new JavaDocSettings(javaDocSettings);
+        loadedStoredConfig = true;
     }
 
 }

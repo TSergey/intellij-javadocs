@@ -55,8 +55,10 @@ public class JavaDocGenerateAction extends AnAction {
         JavaDocGenerator generator = getGenerator(element);
         if (generator != null) {
             @SuppressWarnings("unchecked")
-            PsiDocComment javaDoc = generator.generate(element, false);
-            writer.write(javaDoc, element);
+            PsiDocComment javaDoc = generator.generate(element);
+            if (javaDoc != null) {
+                writer.write(javaDoc, element);
+            }
         }
     }
 

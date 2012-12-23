@@ -1,6 +1,6 @@
 package com.github.ideajavadocs.ui.component;
 
-import com.github.ideajavadocs.model.JavaDocSettings;
+import com.github.ideajavadocs.model.settings.JavaDocSettings;
 
 /**
  * The interface Java doc configuration.

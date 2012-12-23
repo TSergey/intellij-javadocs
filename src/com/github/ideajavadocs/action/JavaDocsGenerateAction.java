@@ -10,14 +10,9 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -109,8 +104,10 @@ public class JavaDocsGenerateAction extends AnAction {
         JavaDocGenerator generator = getGenerator(element);
         if (generator != null) {
             @SuppressWarnings("unchecked")
-            PsiDocComment javaDoc = generator.generate(element, false);
-            writer.write(javaDoc, element);
+            PsiDocComment javaDoc = generator.generate(element);
+            if (javaDoc != null) {
+                writer.write(javaDoc, element);
+            }
         }
     }
 

@@ -2,21 +2,18 @@ package com.github.ideajavadocs.generator.impl;
 
 import com.github.ideajavadocs.model.JavaDoc;
 import com.github.ideajavadocs.model.JavaDocTag;
+import com.github.ideajavadocs.model.settings.Level;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiTypeElement;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 /**
@@ -35,9 +32,12 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
         super(project);
     }
 
-    @NotNull
+    @Nullable
     @Override
     protected JavaDoc generateJavaDoc(@NotNull PsiMethod element) {
+        if (!shouldGenerate(element) || !shouldGenerate(element.getModifierList())) {
+            return null;
+        }
         String template = getDocTemplateManager().getMethodTemplate(element);
         Map<String, String> params = new HashMap<String, String>();
         String name = element.getName();
@@ -94,6 +94,13 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
             }
             tags.get(tagName).addAll(tagEntries.getValue());
         }
+    }
+
+    private boolean shouldGenerate(@NotNull PsiMethod element) {
+        PsiMethod[] superMethods = element.findSuperMethods();
+        boolean overriddenMethods = superMethods.length > 0 && !getSettings().getConfiguration().isOverriddenMethods();
+        boolean level = getSettings().getConfiguration().getLevels().contains(Level.METHOD);
+        return !level || !overriddenMethods;
     }
 
 }

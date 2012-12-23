@@ -2,16 +2,21 @@ package com.github.ideajavadocs.generator.impl;
 
 import com.github.ideajavadocs.generator.JavaDocGenerator;
 import com.github.ideajavadocs.model.JavaDoc;
+import com.github.ideajavadocs.model.settings.Mode;
+import com.github.ideajavadocs.model.settings.Visibility;
 import com.github.ideajavadocs.template.DocTemplateManager;
 import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
+import com.github.ideajavadocs.ui.component.JavaDocConfiguration;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiModifier;
+import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.javadoc.PsiDocComment;
-
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The type Abstract java doc generator.
@@ -23,6 +28,7 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
     private DocTemplateManager docTemplateManager;
     private DocTemplateProcessor docTemplateProcessor;
     private PsiElementFactory psiElementFactory;
+    private JavaDocConfiguration settings;
 
     /**
      * Instantiates a new Abstract java doc generator.
@@ -31,13 +37,15 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
      */
     public AbstractJavaDocGenerator(@NotNull Project project) {
         docTemplateManager = ServiceManager.getService(project, DocTemplateManager.class);
-        docTemplateProcessor = ServiceManager.getService(DocTemplateProcessor.class);
+        docTemplateProcessor = ServiceManager.getService(project, DocTemplateProcessor.class);
         psiElementFactory = PsiElementFactory.SERVICE.getInstance(project);
+        settings = ServiceManager.getService(project, JavaDocConfiguration.class);
     }
 
+    @Nullable
     @Override
-    @NotNull
-    public final PsiDocComment generate(@NotNull T element, boolean replace) {
+    public final PsiDocComment generate(@NotNull T element) {
+        PsiDocComment result = null;
         PsiDocComment oldDocComment = null;
         PsiElement firstElement = element.getFirstChild();
         if (firstElement instanceof PsiDocComment) {
@@ -45,12 +53,20 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
         }
 
         JavaDoc newJavaDoc = generateJavaDoc(element);
-        if (!replace && oldDocComment != null) {
-            JavaDoc oldJavaDoc = JavaDocUtils.createJavaDoc(oldDocComment);
-            newJavaDoc = JavaDocUtils.mergeJavaDocs(oldJavaDoc, newJavaDoc);
+        if (newJavaDoc != null) {
+            Mode mode = settings.getConfiguration().getMode();
+            if (mode != Mode.REPLACE && oldDocComment != null) {
+                JavaDoc oldJavaDoc = JavaDocUtils.createJavaDoc(oldDocComment);
+                if (mode == Mode.UPDATE) {
+                    newJavaDoc = JavaDocUtils.mergeJavaDocs(oldJavaDoc, newJavaDoc);
+                } else if (mode == Mode.KEEP) {
+                    newJavaDoc = oldJavaDoc;
+                }
+            }
+            String javaDoc = newJavaDoc.toJavaDoc();
+            result = psiElementFactory.createDocCommentFromText(javaDoc);
         }
-        String javaDoc = newJavaDoc.toJavaDoc();
-        return psiElementFactory.createDocCommentFromText(javaDoc);
+        return result;
     }
 
     /**
@@ -59,7 +75,7 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
      * @return the Doc template manager
      */
     @NotNull
-    public DocTemplateManager getDocTemplateManager() {
+    protected DocTemplateManager getDocTemplateManager() {
         return docTemplateManager;
     }
 
@@ -69,7 +85,7 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
      * @return the Doc template processor
      */
     @NotNull
-    public DocTemplateProcessor getDocTemplateProcessor() {
+    protected DocTemplateProcessor getDocTemplateProcessor() {
         return docTemplateProcessor;
     }
 
@@ -79,8 +95,25 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
      * @return the Psi element factory
      */
     @NotNull
-    public PsiElementFactory getPsiElementFactory() {
+    protected PsiElementFactory getPsiElementFactory() {
         return psiElementFactory;
+    }
+
+    @NotNull
+    protected JavaDocConfiguration getSettings() {
+        return settings;
+    }
+
+    protected boolean shouldGenerate(PsiModifierList modifiers) {
+        return checkModifiers(modifiers, PsiModifier.PUBLIC, Visibility.PUBLIC) ||
+                checkModifiers(modifiers, PsiModifier.PROTECTED, Visibility.PROTECTED) ||
+                checkModifiers(modifiers, PsiModifier.PACKAGE_LOCAL, Visibility.DEFAULT) ||
+                checkModifiers(modifiers, PsiModifier.PRIVATE, Visibility.PRIVATE);
+    }
+
+    private boolean checkModifiers(PsiModifierList modifiers, String modifier, Visibility visibility) {
+        return modifiers != null && modifiers.hasModifierProperty(modifier) &&
+                getSettings().getConfiguration().getVisibilities().contains(visibility);
     }
 
     /**
@@ -89,7 +122,7 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
      * @param element the Element
      * @return the Java doc
      */
-    @NotNull
+    @Nullable
     protected abstract JavaDoc generateJavaDoc(@NotNull T element);
 
 }
