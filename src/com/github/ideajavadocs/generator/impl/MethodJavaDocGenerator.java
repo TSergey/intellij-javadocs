@@ -5,11 +5,9 @@ import com.github.ideajavadocs.model.JavaDocTag;
 import com.github.ideajavadocs.model.settings.Level;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiClassType;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiParameter;
-import com.intellij.psi.PsiTypeElement;
+import com.intellij.psi.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +36,7 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
         if (!shouldGenerate(element) || !shouldGenerate(element.getModifierList())) {
             return null;
         }
-        String template = getDocTemplateManager().getMethodTemplate(element);
+        Template template = getDocTemplateManager().getMethodTemplate(element);
         Map<String, String> params = new HashMap<String, String>();
         String name = element.getName();
         String returnDescription = StringUtils.EMPTY;
@@ -61,10 +59,10 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
     }
 
     private void processExceptionTags(@NotNull PsiMethod element, @NotNull Map<String, List<JavaDocTag>> tags) {
-        for (PsiClassType psiClassType : element.getThrowsList().getReferencedTypes()) {
-            String template = getDocTemplateManager().getExceptionTagTemplate(psiClassType);
+        for (PsiJavaCodeReferenceElement psiReferenceElement : element.getThrowsList().getReferenceElements()) {
+            Template template = getDocTemplateManager().getExceptionTagTemplate(psiReferenceElement);
             Map<String, String> params = new HashMap<String, String>();
-            String name = psiClassType.getClassName();
+            String name = psiReferenceElement.getReferenceName();
             params.put("name", name);
             params.put("description", getDocTemplateProcessor().buildDescription(name));
             JavaDoc javaDocEnrichment = JavaDocUtils.toJavaDoc(
@@ -75,7 +73,7 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
 
     private void processParamTags(@NotNull PsiMethod element, @NotNull Map<String, List<JavaDocTag>> tags) {
         for (PsiParameter psiParameter : element.getParameterList().getParameters()) {
-            String template = getDocTemplateManager().getParamTagTemplate(psiParameter);
+            Template template = getDocTemplateManager().getParamTagTemplate(psiParameter);
             Map<String, String> params = new HashMap<String, String>();
             String name = psiParameter.getName();
             params.put("name", name);

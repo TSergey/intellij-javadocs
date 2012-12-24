@@ -1,11 +1,8 @@
 package com.github.ideajavadocs.template;
 
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiClassType;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiParameter;
+import com.intellij.psi.*;
 
+import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -23,46 +20,51 @@ public interface DocTemplateManager {
     /**
      * Gets the class template.
      *
+     *
      * @param classElement the Class element
      * @return the Class template
      */
     @NotNull
-    String getClassTemplate(@NotNull PsiClass classElement);
+    Template getClassTemplate(@NotNull PsiClass classElement);
 
     /**
      * Gets the method template.
+     *
      *
      * @param methodElement the Method element
      * @return the Method template
      */
     @NotNull
-    String getMethodTemplate(@NotNull PsiMethod methodElement);
+    Template getMethodTemplate(@NotNull PsiMethod methodElement);
 
     /**
      * Gets the field template.
      *
-     * @param fieldElement the Field element
+     *
+     * @param psiField the Field element
      * @return the Field template
      */
     @NotNull
-    String getFieldTemplate(@NotNull PsiField fieldElement);
+    Template getFieldTemplate(@NotNull PsiField psiField);
 
     /**
      * Gets the param tag template.
      *
-     * @param fieldElement the Field element
+     *
+     * @param psiParameter the Field element
      * @return the Param tag template
      */
     @NotNull
-    String getParamTagTemplate(@NotNull PsiParameter fieldElement);
+    Template getParamTagTemplate(@NotNull PsiParameter psiParameter);
 
     /**
      * Gets the exception tag template.
      *
-     * @param fieldElement the Field element
+     *
+     * @param psiReferenceElement the Psi reference element
      * @return the Exception tag template
      */
     @NotNull
-    String getExceptionTagTemplate(@NotNull PsiClassType fieldElement);
+    Template getExceptionTagTemplate(@NotNull PsiJavaCodeReferenceElement psiReferenceElement);
 
 }

@@ -5,18 +5,20 @@ import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.psi.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
+import org.apache.velocity.Template;
+import org.apache.velocity.runtime.RuntimeServices;
+import org.apache.velocity.runtime.RuntimeSingleton;
+import org.apache.velocity.runtime.parser.ParseException;
+import org.apache.velocity.runtime.parser.node.SimpleNode;
 import org.jdom.DataConversionException;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
@@ -39,12 +41,18 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     private static final String THROWS_TAG = "throws-tag";
 
     // TODO add more templates for different cases
-    private static final Map<String, String> CLASS_TEMPLATES = new LinkedHashMap<String, String>();
-    private static final Map<String, String> FIELD_TEMPLATES = new LinkedHashMap<String, String>();
-    private static final Map<String, String> METHOD_TEMPLATES = new LinkedHashMap<String, String>();
-    private static final Map<String, String> CONSTRUCTOR_TEMPLATES = new LinkedHashMap<String, String>();
-    private static final Map<String, String> PARAM_TAG_TEMPLATES = new LinkedHashMap<String, String>();
-    private static final Map<String, String> THROWS_TAG_TEMPLATES = new LinkedHashMap<String, String>();
+    private static final Map<Integer, Template> CLASS_TEMPLATES = new TreeMap<Integer, Template>();
+    private static final Map<Integer, Template> FIELD_TEMPLATES = new TreeMap<Integer, Template>();
+    private static final Map<Integer, Template> METHOD_TEMPLATES = new TreeMap<Integer, Template>();
+    private static final Map<Integer, Template> CONSTRUCTOR_TEMPLATES = new TreeMap<Integer, Template>();
+    private static final Map<Integer, Template> PARAM_TAG_TEMPLATES = new TreeMap<Integer, Template>();
+    private static final Map<Integer, Template> THROWS_TAG_TEMPLATES = new TreeMap<Integer, Template>();
+
+    private final RuntimeServices velosityServices;
+
+    public DocTemplateManagerImpl() {
+        velosityServices = RuntimeSingleton.getRuntimeServices();
+    }
 
     @Override
     public void projectOpened() {
@@ -53,35 +61,35 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
                     (TEMPLATES_PATH));
             Element root = document.getRootElement();
             if (root != null) {
-                populateTemplates(root, CLASS, CLASS_TEMPLATES);
-                populateTemplates(root, FIELD, FIELD_TEMPLATES);
-                populateTemplates(root, METHOD, METHOD_TEMPLATES);
-                populateTemplates(root, CONSTRUCTOR, CONSTRUCTOR_TEMPLATES);
-                populateTemplates(root, PARAM_TAG, PARAM_TAG_TEMPLATES);
-                populateTemplates(root, THROWS_TAG, THROWS_TAG_TEMPLATES);
+                readTemplates(root, CLASS, CLASS_TEMPLATES);
+                readTemplates(root, FIELD, FIELD_TEMPLATES);
+                readTemplates(root, METHOD, METHOD_TEMPLATES);
+                readTemplates(root, CONSTRUCTOR, CONSTRUCTOR_TEMPLATES);
+                readTemplates(root, PARAM_TAG, PARAM_TAG_TEMPLATES);
+                readTemplates(root, THROWS_TAG, THROWS_TAG_TEMPLATES);
             }
         } catch (Exception e) {
             // ignore error if settings can not be parsed
         }
     }
 
-    private void populateTemplates(Element root, String elementName, Map<String, String> templates)
-            throws DataConversionException {
-        Map<Integer, Element> elements = readTemplates(root, elementName);
-        for (Element element : elements.values()) {
-            templates.put(element.getAttribute(REGEXP).getValue(), StringUtils.strip(element.getValue()));
-        }
-    }
-
-    private Map<Integer, Element> readTemplates(Element root, String aClass) throws DataConversionException {
-        Element element = root.getChild(aClass);
+    private void readTemplates(Element document, String elementName, Map<Integer, Template> templates)
+            throws DataConversionException, ParseException {
+        Element root = document.getChild(elementName);
         @SuppressWarnings("unchecked")
-        List<Element> templates = element.getChildren(TEMPLATE);
-        Map<Integer, Element> elements = new TreeMap<Integer, Element>();
-        for (Element template : templates) {
-            elements.put(template.getAttribute(ORDER).getIntValue(), template);
+        List<Element> elements = root.getChildren(TEMPLATE);
+        for (Element element : elements) {
+            SimpleNode node = velosityServices.parse(
+                    StringUtils.strip(element.getValue()),
+                    element.getAttribute(REGEXP).getValue());
+            Template template = new Template();
+            template.setRuntimeServices(velosityServices);
+            template.setData(node);
+            template.setName(node.getTemplateName());
+            template.initDocument();
+
+            templates.put(element.getAttribute(ORDER).getIntValue(), template);
         }
-        return elements;
     }
 
     @Override
@@ -105,14 +113,14 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
 
     @NotNull
     @Override
-    public String getClassTemplate(@NotNull PsiClass classElement) {
+    public Template getClassTemplate(@NotNull PsiClass classElement) {
         return getMatchingTemplate(classElement.getText(), CLASS_TEMPLATES);
     }
 
     @NotNull
     @Override
-    public String getMethodTemplate(@NotNull PsiMethod methodElement) {
-        Map<String, String> templates;
+    public Template getMethodTemplate(@NotNull PsiMethod methodElement) {
+        Map<Integer, Template> templates;
         if (methodElement.isConstructor()) {
             templates = CONSTRUCTOR_TEMPLATES;
         } else {
@@ -129,31 +137,31 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
 
     @NotNull
     @Override
-    public String getFieldTemplate(@NotNull PsiField fieldElement) {
-        return getMatchingTemplate(fieldElement.getText(), FIELD_TEMPLATES);
+    public Template getFieldTemplate(@NotNull PsiField psiField) {
+        return getMatchingTemplate(psiField.getText(), FIELD_TEMPLATES);
 
     }
 
     @NotNull
     @Override
-    public String getParamTagTemplate(@NotNull PsiParameter psiParameter) {
+    public Template getParamTagTemplate(@NotNull PsiParameter psiParameter) {
         return getMatchingTemplate(psiParameter.getText(), PARAM_TAG_TEMPLATES);
 
     }
 
     @NotNull
     @Override
-    public String getExceptionTagTemplate(@NotNull PsiClassType classElement) {
-        return getMatchingTemplate(classElement.getCanonicalText(), THROWS_TAG_TEMPLATES);
+    public Template getExceptionTagTemplate(@NotNull PsiJavaCodeReferenceElement psiReferenceElement) {
+        return getMatchingTemplate(psiReferenceElement.getCanonicalText(), THROWS_TAG_TEMPLATES);
 
     }
 
-    @NotNull
-    private String getMatchingTemplate(@NotNull String elementText, @NotNull Map<String, String> templates) {
-        String result = StringUtils.EMPTY;
-        for (Entry<String, String> entry : templates.entrySet()) {
-            if (Pattern.compile(entry.getKey(), Pattern.DOTALL | Pattern.MULTILINE).matcher(elementText).matches()) {
-                result = entry.getValue();
+    @Nullable
+    private Template getMatchingTemplate(@NotNull String elementText, @NotNull Map<Integer, Template> templates) {
+        Template result = null;
+        for (Template template : templates.values()) {
+            if (Pattern.compile(template.getName(), Pattern.DOTALL | Pattern.MULTILINE).matcher(elementText).matches()) {
+                result = template;
                 break;
             }
         }

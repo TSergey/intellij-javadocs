@@ -3,11 +3,16 @@ package com.github.ideajavadocs.template.impl;
 import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.intellij.openapi.components.ProjectComponent;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,11 +75,11 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectCo
 
     @NotNull
     @Override
-    public String merge(@NotNull String template, @NotNull Map<String, String> params) {
-        for (Entry<String, String> entry : params.entrySet()) {
-            template = template.replaceAll(getReplaceParameter(entry.getKey()), entry.getValue());
-        }
-        return template;
+    public String merge(@NotNull Template template, @NotNull Map<String, String> params) {
+        Context context = new VelocityContext(params);
+        StringWriter writer = new StringWriter();
+        template.merge(context, writer);
+        return writer.toString();
 
     }
 

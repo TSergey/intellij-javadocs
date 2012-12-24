@@ -5,6 +5,7 @@ import com.github.ideajavadocs.model.settings.Level;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
+import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,7 +35,7 @@ public class ClassJavaDocGenerator extends AbstractJavaDocGenerator<PsiClass> {
                 !shouldGenerate(element.getModifierList())) {
             return null;
         }
-        String template = getDocTemplateManager().getClassTemplate(element);
+        Template template = getDocTemplateManager().getClassTemplate(element);
         Map<String, String> params = new HashMap<String, String>();
         String type;
         if (element.isAnnotationType()) {
