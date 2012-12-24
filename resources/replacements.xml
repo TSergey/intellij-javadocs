@@ -1,0 +1,22 @@
+<replacements>
+    <item>
+        <input>get</input>
+        <output>Gets the</output>
+    </item>
+    <item>
+        <input>set</input>
+        <output>Sets the</output>
+    </item>
+    <item>
+        <input>create</input>
+        <output>Creates the</output>
+    </item>
+    <item>
+        <input>build</input>
+        <output>Builds the</output>
+    </item>
+    <item>
+        <input>init</input>
+        <output>Init the</output>
+    </item>
+</replacements>

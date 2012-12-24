@@ -1,22 +1,21 @@
 package com.github.ideajavadocs.template.impl;
 
 import com.github.ideajavadocs.template.DocTemplateProcessor;
-import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nls;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
-
-import javax.swing.*;
 
 /**
  * The type Doc template processor impl.
@@ -25,18 +24,27 @@ import javax.swing.*;
  */
 public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectComponent {
 
+    private static final String REPLACEMENT_TOKENS_PATH = "/replacements.xml";
+
     // TODO move the section to the configuration menu
     private static final Map<String, String> REPLACE_TOKENS = new HashMap<String, String>();
-    static {
-        REPLACE_TOKENS.put("get", "Gets the");
-        REPLACE_TOKENS.put("set", "Sets the");
-        REPLACE_TOKENS.put("create", "Creates the");
-        REPLACE_TOKENS.put("build", "Builds the");
-        REPLACE_TOKENS.put("init", "Init the");
-    }
 
     @Override
     public void projectOpened() {
+        // populate REPLACE_TOKENS with default values
+        try {
+            Document document = new SAXBuilder().build(DocTemplateProcessor.class.getResourceAsStream
+                    (REPLACEMENT_TOKENS_PATH));
+            Element root = document.getRootElement();
+            List<Element> items = root.getChildren("item");
+            for (Element item : items) {
+                REPLACE_TOKENS.put(item.getChild("input").getValue(), item.getChild("output").getValue());
+            }
+        } catch (JDOMException e) {
+            // ignore error if settings can not be parsed
+        } catch (IOException e) {
+            // ignore error if settings can not be parsed
+        }
     }
 
     @Override
