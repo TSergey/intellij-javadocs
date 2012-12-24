@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <class>
+        <template order="0" regexp=".+">
+            /**
+             * The ${type} ${name}.
+             */
+        </template>
+    </class>
+
+    <field>
+        <template order="0" regexp=".*static\s.+">
+            /**
+             * The constant ${name}.
+             */
+        </template>
+        <template order="1" regexp=".+">
+            /**
+             * The ${name}.
+             */
+        </template>
+    </field>
+
+    <method>
+        <template order="0" regexp=".*get.+">
+            /**
+             * ${description}.
+             * @return the ${return_by_name}
+             */
+        </template>
+        <template order="1" regexp=".*void\s.+">
+            /**
+             * ${description}.
+             */
+        </template>
+        <template order="2" regexp=".+">
+            /**
+             * ${description}.
+             * @return the ${return_description}
+             */
+        </template>
+    </method>
+
+    <constructor>
+        <template order="0" regexp=".+">
+            /**
+             * Instantiates a new ${description}.
+             */
+        </template>
+    </constructor>
+
+    <param-tag>
+        <template order="0" regexp=".+">
+            /**
+             * @param ${name} the ${description}
+             */
+        </template>
+    </param-tag>
+
+    <throws-tag>
+        <template order="0" regexp=".+">
+            /**
+             * @throws ${name} the ${description}
+             */
+        </template>
+    </throws-tag>
+</templates>

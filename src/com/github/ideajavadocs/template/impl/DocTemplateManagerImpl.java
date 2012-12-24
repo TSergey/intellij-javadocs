@@ -1,27 +1,24 @@
 package com.github.ideajavadocs.template.impl;
 
 import com.github.ideajavadocs.template.DocTemplateManager;
+import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiClassType;
-import com.intellij.psi.PsiCodeBlock;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiParameter;
-
+import com.intellij.psi.*;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nls;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.jdom.DataConversionException;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
-
-import javax.swing.*;
 
 /**
  * The type Doc template manager impl.
@@ -30,78 +27,61 @@ import javax.swing.*;
  */
 public class DocTemplateManagerImpl implements DocTemplateManager, ProjectComponent {
 
+    private static final String TEMPLATES_PATH = "/templates.xml";
+    private static final String ORDER = "order";
+    private static final String TEMPLATE = "template";
+    private static final String REGEXP = "regexp";
+    private static final String CLASS = "class";
+    private static final String FIELD = "field";
+    private static final String METHOD = "method";
+    private static final String CONSTRUCTOR = "constructor";
+    private static final String PARAM_TAG = "param-tag";
+    private static final String THROWS_TAG = "throws-tag";
+
     // TODO add more templates for different cases
-
-    /*     */
-    private static final String CLASS_TEMPLATE = "/**\n"
-            + " * The ${type} ${name}.\n"
-            + " */";
     private static final Map<String, String> CLASS_TEMPLATES = new LinkedHashMap<String, String>();
-    static {
-        CLASS_TEMPLATES.put(".+", CLASS_TEMPLATE);
-    }
-
-    /*     */
-    private static final String FIELD_TEMPLATE = "/**\n"
-            + " * The ${name}.\n"
-            + " */";
-    private static final String CONSTANT_TEMPLATE = "/**\n"
-            + " * The constant ${name}.\n"
-            + " */";
     private static final Map<String, String> FIELD_TEMPLATES = new LinkedHashMap<String, String>();
-    static {
-        FIELD_TEMPLATES.put(".*static\\s.+", CONSTANT_TEMPLATE);
-        FIELD_TEMPLATES.put(".+", FIELD_TEMPLATE);
-    }
-
-    /*     */
-    private static final String METHOD_GETTER_TEMPLATE = "/**\n"
-            + " * ${description}.\n"
-            + " * @return the ${return_by_name}\n"
-            + " */";
-    private static final String METHOD_VOID_TEMPLATE = "/**\n"
-            + " * ${description}.\n"
-            + " */";
-    private static final String METHOD_TEMPLATE = "/**\n"
-            + " * ${description}.\n"
-            + " * @return the ${return_description}"
-            + " */";
     private static final Map<String, String> METHOD_TEMPLATES = new LinkedHashMap<String, String>();
-    static {
-        METHOD_TEMPLATES.put(".*get.+", METHOD_GETTER_TEMPLATE);
-        METHOD_TEMPLATES.put(".*void\\s.+", METHOD_VOID_TEMPLATE);
-        METHOD_TEMPLATES.put(".+", METHOD_TEMPLATE);
-    }
-
-    /*     */
-    private static final String CONSTRUCTOR_TEMPLATE = "/**\n"
-            + " * Instantiates a new ${description}.\n"
-            + " */";
     private static final Map<String, String> CONSTRUCTOR_TEMPLATES = new LinkedHashMap<String, String>();
-    static {
-        CONSTRUCTOR_TEMPLATES.put(".+", CONSTRUCTOR_TEMPLATE);
-    }
-
-    /*     */
-    private static final String PARAM_TAG_TEMPLATE = "/**\n"
-            + " * @param ${name} the ${description}\n"
-            + " */";
     private static final Map<String, String> PARAM_TAG_TEMPLATES = new LinkedHashMap<String, String>();
-    static {
-        PARAM_TAG_TEMPLATES.put(".+", PARAM_TAG_TEMPLATE);
-    }
-
-    /*     */
-    private static final String THROWS_TAG_TEMPLATE = "/**\n"
-            + " * @throws ${name} the ${description}\n"
-            + " */";
     private static final Map<String, String> THROWS_TAG_TEMPLATES = new LinkedHashMap<String, String>();
-    static {
-        THROWS_TAG_TEMPLATES.put(".+", THROWS_TAG_TEMPLATE);
-    }
 
     @Override
     public void projectOpened() {
+        try {
+            Document document = new SAXBuilder().build(DocTemplateProcessor.class.getResourceAsStream
+                    (TEMPLATES_PATH));
+            Element root = document.getRootElement();
+            if (root != null) {
+                populateTemplates(root, CLASS, CLASS_TEMPLATES);
+                populateTemplates(root, FIELD, FIELD_TEMPLATES);
+                populateTemplates(root, METHOD, METHOD_TEMPLATES);
+                populateTemplates(root, CONSTRUCTOR, CONSTRUCTOR_TEMPLATES);
+                populateTemplates(root, PARAM_TAG, PARAM_TAG_TEMPLATES);
+                populateTemplates(root, THROWS_TAG, THROWS_TAG_TEMPLATES);
+            }
+        } catch (Exception e) {
+            // ignore error if settings can not be parsed
+        }
+    }
+
+    private void populateTemplates(Element root, String elementName, Map<String, String> templates)
+            throws DataConversionException {
+        Map<Integer, Element> elements = readTemplates(root, elementName);
+        for (Element element : elements.values()) {
+            templates.put(element.getAttribute(REGEXP).getValue(), StringUtils.strip(element.getValue()));
+        }
+    }
+
+    private Map<Integer, Element> readTemplates(Element root, String aClass) throws DataConversionException {
+        Element element = root.getChild(aClass);
+        @SuppressWarnings("unchecked")
+        List<Element> templates = element.getChildren(TEMPLATE);
+        Map<Integer, Element> elements = new TreeMap<Integer, Element>();
+        for (Element template : templates) {
+            elements.put(template.getAttribute(ORDER).getIntValue(), template);
+        }
+        return elements;
     }
 
     @Override
