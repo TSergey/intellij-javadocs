@@ -36,7 +36,7 @@ public class FieldJavaDocGenerator extends AbstractJavaDocGenerator<PsiField> {
             return null;
         }
         Template template = getDocTemplateManager().getFieldTemplate(element);
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("name", element.getName());
         String javaDocText = getDocTemplateProcessor().merge(template, params);
         return JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());

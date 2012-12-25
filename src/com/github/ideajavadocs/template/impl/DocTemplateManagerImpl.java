@@ -2,6 +2,7 @@ package com.github.ideajavadocs.template.impl;
 
 import com.github.ideajavadocs.template.DocTemplateManager;
 import com.github.ideajavadocs.template.DocTemplateProcessor;
+import com.github.ideajavadocs.transformation.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.psi.*;
 import org.apache.commons.lang3.StringUtils;
@@ -10,13 +11,17 @@ import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.RuntimeSingleton;
 import org.apache.velocity.runtime.parser.ParseException;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
-import org.jdom.DataConversionException;
-import org.jdom.Document;
-import org.jdom.Element;
+import org.jdom.*;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.XMLFilter;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -69,18 +74,19 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
                 readTemplates(root, THROWS_TAG, THROWS_TAG_TEMPLATES);
             }
         } catch (Exception e) {
-            // ignore error if settings can not be parsed
+            // TODO throw runtime exception and catch it at top level app
+            throw new RuntimeException(e);
         }
     }
 
     private void readTemplates(Element document, String elementName, Map<Integer, Template> templates)
-            throws DataConversionException, ParseException {
+            throws IOException, DataConversionException, ParseException {
         Element root = document.getChild(elementName);
         @SuppressWarnings("unchecked")
         List<Element> elements = root.getChildren(TEMPLATE);
         for (Element element : elements) {
             SimpleNode node = velosityServices.parse(
-                    StringUtils.strip(element.getValue()),
+                    XmlUtils.trimElementContent(element),
                     element.getAttribute(REGEXP).getValue());
             Template template = new Template();
             template.setRuntimeServices(velosityServices);

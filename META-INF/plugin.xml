@@ -52,14 +52,14 @@
               text="Generate javadocs"
               description="Generate javadocs for the selected element.">
           <add-to-group group-id="GenerateGroup" anchor="last"/>
-          <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt J"/>
+          <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>
       </action>
       <action id="com.github.ideajavadocs.action.JavaDocsGenerateAction"
               class="com.github.ideajavadocs.action.JavaDocsGenerateAction"
               text="Generate javadocs ..."
               description="Generate javadocs for the all elements in the current java file.">
           <add-to-group group-id="GenerateGroup" anchor="last"/>
-          <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>
+          <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt J"/>
       </action>
   </actions>
 

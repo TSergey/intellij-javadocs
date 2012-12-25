@@ -37,7 +37,7 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
             return null;
         }
         Template template = getDocTemplateManager().getMethodTemplate(element);
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, Object> params = new HashMap<String, Object>();
         String name = element.getName();
         String returnDescription = StringUtils.EMPTY;
         PsiTypeElement returnElement = element.getReturnTypeElement();
@@ -61,7 +61,7 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
     private void processExceptionTags(@NotNull PsiMethod element, @NotNull Map<String, List<JavaDocTag>> tags) {
         for (PsiJavaCodeReferenceElement psiReferenceElement : element.getThrowsList().getReferenceElements()) {
             Template template = getDocTemplateManager().getExceptionTagTemplate(psiReferenceElement);
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, Object> params = new HashMap<String, Object>();
             String name = psiReferenceElement.getReferenceName();
             params.put("name", name);
             params.put("description", getDocTemplateProcessor().buildDescription(name));
@@ -74,7 +74,7 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
     private void processParamTags(@NotNull PsiMethod element, @NotNull Map<String, List<JavaDocTag>> tags) {
         for (PsiParameter psiParameter : element.getParameterList().getParameters()) {
             Template template = getDocTemplateManager().getParamTagTemplate(psiParameter);
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, Object> params = new HashMap<String, Object>();
             String name = psiParameter.getName();
             params.put("name", name);
             params.put("description", getDocTemplateProcessor().buildDescription(name));

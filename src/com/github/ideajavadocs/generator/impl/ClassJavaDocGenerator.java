@@ -5,6 +5,7 @@ import com.github.ideajavadocs.model.settings.Level;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +37,7 @@ public class ClassJavaDocGenerator extends AbstractJavaDocGenerator<PsiClass> {
             return null;
         }
         Template template = getDocTemplateManager().getClassTemplate(element);
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, Object> params = new HashMap<String, Object>();
         String type;
         if (element.isAnnotationType()) {
             type = "annotation";
@@ -49,6 +50,7 @@ public class ClassJavaDocGenerator extends AbstractJavaDocGenerator<PsiClass> {
         }
         params.put("type", type);
         params.put("name", getDocTemplateProcessor().buildDescription(element.getName()));
+        params.put("names", StringUtils.splitByCharacterTypeCamelCase(element.getName()));
         String javaDocText = getDocTemplateProcessor().merge(template, params);
         return JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());
     }

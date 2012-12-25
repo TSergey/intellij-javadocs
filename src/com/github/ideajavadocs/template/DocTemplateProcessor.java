@@ -3,6 +3,7 @@ package com.github.ideajavadocs.template;
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -19,12 +20,13 @@ public interface DocTemplateProcessor {
      * Merge.
      *
      *
+     *
      * @param template the Template
      * @param params   the Params
      * @return the String
      */
     @NotNull
-    String merge(@NotNull Template template, @NotNull Map<String, String> params);
+    String merge(@NotNull Template template, @NotNull Map<String, Object> params);
 
     /**
      * Builds the description.

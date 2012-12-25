@@ -1,6 +1,7 @@
 package com.github.ideajavadocs.template.impl;
 
 import com.github.ideajavadocs.template.DocTemplateProcessor;
+import com.github.ideajavadocs.transformation.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
@@ -9,14 +10,15 @@ import org.apache.velocity.context.Context;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 /**
@@ -75,12 +77,16 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectCo
 
     @NotNull
     @Override
-    public String merge(@NotNull Template template, @NotNull Map<String, String> params) {
+    public String merge(@NotNull Template template, @NotNull Map<String, Object> params) {
         Context context = new VelocityContext(params);
         StringWriter writer = new StringWriter();
         template.merge(context, writer);
-        return writer.toString();
-
+        try {
+            return XmlUtils.normalizeTemplate(writer.toString());
+        } catch (IOException e) {
+            // TODO throw runtime exception and catch it at top level app
+            throw new RuntimeException(e);
+        }
     }
 
     @NotNull
