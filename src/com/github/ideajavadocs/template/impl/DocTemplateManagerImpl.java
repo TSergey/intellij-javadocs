@@ -22,8 +22,10 @@ import org.xml.sax.XMLFilter;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
@@ -35,7 +37,6 @@ import java.util.regex.Pattern;
 public class DocTemplateManagerImpl implements DocTemplateManager, ProjectComponent {
 
     private static final String TEMPLATES_PATH = "/templates.xml";
-    private static final String ORDER = "order";
     private static final String TEMPLATE = "template";
     private static final String REGEXP = "regexp";
     private static final String CLASS = "class";
@@ -46,12 +47,12 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     private static final String THROWS_TAG = "throws-tag";
 
     // TODO add more templates for different cases
-    private static final Map<Integer, Template> CLASS_TEMPLATES = new TreeMap<Integer, Template>();
-    private static final Map<Integer, Template> FIELD_TEMPLATES = new TreeMap<Integer, Template>();
-    private static final Map<Integer, Template> METHOD_TEMPLATES = new TreeMap<Integer, Template>();
-    private static final Map<Integer, Template> CONSTRUCTOR_TEMPLATES = new TreeMap<Integer, Template>();
-    private static final Map<Integer, Template> PARAM_TAG_TEMPLATES = new TreeMap<Integer, Template>();
-    private static final Map<Integer, Template> THROWS_TAG_TEMPLATES = new TreeMap<Integer, Template>();
+    private static final Map<String, Template> CLASS_TEMPLATES = new LinkedHashMap<String, Template>();
+    private static final Map<String, Template> FIELD_TEMPLATES = new LinkedHashMap<String, Template>();
+    private static final Map<String, Template> METHOD_TEMPLATES = new LinkedHashMap<String, Template>();
+    private static final Map<String, Template> CONSTRUCTOR_TEMPLATES = new LinkedHashMap<String, Template>();
+    private static final Map<String, Template> PARAM_TAG_TEMPLATES = new LinkedHashMap<String, Template>();
+    private static final Map<String, Template> THROWS_TAG_TEMPLATES = new LinkedHashMap<String, Template>();
 
     private final RuntimeServices velosityServices;
 
@@ -79,22 +80,23 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         }
     }
 
-    private void readTemplates(Element document, String elementName, Map<Integer, Template> templates)
+    private void readTemplates(Element document, String elementName, Map<String, Template> templates)
             throws IOException, DataConversionException, ParseException {
         Element root = document.getChild(elementName);
         @SuppressWarnings("unchecked")
         List<Element> elements = root.getChildren(TEMPLATE);
         for (Element element : elements) {
+            String name = element.getAttribute(REGEXP).getValue();
             SimpleNode node = velosityServices.parse(
                     XmlUtils.trimElementContent(element),
-                    element.getAttribute(REGEXP).getValue());
+                    name);
             Template template = new Template();
             template.setRuntimeServices(velosityServices);
             template.setData(node);
             template.setName(node.getTemplateName());
             template.initDocument();
 
-            templates.put(element.getAttribute(ORDER).getIntValue(), template);
+            templates.put(name, template);
         }
     }
 
@@ -127,7 +129,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     @Nullable
     @Override
     public Template getMethodTemplate(@NotNull PsiMethod methodElement) {
-        Map<Integer, Template> templates;
+        Map<String, Template> templates;
         if (methodElement.isConstructor()) {
             templates = CONSTRUCTOR_TEMPLATES;
         } else {
@@ -164,11 +166,11 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     }
 
     @Nullable
-    private Template getMatchingTemplate(@NotNull String elementText, @NotNull Map<Integer, Template> templates) {
+    private Template getMatchingTemplate(@NotNull String elementText, @NotNull Map<String, Template> templates) {
         Template result = null;
-        for (Template template : templates.values()) {
-            if (Pattern.compile(template.getName(), Pattern.DOTALL | Pattern.MULTILINE).matcher(elementText).matches()) {
-                result = template;
+        for (Entry<String, Template> entry : templates.entrySet()) {
+            if (Pattern.compile(entry.getKey(), Pattern.DOTALL | Pattern.MULTILINE).matcher(elementText).matches()) {
+                result = entry.getValue();
                 break;
             }
         }
