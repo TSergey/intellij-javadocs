@@ -128,7 +128,6 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
         params.put("name", getDocTemplateProcessor().buildDescription(element.getName()));
         params.put("partName", getDocTemplateProcessor().buildPartialDescription(element.getName()));
         params.put("splitNames", StringUtils.splitByCharacterTypeCamelCase(element.getName()));
-        params.put("StringUtils", StringUtils.class);
         return params;
     }
 

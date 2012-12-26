@@ -66,9 +66,12 @@ public class JavaDocBuilder {
      */
     public JavaDocBuilder addDescription(List<String> descriptions) {
         for (String description : descriptions) {
-            builder.append(JavaDocElements.NEW_LINE.getPresentation());
-            builder.append(JavaDocElements.LINE_START.getPresentation());
-            builder.append(description);
+            if (!StringUtils.equals(description, " ")) {
+                builder.append(description);
+                if (StringUtils.isWhitespace(description)) {
+                    builder.append(JavaDocElements.LINE_START.getPresentation());
+                }
+            }
         }
         return this;
     }
@@ -125,7 +128,6 @@ public class JavaDocBuilder {
      */
     public JavaDocBuilder createDefaultJavaDoc(@NotNull JavaDoc javadoc) {
         openJavaDoc();
-        addNewLine();
         addDescription(javadoc.getDescription());
         addNewLine();
         addTags(javadoc.getTags());
