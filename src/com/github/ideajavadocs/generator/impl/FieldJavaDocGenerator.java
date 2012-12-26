@@ -5,6 +5,8 @@ import com.github.ideajavadocs.model.settings.Level;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiField;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,8 +38,7 @@ public class FieldJavaDocGenerator extends AbstractJavaDocGenerator<PsiField> {
             return null;
         }
         Template template = getDocTemplateManager().getFieldTemplate(element);
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("name", element.getName());
+        Map<String, Object> params = getDefaultParameters(element);
         String javaDocText = getDocTemplateProcessor().merge(template, params);
         return JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());
     }

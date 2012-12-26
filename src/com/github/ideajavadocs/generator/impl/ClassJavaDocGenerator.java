@@ -37,20 +37,7 @@ public class ClassJavaDocGenerator extends AbstractJavaDocGenerator<PsiClass> {
             return null;
         }
         Template template = getDocTemplateManager().getClassTemplate(element);
-        Map<String, Object> params = new HashMap<String, Object>();
-        String type;
-        if (element.isAnnotationType()) {
-            type = "annotation";
-        } else if (element.isEnum()) {
-            type = "enum";
-        } else if (element.isInterface()) {
-            type = "interface";
-        } else {
-            type = "type";
-        }
-        params.put("type", type);
-        params.put("name", getDocTemplateProcessor().buildDescription(element.getName()));
-        params.put("names", StringUtils.splitByCharacterTypeCamelCase(element.getName()));
+        Map<String, Object> params = getDefaultParameters(element);
         String javaDocText = getDocTemplateProcessor().merge(template, params);
         return JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());
     }

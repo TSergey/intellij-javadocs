@@ -117,13 +117,14 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         return COMPONENT_NAME;
     }
 
-    @NotNull
+    @Nullable
     @Override
     public Template getClassTemplate(@NotNull PsiClass classElement) {
-        return getMatchingTemplate(classElement.getText(), CLASS_TEMPLATES);
+        StringBuilder builder = getClassSignature(classElement);
+        return getMatchingTemplate(builder.toString(), CLASS_TEMPLATES);
     }
 
-    @NotNull
+    @Nullable
     @Override
     public Template getMethodTemplate(@NotNull PsiMethod methodElement) {
         Map<Integer, Template> templates;
@@ -141,21 +142,21 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
 
     }
 
-    @NotNull
+    @Nullable
     @Override
     public Template getFieldTemplate(@NotNull PsiField psiField) {
         return getMatchingTemplate(psiField.getText(), FIELD_TEMPLATES);
 
     }
 
-    @NotNull
+    @Nullable
     @Override
     public Template getParamTagTemplate(@NotNull PsiParameter psiParameter) {
         return getMatchingTemplate(psiParameter.getText(), PARAM_TAG_TEMPLATES);
 
     }
 
-    @NotNull
+    @Nullable
     @Override
     public Template getExceptionTagTemplate(@NotNull PsiJavaCodeReferenceElement psiReferenceElement) {
         return getMatchingTemplate(psiReferenceElement.getCanonicalText(), THROWS_TAG_TEMPLATES);
@@ -172,6 +173,44 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
             }
         }
         return result;
+    }
+
+    private StringBuilder getClassSignature(PsiClass classElement) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(classElement.getModifierList().getText());
+        builder.append(" ");
+        if (classElement.isInterface()) {
+            builder.append("interface ");
+        } else if (classElement.isEnum()) {
+            builder.append("enum ");
+        } else {
+            builder.append("class ");
+        }
+        PsiClassType[] extendsTypes = classElement.getExtendsListTypes();
+        if (extendsTypes != null && extendsTypes.length > 0) {
+            builder.append("extends ");
+            for (int i = 0; i < extendsTypes.length; i++) {
+                PsiClassType extendsType = extendsTypes[i];
+                builder.append(extendsType.getClassName());
+                if (i < extendsTypes.length - 1) {
+                    builder.append(",");
+                }
+                builder.append(" ");
+            }
+        }
+        PsiClassType[] implementTypes = classElement.getImplementsListTypes();
+        if (implementTypes != null && implementTypes.length > 0) {
+            builder.append("implements");
+            for (int i = 0; i < implementTypes.length; i++) {
+                PsiClassType extendsType = extendsTypes[i];
+                builder.append(extendsType.getClassName());
+                if (i < extendsTypes.length - 1) {
+                    builder.append(",");
+                }
+                builder.append(" ");
+            }
+        }
+        return builder;
     }
 
 }

@@ -1,67 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <class>
-        <template order="0" regexp=".+">
-            /**
-             * The ${type} ${name}.
-             */
+        <template order="0" regexp="^(public|protected|private)*.+interface\s+\w+.*">
+            /**\n
+            * The interface $name.\n
+            */
+        </template>
+        <template order="1" regexp="^(public|protected|private)*.+enum\s+\w+.*">
+            /**\n
+            * The enum $name.\n
+            */
+        </template>
+        <template order="2" regexp="^(public|protected|private)*.+class\s+\w+.*">
+            /**\n
+            * The type $name.\n
+            */
+        </template>
+        <template order="3" regexp=".+">
+            /**\n
+            * The type $name.\n
+            */
         </template>
     </class>
 
     <field>
-        <template order="0" regexp=".*static\s.+">
-            /**
-             * The constant ${name}.
-             */
+        <template order="0" regexp="^(public|protected|private)*.+static.*(\w\s\w)+.+">
+            /**\n
+            * The constant $element.getName().\n
+            */
         </template>
-        <template order="1" regexp=".+">
-            /**
-             * The ${name}.
-             */
+        <template order="1" regexp="^(public|protected|private)*.*(\w\s\w)+.+">
+            /**\n
+            * The $name.\n
+            */
+        </template>
+        <template order="2" regexp=".+">
+            /**\n
+            * The $name.\n
+            */
         </template>
     </field>
 
     <method>
-        <template order="0" regexp=".*get.+">
-            /**
-             * ${description}.
-             * @return the ${return_by_name}
-             */
+        <template order="0" regexp="(public|protected|private)*\s*(void|\w)+\s+get\w+\(.*\)">
+            /**\n
+            * ${description}.\n
+            * @return the ${return_by_name}\n
+            */
         </template>
         <template order="1" regexp=".*void\s.+">
-            /**
-             * ${description}.
-             */
+            /**\n
+            * ${description}.\n
+            */
         </template>
         <template order="2" regexp=".+">
-            /**
-             * ${description}.
-             * @return the ${return_description}
-             */
+            /**\n
+            * ${description}.\n
+            * @return the ${return_description}\n
+            */
         </template>
     </method>
 
     <constructor>
         <template order="0" regexp=".+">
-            /**
-             * Instantiates a new ${description}.
-             */
+            /**\n
+            * Instantiates a new ${description}.\n
+            */
         </template>
     </constructor>
 
     <param-tag>
         <template order="0" regexp=".+">
-            /**
-             * @param ${name} the ${description}
-             */
+            /**\n
+            * @param ${name} the ${description}\n
+            */
         </template>
     </param-tag>
 
     <throws-tag>
         <template order="0" regexp=".+">
-            /**
-             * @throws ${name} the ${description}
-             */
+            /**\n
+            * @throws ${name} the ${description}\n
+            */
         </template>
     </throws-tag>
 </templates>

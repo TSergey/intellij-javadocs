@@ -37,7 +37,8 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
             return null;
         }
         Template template = getDocTemplateManager().getMethodTemplate(element);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = getDefaultParameters(element);
+
         String name = element.getName();
         String returnDescription = StringUtils.EMPTY;
         PsiTypeElement returnElement = element.getReturnTypeElement();
@@ -45,7 +46,7 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
             returnDescription = returnElement.getText();
         }
         params.put("description", getDocTemplateProcessor().buildDescription(name));
-        params.put("return_by_name", getDocTemplateProcessor().buildRawDescription(name));
+        params.put("return_by_name", getDocTemplateProcessor().buildDescription(name));
         params.put("return_description", getDocTemplateProcessor().buildDescription(returnDescription));
 
         String javaDocText = getDocTemplateProcessor().merge(template, params);

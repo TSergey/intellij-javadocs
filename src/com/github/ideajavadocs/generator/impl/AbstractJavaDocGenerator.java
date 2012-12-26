@@ -10,13 +10,20 @@ import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.github.ideajavadocs.ui.component.JavaDocConfiguration;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.pom.PomNamedTarget;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.javadoc.PsiDocComment;
+
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Abstract java doc generator.
@@ -114,6 +121,14 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
     private boolean checkModifiers(PsiModifierList modifiers, String modifier, Visibility visibility) {
         return modifiers != null && modifiers.hasModifierProperty(modifier) &&
                 getSettings().getConfiguration().getGeneralSettings().getVisibilities().contains(visibility);
+    }
+
+    protected Map<String, Object> getDefaultParameters(PomNamedTarget element) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("element", element);
+        params.put("name", getDocTemplateProcessor().buildDescription(element.getName()));
+        params.put("splitNames", StringUtils.splitByCharacterTypeCamelCase(element.getName()));
+        return params;
     }
 
     /**

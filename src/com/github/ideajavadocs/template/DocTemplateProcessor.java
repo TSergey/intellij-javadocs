@@ -2,6 +2,7 @@ package com.github.ideajavadocs.template;
 
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.Map;
@@ -26,7 +27,7 @@ public interface DocTemplateProcessor {
      * @return the String
      */
     @NotNull
-    String merge(@NotNull Template template, @NotNull Map<String, Object> params);
+    String merge(@Nullable Template template, @NotNull Map<String, Object> params);
 
     /**
      * Builds the description.
@@ -36,14 +37,5 @@ public interface DocTemplateProcessor {
      */
     @NotNull
     String buildDescription(@NotNull String description);
-
-    /**
-     * Builds the raw description.
-     *
-     * @param description the Description
-     * @return the String
-     */
-    @NotNull
-    String buildRawDescription(@NotNull String description);
 
 }

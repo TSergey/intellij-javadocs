@@ -30,7 +30,6 @@ public class ConfigPanel {
     private JCheckBox generalOtherOverriddenMethodsCheckbox;
     private JPanel generalPanel;
     private JPanel templatesPanel;
-    private JPanel replacementsPanel;
     private JPanel generalModePanel;
     private JPanel generalLevelPanel;
     private JPanel generalVisibilityPanel;
@@ -241,9 +240,6 @@ public class ConfigPanel {
         templatesPanel = new JPanel();
         templatesPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPane.addTab("Templates", templatesPanel);
-        replacementsPanel = new JPanel();
-        replacementsPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPane.addTab("Replacements", replacementsPanel);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(generalModeKeepRadioButton);
