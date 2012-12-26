@@ -1,18 +1,22 @@
 package com.github.ideajavadocs.generator.impl;
 
 import com.github.ideajavadocs.model.JavaDoc;
-import com.github.ideajavadocs.model.JavaDocTag;
 import com.github.ideajavadocs.model.settings.Level;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiJavaCodeReferenceElement;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiParameter;
+import com.intellij.psi.PsiType;
+import com.intellij.psi.PsiTypeElement;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Method java doc generator.
@@ -37,62 +41,30 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
             return null;
         }
         Template template = getDocTemplateManager().getMethodTemplate(element);
-        Map<String, Object> params = getDefaultParameters(element);
-
-        String name = element.getName();
         String returnDescription = StringUtils.EMPTY;
         PsiTypeElement returnElement = element.getReturnTypeElement();
         if (returnElement != null) {
             returnDescription = returnElement.getText();
         }
-        params.put("description", getDocTemplateProcessor().buildDescription(name));
-        params.put("return_by_name", getDocTemplateProcessor().buildDescription(name));
-        params.put("return_description", getDocTemplateProcessor().buildDescription(returnDescription));
+        Map<String, String> paramNames = new HashMap<String, String>();
+        for (PsiParameter parameter : element.getParameterList().getParameters()) {
+            paramNames.put(parameter.getName(), getDocTemplateProcessor().buildDescription(parameter.getName()));
+        }
+        Map<String, String> exceptionNames = new HashMap<String, String>();
+        for (PsiJavaCodeReferenceElement exception : element.getThrowsList().getReferenceElements()) {
+            exceptionNames.put(exception.getReferenceName(), getDocTemplateProcessor().buildDescription(exception.getReferenceName()));
+        }
+        Map<String, Object> params = getDefaultParameters(element);
+        if (returnElement != null) {
+            params.put("isNotVoid", !returnElement.getType().isAssignableFrom(PsiType.VOID));
+            params.put("return", getDocTemplateProcessor().buildDescription(returnDescription));
+        }
+        params.put("paramNames", paramNames);
+        params.put("exceptionNames", exceptionNames);
+
 
         String javaDocText = getDocTemplateProcessor().merge(template, params);
-        JavaDoc newJavaDoc = JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());
-
-        Map<String, List<JavaDocTag>> tags = new LinkedHashMap<String, List<JavaDocTag>>();
-        tags.putAll(newJavaDoc.getTags());
-        processParamTags(element, tags);
-        processExceptionTags(element, tags);
-        return new JavaDoc(newJavaDoc.getDescription(), tags);
-    }
-
-    private void processExceptionTags(@NotNull PsiMethod element, @NotNull Map<String, List<JavaDocTag>> tags) {
-        for (PsiJavaCodeReferenceElement psiReferenceElement : element.getThrowsList().getReferenceElements()) {
-            Template template = getDocTemplateManager().getExceptionTagTemplate(psiReferenceElement);
-            Map<String, Object> params = new HashMap<String, Object>();
-            String name = psiReferenceElement.getReferenceName();
-            params.put("name", name);
-            params.put("description", getDocTemplateProcessor().buildDescription(name));
-            JavaDoc javaDocEnrichment = JavaDocUtils.toJavaDoc(
-                    getDocTemplateProcessor().merge(template, params), getPsiElementFactory());
-            addTags(javaDocEnrichment, tags);
-        }
-    }
-
-    private void processParamTags(@NotNull PsiMethod element, @NotNull Map<String, List<JavaDocTag>> tags) {
-        for (PsiParameter psiParameter : element.getParameterList().getParameters()) {
-            Template template = getDocTemplateManager().getParamTagTemplate(psiParameter);
-            Map<String, Object> params = new HashMap<String, Object>();
-            String name = psiParameter.getName();
-            params.put("name", name);
-            params.put("description", getDocTemplateProcessor().buildDescription(name));
-            JavaDoc javaDocEnrichment = JavaDocUtils.toJavaDoc(
-                    getDocTemplateProcessor().merge(template, params), getPsiElementFactory());
-            addTags(javaDocEnrichment, tags);
-        }
-    }
-
-    private void addTags(JavaDoc javaDocEnrichment, Map<String, List<JavaDocTag>> tags) {
-        for (Entry<String, List<JavaDocTag>> tagEntries : javaDocEnrichment.getTags().entrySet()) {
-            String tagName = tagEntries.getKey();
-            if (!tags.containsKey(tagName)) {
-                tags.put(tagName, new LinkedList<JavaDocTag>());
-            }
-            tags.get(tagName).addAll(tagEntries.getValue());
-        }
+        return JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());
     }
 
     private boolean shouldGenerate(@NotNull PsiMethod element) {

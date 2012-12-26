@@ -183,7 +183,9 @@
             <constraints>
               <tabbedpane title="Templates"/>
             </constraints>
-            <properties/>
+            <properties>
+              <enabled value="false"/>
+            </properties>
             <border type="none"/>
             <children/>
           </grid>

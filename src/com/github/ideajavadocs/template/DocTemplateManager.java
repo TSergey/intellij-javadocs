@@ -1,6 +1,8 @@
 package com.github.ideajavadocs.template;
 
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
 
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +22,6 @@ public interface DocTemplateManager {
     /**
      * Gets the class template.
      *
-     *
      * @param classElement the Class element
      * @return the Class template
      */
@@ -29,7 +30,6 @@ public interface DocTemplateManager {
 
     /**
      * Gets the method template.
-     *
      *
      * @param methodElement the Method element
      * @return the Method template
@@ -40,31 +40,10 @@ public interface DocTemplateManager {
     /**
      * Gets the field template.
      *
-     *
      * @param psiField the Field element
      * @return the Field template
      */
     @NotNull
     Template getFieldTemplate(@NotNull PsiField psiField);
-
-    /**
-     * Gets the param tag template.
-     *
-     *
-     * @param psiParameter the Field element
-     * @return the Param tag template
-     */
-    @NotNull
-    Template getParamTagTemplate(@NotNull PsiParameter psiParameter);
-
-    /**
-     * Gets the exception tag template.
-     *
-     *
-     * @param psiReferenceElement the Psi reference element
-     * @return the Exception tag template
-     */
-    @NotNull
-    Template getExceptionTagTemplate(@NotNull PsiJavaCodeReferenceElement psiReferenceElement);
 
 }

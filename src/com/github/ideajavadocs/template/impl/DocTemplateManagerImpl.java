@@ -4,29 +4,29 @@ import com.github.ideajavadocs.template.DocTemplateManager;
 import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.github.ideajavadocs.transformation.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.psi.*;
-import org.apache.commons.lang3.StringUtils;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiClassType;
+import com.intellij.psi.PsiCodeBlock;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
+
 import org.apache.velocity.Template;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.RuntimeSingleton;
 import org.apache.velocity.runtime.parser.ParseException;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
-import org.jdom.*;
+import org.jdom.DataConversionException;
+import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.XMLFilter;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 /**
@@ -43,16 +43,12 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     private static final String FIELD = "field";
     private static final String METHOD = "method";
     private static final String CONSTRUCTOR = "constructor";
-    private static final String PARAM_TAG = "param-tag";
-    private static final String THROWS_TAG = "throws-tag";
 
     // TODO add more templates for different cases
     private static final Map<String, Template> CLASS_TEMPLATES = new LinkedHashMap<String, Template>();
     private static final Map<String, Template> FIELD_TEMPLATES = new LinkedHashMap<String, Template>();
     private static final Map<String, Template> METHOD_TEMPLATES = new LinkedHashMap<String, Template>();
     private static final Map<String, Template> CONSTRUCTOR_TEMPLATES = new LinkedHashMap<String, Template>();
-    private static final Map<String, Template> PARAM_TAG_TEMPLATES = new LinkedHashMap<String, Template>();
-    private static final Map<String, Template> THROWS_TAG_TEMPLATES = new LinkedHashMap<String, Template>();
 
     private final RuntimeServices velosityServices;
 
@@ -71,8 +67,6 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
                 readTemplates(root, FIELD, FIELD_TEMPLATES);
                 readTemplates(root, METHOD, METHOD_TEMPLATES);
                 readTemplates(root, CONSTRUCTOR, CONSTRUCTOR_TEMPLATES);
-                readTemplates(root, PARAM_TAG, PARAM_TAG_TEMPLATES);
-                readTemplates(root, THROWS_TAG, THROWS_TAG_TEMPLATES);
             }
         } catch (Exception e) {
             // TODO throw runtime exception and catch it at top level app
@@ -148,20 +142,6 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     @Override
     public Template getFieldTemplate(@NotNull PsiField psiField) {
         return getMatchingTemplate(psiField.getText(), FIELD_TEMPLATES);
-
-    }
-
-    @Nullable
-    @Override
-    public Template getParamTagTemplate(@NotNull PsiParameter psiParameter) {
-        return getMatchingTemplate(psiParameter.getText(), PARAM_TAG_TEMPLATES);
-
-    }
-
-    @Nullable
-    @Override
-    public Template getExceptionTagTemplate(@NotNull PsiJavaCodeReferenceElement psiReferenceElement) {
-        return getMatchingTemplate(psiReferenceElement.getCanonicalText(), THROWS_TAG_TEMPLATES);
 
     }
 

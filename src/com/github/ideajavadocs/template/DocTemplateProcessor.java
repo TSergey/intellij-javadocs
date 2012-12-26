@@ -4,7 +4,6 @@ import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -20,8 +19,6 @@ public interface DocTemplateProcessor {
     /**
      * Merge.
      *
-     *
-     *
      * @param template the Template
      * @param params   the Params
      * @return the String
@@ -33,9 +30,19 @@ public interface DocTemplateProcessor {
      * Builds the description.
      *
      * @param description the Description
-     * @return the String
+     * @return generated description
      */
     @NotNull
     String buildDescription(@NotNull String description);
+
+    /**
+     * Builds the description for the methods like getter, setter. There will be removed first word, e.g. get, set,
+     * etc.
+     *
+     * @param description the description
+     * @return generated description
+     */
+    @NotNull
+    String buildPartialDescription(@NotNull String description);
 
 }

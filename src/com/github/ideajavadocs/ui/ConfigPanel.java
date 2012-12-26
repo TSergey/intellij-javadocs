@@ -8,8 +8,9 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 
-import javax.swing.*;
 import java.awt.*;
+
+import javax.swing.*;
 
 public class ConfigPanel {
 
@@ -239,6 +240,7 @@ public class ConfigPanel {
         generalPanel.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         templatesPanel = new JPanel();
         templatesPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        templatesPanel.setEnabled(false);
         tabbedPane.addTab("Templates", templatesPanel);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();

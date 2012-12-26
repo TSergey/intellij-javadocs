@@ -13,7 +13,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.pom.PomNamedTarget;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
-import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.javadoc.PsiDocComment;
@@ -127,7 +126,9 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("element", element);
         params.put("name", getDocTemplateProcessor().buildDescription(element.getName()));
+        params.put("partName", getDocTemplateProcessor().buildPartialDescription(element.getName()));
         params.put("splitNames", StringUtils.splitByCharacterTypeCamelCase(element.getName()));
+        params.put("StringUtils", StringUtils.class);
         return params;
     }
 

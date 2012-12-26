@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <class>
-        <template regexp="^(public|protected|private)*.+interface\s+\w+.*">
+        <template regexp="^.*(public|protected|private)*.+interface\s+\w+.*">
             /**\n
             * The interface $name.\n
             */
         </template>
-        <template regexp="^(public|protected|private)*.+enum\s+\w+.*">
+        <template regexp="^.*(public|protected|private)*.+enum\s+\w+.*">
             /**\n
             * The enum $name.\n
             */
         </template>
-        <template regexp="^(public|protected|private)*.+class\s+\w+.*">
+        <template regexp="^.*(public|protected|private)*.+class\s+\w+.*">
             /**\n
             * The type $name.\n
             */
@@ -24,12 +24,12 @@
     </class>
 
     <field>
-        <template regexp="^(public|protected|private)*.+static.*(\w\s\w)+.+">
+        <template regexp="^.*(public|protected|private)*.+static.*(\w\s\w)+.+">
             /**\n
             * The constant $element.getName().\n
             */
         </template>
-        <template regexp="^(public|protected|private)*.*(\w\s\w)+.+">
+        <template regexp="^.*(public|protected|private)*.*(\w\s\w)+.+">
             /**\n
             * The $name.\n
             */
@@ -42,21 +42,104 @@
     </field>
 
     <method>
-        <template regexp="(public|protected|private)*\s*(void|\w)+\s+get\w+\(.*\)">
+        <template regexp="^.*(public|protected|private)*\s*.*\w+\s+get\w+\(.*\).+">
             /**\n
-            * ${description}.\n
-            * @return the ${return_by_name}\n
+            * Gets the $partName.\n
+
+                #if(!$element.parameterList.parameters.isEmpty())
+                    *\n
+                #end
+                #foreach($parameter in $element.parameterList.parameters)
+                    * @param $parameter.name  the $paramNames[$parameter.name].\n
+                #end
+
+                #if($isNotVoid)
+                    *\n
+                    * @return the $partName\n
+                #end
+
+                #if(!$element.throwsList.referenceElements.isEmpty())
+                    *\n
+                #end
+                #foreach($exception in $element.throwsList.referenceElements)
+                    * @throws $exception.referenceName  the $exceptionNames[$exception.referenceName].\n
+                #end
+
             */
         </template>
-        <template regexp=".*void\s.+">
+        <template regexp="^.*(public|protected|private)*\s*.*(void|\w)+\s+set\w+\(.*\).+">
             /**\n
-            * ${description}.\n
+            * Sets the $partName.\n
+
+                #if(!$element.parameterList.parameters.isEmpty())
+                    *\n
+                #end
+                #foreach($parameter in $element.parameterList.parameters)
+                    * @param $parameter.name  the $paramNames[$parameter.name].\n
+                #end
+
+                #if($isNotVoid)
+                    *\n
+                    * @return the $partName\n
+                #end
+
+                #if(!$element.throwsList.referenceElements.isEmpty())
+                    *\n
+                #end
+                #foreach($exception in $element.throwsList.referenceElements)
+                    * @throws $exception.referenceName  the $exceptionNames[$exception.referenceName].\n
+                #end
+
+            */
+        </template>
+        <template regexp="^.*(public|protected|private)*\s*.*\w+\s+\w+\(.*\).+">
+            /**\n
+            * $name.\n
+
+                #if(!$element.parameterList.parameters.isEmpty())
+                    *\n
+                #end
+                #foreach($parameter in $element.parameterList.parameters)
+                    * @param $parameter.name  the $paramNames[$parameter.name].\n
+                #end
+
+                #if($isNotVoid)
+                    *\n
+                    * @return the $partName\n
+                #end
+
+                #if(!$element.throwsList.referenceElements.isEmpty())
+                    *\n
+                #end
+                #foreach($exception in $element.throwsList.referenceElements)
+                    * @throws $exception.referenceName  the $exceptionNames[$exception.referenceName].\n
+                #end
+
             */
         </template>
         <template regexp=".+">
             /**\n
-            * ${description}.\n
-            * @return the ${return_description}\n
+            * $name.\n
+
+                #if(!$element.parameterList.parameters.isEmpty())
+                    *\n
+                #end
+                #foreach($parameter in $element.parameterList.parameters)
+                    * @param $parameter.name  the $paramNames[$parameter.name].\n
+                #end
+
+                #if($isNotVoid)
+                    *\n
+                    * @return the $partName\n
+                #end
+
+                #if(!$element.throwsList.referenceElements.isEmpty())
+                    *\n
+                #end
+                #foreach($exception in $element.throwsList.referenceElements)
+                    * @throws $exception.referenceName  the $exceptionNames[$exception.referenceName].\n
+                #end
+
             */
         </template>
     </method>
@@ -64,24 +147,24 @@
     <constructor>
         <template regexp=".+">
             /**\n
-            * Instantiates a new ${description}.\n
+            * Instantiates a new $name.\n
+
+                #if(!$element.parameterList.parameters.isEmpty())
+                    *\n
+                #end
+                #foreach($parameter in $element.parameterList.parameters)
+                    * @param $parameter.name  the $paramNames[$parameter.name].\n
+                #end
+
+                #if(!$element.throwsList.referenceElements.isEmpty())
+                    *\n
+                #end
+                #foreach($exception in $element.throwsList.referenceElements)
+                    * @throws $exception.referenceName  the $exceptionNames[$exception.referenceName].\n
+                #end
+
             */
         </template>
     </constructor>
 
-    <param-tag>
-        <template regexp=".+">
-            /**\n
-            * @param ${name} the ${description}\n
-            */
-        </template>
-    </param-tag>
-
-    <throws-tag>
-        <template regexp=".+">
-            /**\n
-            * @throws ${name} the ${description}\n
-            */
-        </template>
-    </throws-tag>
 </templates>

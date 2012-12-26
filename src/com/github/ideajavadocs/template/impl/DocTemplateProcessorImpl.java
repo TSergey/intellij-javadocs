@@ -3,6 +3,7 @@ package com.github.ideajavadocs.template.impl;
 import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.github.ideajavadocs.transformation.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -13,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * The type Doc template processor impl.
@@ -69,10 +69,27 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectCo
         if (StringUtils.isBlank(description)) {
             return StringUtils.EMPTY;
         }
+        return buildDescription(description, 0);
+    }
+
+    @NotNull
+    @Override
+    public String buildPartialDescription(@NotNull String description) {
+        if (StringUtils.isBlank(description)) {
+            return StringUtils.EMPTY;
+        }
+        return buildDescription(description, 1);
+    }
+
+    private String buildDescription(String description, int firstElement) {
         String[] parts = StringUtils.splitByCharacterTypeCamelCase(description);
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < parts.length; i++) {
-            result.append(StringUtils.capitalize(parts[i]));
+        for (int i = firstElement; i < parts.length; i++) {
+            if (i == firstElement) {
+                result.append(StringUtils.capitalize(parts[i]));
+            } else {
+                result.append(StringUtils.uncapitalize(parts[i]));
+            }
             if (i < parts.length - 1) {
                 result.append(" ");
             }
