@@ -58,21 +58,35 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
             oldDocComment = (PsiDocComment) firstElement;
         }
 
-        JavaDoc newJavaDoc = generateJavaDoc(element);
-        if (newJavaDoc != null) {
-            Mode mode = settings.getConfiguration().getGeneralSettings().getMode();
-            if (mode != Mode.REPLACE && oldDocComment != null) {
-                JavaDoc oldJavaDoc = JavaDocUtils.createJavaDoc(oldDocComment);
-                if (mode == Mode.UPDATE) {
-                    newJavaDoc = JavaDocUtils.mergeJavaDocs(oldJavaDoc, newJavaDoc);
-                } else if (mode == Mode.KEEP) {
-                    newJavaDoc = oldJavaDoc;
+        Mode mode = settings.getConfiguration().getGeneralSettings().getMode();
+        switch (mode) {
+            case KEEP:
+                if (oldDocComment != null) {
+                    break;
                 }
-            }
-            String javaDoc = newJavaDoc.toJavaDoc();
-            result = psiElementFactory.createDocCommentFromText(javaDoc);
+            case REPLACE:
+                result = replaceJavaDocAction(element);
+                break;
+            case UPDATE:
+            default:
+                result = updateJavaDocAction(element, oldDocComment);
+                break;
         }
         return result;
+    }
+
+    private PsiDocComment updateJavaDocAction(T element, PsiDocComment oldDocComment) {
+        JavaDoc newJavaDoc = generateJavaDoc(element);
+        JavaDoc oldJavaDoc = JavaDocUtils.createJavaDoc(oldDocComment);
+        newJavaDoc = JavaDocUtils.mergeJavaDocs(oldJavaDoc, newJavaDoc);
+        String javaDoc = newJavaDoc.toJavaDoc();
+        return psiElementFactory.createDocCommentFromText(javaDoc);
+    }
+
+    private PsiDocComment replaceJavaDocAction(T element) {
+        JavaDoc newJavaDoc = generateJavaDoc(element);
+        String javaDoc = newJavaDoc.toJavaDoc();
+        return psiElementFactory.createDocCommentFromText(javaDoc);
     }
 
     /**
