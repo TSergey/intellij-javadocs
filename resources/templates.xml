@@ -94,7 +94,8 @@
         </template>
         <template regexp="^.*(public|protected|private)*\s*.*\w+\s+\w+\(.*\).+">
             /**\n
-            * $name #if($partName.isEmpty())$return#end.\n
+            * $name
+                #if($partName.isEmpty())$return#end.\n
 
                 #if(!$element.parameterList.parameters.isEmpty())
                     *\n
@@ -119,7 +120,8 @@
         </template>
         <template regexp=".+">
             /**\n
-            * $name #if($partName.isEmpty())$return#end.\n
+            * $name
+                #if($partName.isEmpty())$return#end.\n
 
                 #if(!$element.parameterList.parameters.isEmpty())
                     *\n
