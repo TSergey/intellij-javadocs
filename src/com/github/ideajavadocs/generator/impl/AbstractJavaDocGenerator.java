@@ -80,17 +80,25 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
     }
 
     private PsiDocComment updateJavaDocAction(T element, PsiDocComment oldDocComment) {
+        PsiDocComment result = null;
         JavaDoc newJavaDoc = generateJavaDoc(element);
         JavaDoc oldJavaDoc = JavaDocUtils.createJavaDoc(oldDocComment);
-        newJavaDoc = JavaDocUtils.mergeJavaDocs(oldJavaDoc, newJavaDoc);
-        String javaDoc = newJavaDoc.toJavaDoc();
-        return psiElementFactory.createDocCommentFromText(javaDoc);
+        if (newJavaDoc != null) {
+            newJavaDoc = JavaDocUtils.mergeJavaDocs(oldJavaDoc, newJavaDoc);
+            String javaDoc = newJavaDoc.toJavaDoc();
+            result = psiElementFactory.createDocCommentFromText(javaDoc);
+        }
+        return result;
     }
 
     private PsiDocComment replaceJavaDocAction(T element) {
+        PsiDocComment result = null;
         JavaDoc newJavaDoc = generateJavaDoc(element);
-        String javaDoc = newJavaDoc.toJavaDoc();
-        return psiElementFactory.createDocCommentFromText(javaDoc);
+        if (newJavaDoc != null) {
+            String javaDoc = newJavaDoc.toJavaDoc();
+            result = psiElementFactory.createDocCommentFromText(javaDoc);
+        }
+        return result;
     }
 
     /**
