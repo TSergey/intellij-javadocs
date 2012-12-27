@@ -58,7 +58,6 @@ public class JavaDocBuilder {
     public JavaDocBuilder addNewLine() {
         builder.append(JavaDocElements.NEW_LINE.getPresentation());
         builder.append(JavaDocElements.LINE_START.getPresentation());
-        builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
         return this;
     }
 
@@ -70,7 +69,7 @@ public class JavaDocBuilder {
      */
     public JavaDocBuilder addDescription(List<String> descriptions) {
         for (String description : descriptions) {
-            if (!StringUtils.equals(description, " ")) {
+            if (StringUtils.isNotBlank(description) || StringUtils.contains(description, "\n")) {
                 builder.append(description);
                 if (StringUtils.isWhitespace(description)) {
                     builder.append(JavaDocElements.LINE_START.getPresentation());
@@ -121,6 +120,7 @@ public class JavaDocBuilder {
                 addTag(name, javaDocTag);
                 if (i < javaDocTags.size() - 1) {
                     addNewLine();
+                    builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
                 }
             }
             if (iterator.hasNext()) {
