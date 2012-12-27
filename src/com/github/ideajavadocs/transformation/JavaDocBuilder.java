@@ -7,6 +7,7 @@ import com.github.ideajavadocs.model.JavaDocTag;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -110,7 +111,9 @@ public class JavaDocBuilder {
      * @return the Java doc builder
      */
     public JavaDocBuilder addTags(@NotNull Map<String, List<JavaDocTag>> tags) {
-        for (Entry<String, List<JavaDocTag>> entry : tags.entrySet()) {
+        Iterator<Entry<String, List<JavaDocTag>>> iterator = tags.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry<String, List<JavaDocTag>> entry = iterator.next();
             String name = entry.getKey();
             List<JavaDocTag> javaDocTags = entry.getValue();
             for (int i = 0; i < javaDocTags.size(); i++) {
@@ -119,6 +122,9 @@ public class JavaDocBuilder {
                 if (i < javaDocTags.size() - 1) {
                     addNewLine();
                 }
+            }
+            if (iterator.hasNext()) {
+                addNewLine();
             }
         }
         return this;

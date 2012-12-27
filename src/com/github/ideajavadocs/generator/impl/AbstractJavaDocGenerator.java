@@ -69,7 +69,11 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
                 break;
             case UPDATE:
             default:
-                result = updateJavaDocAction(element, oldDocComment);
+                if (oldDocComment != null) {
+                    result = updateJavaDocAction(element, oldDocComment);
+                } else {
+                    result = replaceJavaDocAction(element);
+                }
                 break;
         }
         return result;

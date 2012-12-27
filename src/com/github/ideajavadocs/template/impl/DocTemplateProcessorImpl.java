@@ -52,7 +52,6 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectCo
             return StringUtils.EMPTY;
         }
         Context context = new VelocityContext(params);
-        context.put("StringUtils", StringUtils.class);
         StringWriter writer = new StringWriter();
         template.merge(context, writer);
         try {
