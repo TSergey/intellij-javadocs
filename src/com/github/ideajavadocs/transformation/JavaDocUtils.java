@@ -51,15 +51,14 @@ public class JavaDocUtils {
      */
     @NotNull
     public static JavaDoc mergeJavaDocs(@NotNull JavaDoc oldJavaDoc, @NotNull JavaDoc newJavaDoc) {
-        // TODO improve merge code to fix errors when tags appear removed
-
         List<String> description = oldJavaDoc.getDescription();
         if (CollectionUtils.isEmpty(description)) {
             description = newJavaDoc.getDescription();
         }
-        Map<String, List<JavaDocTag>> tags = new LinkedHashMap<String, List<JavaDocTag>>();
         Map<String, List<JavaDocTag>> oldTags = oldJavaDoc.getTags();
         Map<String, List<JavaDocTag>> newTags = newJavaDoc.getTags();
+        Map<String, List<JavaDocTag>> tags = new LinkedHashMap<String, List<JavaDocTag>>();
+        List<String> processedTagNames = new LinkedList<String>();
         for (Entry<String, List<JavaDocTag>> newTagsEntry : newTags.entrySet()) {
             String name = newTagsEntry.getKey();
             List<JavaDocTag> tagsEntry = newTagsEntry.getValue();
@@ -84,6 +83,14 @@ public class JavaDocUtils {
                     // the case when old tag has been removed
                     tags.get(name).add(tag);
                 }
+            }
+            processedTagNames.add(name);
+        }
+        // add old tags that were not processed
+        for (Entry<String, List<JavaDocTag>> entry : oldTags.entrySet()) {
+            String name = entry.getKey();
+            if (!processedTagNames.contains(name)) {
+                tags.put(name, entry.getValue());
             }
         }
         return new JavaDoc(description, tags);

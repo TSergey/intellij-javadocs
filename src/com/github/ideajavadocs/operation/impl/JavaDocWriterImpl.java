@@ -10,6 +10,7 @@ import com.intellij.openapi.vfs.ReadonlyStatusHandler.OperationStatus;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.javadoc.PsiDocComment;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
