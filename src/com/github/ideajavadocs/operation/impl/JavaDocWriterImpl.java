@@ -95,8 +95,7 @@ public class JavaDocWriterImpl implements JavaDocWriter, ApplicationComponent {
                 element.addBefore(javaDoc, element.getFirstChild());
             }
             CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(element.getProject());
-            // TODO figure out how to reformat javadoc only
-            codeStyleManager.reformat(element);
+            codeStyleManager.reformatNewlyAddedElement(element.getNode(), element.getFirstChild().getNode());
         }
     }
 }
