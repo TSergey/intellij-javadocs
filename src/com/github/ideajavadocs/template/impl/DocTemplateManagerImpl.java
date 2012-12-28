@@ -11,6 +11,7 @@ import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiMethod;
 
 import org.apache.velocity.Template;
+import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.RuntimeSingleton;
 import org.apache.velocity.runtime.parser.ParseException;
@@ -53,7 +54,9 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     private final RuntimeServices velosityServices;
 
     public DocTemplateManagerImpl() {
-        velosityServices = RuntimeSingleton.getRuntimeServices();
+        RuntimeInstance ri = new RuntimeInstance();
+        ri.init();
+        velosityServices = ri;
     }
 
     @Override
