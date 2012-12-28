@@ -50,7 +50,7 @@
                     *\n
                 #end
                 #foreach($parameter in $element.parameterList.parameters)
-                    * @param $parameter.name the $paramNames[$parameter.name].\n
+                    * @param $parameter.name the $paramNames[$parameter.name]\n
                 #end
 
                 #if($isNotVoid)
@@ -75,7 +75,7 @@
                     *\n
                 #end
                 #foreach($parameter in $element.parameterList.parameters)
-                    * @param $parameter.name the $paramNames[$parameter.name].\n
+                    * @param $parameter.name the $paramNames[$parameter.name]\n
                 #end
 
                 #if($isNotVoid)
@@ -100,7 +100,7 @@
                     *\n
                 #end
 
-                * @param $element.parameterList.parameters[0].name the input arguments.\n
+                * @param $element.parameterList.parameters[0].name the input arguments\n
 
                 #if(!$element.throwsList.referenceElements.isEmpty())
                     *\n
@@ -120,7 +120,7 @@
                     *\n
                 #end
                 #foreach($parameter in $element.parameterList.parameters)
-                    * @param $parameter.name the $paramNames[$parameter.name].\n
+                    * @param $parameter.name the $paramNames[$parameter.name]\n
                 #end
 
                 #if($isNotVoid)
@@ -148,7 +148,7 @@
                     *\n
                 #end
                 #foreach($parameter in $element.parameterList.parameters)
-                    * @param $parameter.name the $paramNames[$parameter.name].\n
+                    * @param $parameter.name the $paramNames[$parameter.name]\n
                 #end
 
                 #if(!$element.throwsList.referenceElements.isEmpty())
