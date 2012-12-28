@@ -4,12 +4,7 @@ import com.github.ideajavadocs.model.JavaDoc;
 import com.github.ideajavadocs.model.settings.Level;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiJavaCodeReferenceElement;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiParameter;
-import com.intellij.psi.PsiType;
-import com.intellij.psi.PsiTypeElement;
-
+import com.intellij.psi.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;

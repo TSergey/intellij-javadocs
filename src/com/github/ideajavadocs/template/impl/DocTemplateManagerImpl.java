@@ -4,16 +4,10 @@ import com.github.ideajavadocs.template.DocTemplateManager;
 import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.github.ideajavadocs.transformation.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiClassType;
-import com.intellij.psi.PsiCodeBlock;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiMethod;
-
+import com.intellij.psi.*;
 import org.apache.velocity.Template;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
-import org.apache.velocity.runtime.RuntimeSingleton;
 import org.apache.velocity.runtime.parser.ParseException;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
 import org.jdom.DataConversionException;

@@ -3,7 +3,6 @@ package com.github.ideajavadocs.template.impl;
 import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.github.ideajavadocs.transformation.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
