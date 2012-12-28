@@ -62,7 +62,7 @@
                     *\n
                 #end
                 #foreach($exception in $element.throwsList.referenceElements)
-                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName].\n
+                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
                 #end
 
             */
@@ -87,7 +87,7 @@
                     *\n
                 #end
                 #foreach($exception in $element.throwsList.referenceElements)
-                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName].\n
+                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
                 #end
 
             */
@@ -106,7 +106,7 @@
                     *\n
                 #end
                 #foreach($exception in $element.throwsList.referenceElements)
-                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName].\n
+                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
                 #end
 
             */
@@ -132,7 +132,7 @@
                     *\n
                 #end
                 #foreach($exception in $element.throwsList.referenceElements)
-                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName].\n
+                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
                 #end
 
             */
@@ -155,7 +155,7 @@
                     *\n
                 #end
                 #foreach($exception in $element.throwsList.referenceElements)
-                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName].\n
+                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
                 #end
 
             */
