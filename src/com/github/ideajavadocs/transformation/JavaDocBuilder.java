@@ -114,13 +114,12 @@ public class JavaDocBuilder {
         while (iterator.hasNext()) {
             Entry<String, List<JavaDocTag>> entry = iterator.next();
             String name = entry.getKey();
-            List<JavaDocTag> javaDocTags = entry.getValue();
-            for (int i = 0; i < javaDocTags.size(); i++) {
-                JavaDocTag javaDocTag = javaDocTags.get(i);
+            Iterator<JavaDocTag> javaDocTagsIterator = entry.getValue().iterator();
+            while (javaDocTagsIterator.hasNext()) {
+                JavaDocTag javaDocTag = javaDocTagsIterator.next();
                 addTag(name, javaDocTag);
-                if (i < javaDocTags.size() - 1) {
+                if (javaDocTagsIterator.hasNext()) {
                     addNewLine();
-                    builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
                 }
             }
             if (iterator.hasNext()) {
