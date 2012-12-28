@@ -51,7 +51,7 @@ public class JavaDocUtils {
      */
     @NotNull
     public static JavaDoc mergeJavaDocs(@NotNull JavaDoc oldJavaDoc, @NotNull JavaDoc newJavaDoc) {
-        List<String> description = oldJavaDoc.getDescription();
+            List<String> description = oldJavaDoc.getDescription();
         if (CollectionUtils.isEmpty(description)) {
             description = newJavaDoc.getDescription();
         }
@@ -61,23 +61,20 @@ public class JavaDocUtils {
         List<String> processedTagNames = new LinkedList<String>();
         for (Entry<String, List<JavaDocTag>> newTagsEntry : newTags.entrySet()) {
             String name = newTagsEntry.getKey();
+            if (!tags.containsKey(name)) {
+                tags.put(name, new LinkedList<JavaDocTag>());
+            }
             List<JavaDocTag> tagsEntry = newTagsEntry.getValue();
             for (JavaDocTag tag : tagsEntry) {
-                if (!tags.containsKey(name)) {
-                    tags.put(name, new LinkedList<JavaDocTag>());
-                }
                 if (oldTags.containsKey(name)) {
                     // the case when old tag exists
                     List<JavaDocTag> oldTagsEntry = oldTags.get(name);
-                    for (JavaDocTag oldTag : oldTagsEntry) {
-                        if (StringUtils.isBlank(oldTag.getValue()) &&
-                                StringUtils.isBlank(oldTag.getRefParam())) {
-                            // the case when old tag has been broken and should be restored
-                            tags.get(name).add(tag);
-                        } else {
-                            // the case when old tag is ok
-                            tags.get(name).add(mergeJavaDocTag(oldTag, tag));
-                        }
+                    JavaDocTag oldTag = findOldTag(oldTagsEntry, tag.getValue(), tag.getRefParam());
+                    if (oldTag != null) {
+                        // the case when old tag is ok
+                        tags.get(name).add(mergeJavaDocTag(oldTag, tag));
+                    } else {
+                        tags.get(name).add(tag);
                     }
                 } else {
                     // the case when old tag has been removed
@@ -241,4 +238,18 @@ public class JavaDocUtils {
         PsiDocComment javaDocComment = psiElementFactory.createDocCommentFromText(javaDocText);
         return createJavaDoc(javaDocComment);
     }
+
+    @Nullable
+    private static JavaDocTag findOldTag(List<JavaDocTag> oldTagsEntry, String value, String refParam) {
+        JavaDocTag result = null;
+        for (JavaDocTag oldTag : oldTagsEntry) {
+            if (StringUtils.equals(oldTag.getValue(), value) &&
+                    StringUtils.equals(oldTag.getRefParam(), refParam)) {
+                result = oldTag;
+                break;
+            }
+        }
+        return result;
+    }
+
 }

@@ -4,8 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 public enum JavaDocElements {
 
-    STARTING_ASTERISK("/**"),
-    ENDING_ASTERISK("*/"),
+    STARTING("/*"),
+    ENDING("/"),
     NEW_LINE("\n"),
     TAG_START("@"),
     LINE_START("*"),

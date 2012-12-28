@@ -34,7 +34,8 @@ public class JavaDocBuilder {
      * @return the Java doc builder
      */
     public JavaDocBuilder openJavaDoc() {
-        builder.append(JavaDocElements.STARTING_ASTERISK.getPresentation());
+        builder.append(JavaDocElements.STARTING.getPresentation());
+        builder.append(JavaDocElements.LINE_START.getPresentation());
         return this;
     }
 
@@ -44,9 +45,12 @@ public class JavaDocBuilder {
      * @return the Java doc builder
      */
     public JavaDocBuilder closeJavaDoc() {
-        builder.append(JavaDocElements.NEW_LINE.getPresentation());
-        builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
-        builder.append(JavaDocElements.ENDING_ASTERISK.getPresentation());
+        if (builder.lastIndexOf(JavaDocElements.LINE_START.getPresentation()) != builder.length() - 1) {
+            builder.append(JavaDocElements.NEW_LINE.getPresentation());
+            builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
+            builder.append(JavaDocElements.LINE_START.getPresentation());
+        }
+        builder.append(JavaDocElements.ENDING.getPresentation());
         return this;
     }
 
