@@ -44,13 +44,13 @@
     <method>
         <template regexp="^.*(public|protected|private)*\s*.*\w+\s+get\w+\(.*\).+">
             /**\n
-            * Gets the $partName.\n
+            * Gets $partName.\n
 
                 #if(!$element.parameterList.parameters.isEmpty())
                     *\n
                 #end
                 #foreach($parameter in $element.parameterList.parameters)
-                    * @param $parameter.name  the $paramNames[$parameter.name].\n
+                    * @param $parameter.name the $paramNames[$parameter.name].\n
                 #end
 
                 #if($isNotVoid)
@@ -62,20 +62,20 @@
                     *\n
                 #end
                 #foreach($exception in $element.throwsList.referenceElements)
-                    * @throws $exception.referenceName  the $exceptionNames[$exception.referenceName].\n
+                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName].\n
                 #end
 
             */
         </template>
         <template regexp="^.*(public|protected|private)*\s*.*(void|\w)+\s+set\w+\(.*\).+">
             /**\n
-            * Sets the $partName.\n
+            * Sets $partName.\n
 
                 #if(!$element.parameterList.parameters.isEmpty())
                     *\n
                 #end
                 #foreach($parameter in $element.parameterList.parameters)
-                    * @param $parameter.name  the $paramNames[$parameter.name].\n
+                    * @param $parameter.name the $paramNames[$parameter.name].\n
                 #end
 
                 #if($isNotVoid)
@@ -87,7 +87,7 @@
                     *\n
                 #end
                 #foreach($exception in $element.throwsList.referenceElements)
-                    * @throws $exception.referenceName  the $exceptionNames[$exception.referenceName].\n
+                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName].\n
                 #end
 
             */
@@ -106,7 +106,7 @@
                     *\n
                 #end
                 #foreach($exception in $element.throwsList.referenceElements)
-                    * @throws $exception.referenceName  the $exceptionNames[$exception.referenceName].\n
+                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName].\n
                 #end
 
             */
@@ -120,7 +120,7 @@
                     *\n
                 #end
                 #foreach($parameter in $element.parameterList.parameters)
-                    * @param $parameter.name  the $paramNames[$parameter.name].\n
+                    * @param $parameter.name the $paramNames[$parameter.name].\n
                 #end
 
                 #if($isNotVoid)
@@ -132,7 +132,7 @@
                     *\n
                 #end
                 #foreach($exception in $element.throwsList.referenceElements)
-                    * @throws $exception.referenceName  the $exceptionNames[$exception.referenceName].\n
+                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName].\n
                 #end
 
             */
@@ -148,14 +148,14 @@
                     *\n
                 #end
                 #foreach($parameter in $element.parameterList.parameters)
-                    * @param $parameter.name  the $paramNames[$parameter.name].\n
+                    * @param $parameter.name the $paramNames[$parameter.name].\n
                 #end
 
                 #if(!$element.throwsList.referenceElements.isEmpty())
                     *\n
                 #end
                 #foreach($exception in $element.throwsList.referenceElements)
-                    * @throws $exception.referenceName  the $exceptionNames[$exception.referenceName].\n
+                    * @throws $exception.referenceName the $exceptionNames[$exception.referenceName].\n
                 #end
 
             */
