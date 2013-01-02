@@ -38,13 +38,8 @@ public class ConfigPanel extends JPanel {
 
     public ConfigPanel(JavaDocSettings settings) {
         this.settings = settings;
-        setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        add(panel, new GridConstraints(0, 0, 1, 1,
-                GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_BOTH,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                null, null, null));
+        setLayout(new BorderLayout());
+        add(panel, BorderLayout.CENTER);
     }
 
     public boolean isModified() {
