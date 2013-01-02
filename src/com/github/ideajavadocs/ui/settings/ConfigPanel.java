@@ -1,4 +1,4 @@
-package com.github.ideajavadocs.ui;
+package com.github.ideajavadocs.ui.settings;
 
 import com.github.ideajavadocs.model.settings.JavaDocSettings;
 import com.github.ideajavadocs.model.settings.Level;
@@ -12,7 +12,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
-public class ConfigPanel {
+public class ConfigPanel extends JPanel {
 
     private JavaDocSettings settings;
 
@@ -38,10 +38,13 @@ public class ConfigPanel {
 
     public ConfigPanel(JavaDocSettings settings) {
         this.settings = settings;
-    }
-
-    public JPanel getPanel() {
-        return panel;
+        setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        add(panel, new GridConstraints(0, 0, 1, 1,
+                GridConstraints.ANCHOR_CENTER,
+                GridConstraints.FILL_BOTH,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                null, null, null));
     }
 
     public boolean isModified() {
