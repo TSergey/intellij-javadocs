@@ -4,6 +4,9 @@ import com.github.ideajavadocs.model.settings.JavaDocSettings;
 import com.github.ideajavadocs.model.settings.Level;
 import com.github.ideajavadocs.model.settings.Mode;
 import com.github.ideajavadocs.model.settings.Visibility;
+import com.github.ideajavadocs.ui.component.TemplatesTable;
+import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.table.TableView;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -40,6 +43,7 @@ public class ConfigPanel extends JPanel {
         this.settings = settings;
         setLayout(new BorderLayout());
         add(panel, BorderLayout.CENTER);
+        setupTemplatesPanel();
     }
 
     public boolean isModified() {
@@ -154,12 +158,13 @@ public class ConfigPanel extends JPanel {
     public void disposeUIResources() {
     }
 
-    public JPanel getGeneralPanel() {
-        return generalPanel;
-    }
-
-    public JPanel getGeneralOtherPanel() {
-        return generalOtherPanel;
+    private void setupTemplatesPanel() {
+        // TODO create templates panel
+        TemplatesTable templatesTable = new TemplatesTable();
+        JPanel templatesLocalPanel = ToolbarDecorator.createDecorator(templatesTable).createPanel();
+        templatesPanel.setLayout(new BorderLayout());
+        templatesPanel.add(templatesLocalPanel, BorderLayout.CENTER);
+//        settings.getTemplateSettings()
     }
 
     {

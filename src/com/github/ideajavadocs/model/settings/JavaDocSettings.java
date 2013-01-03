@@ -23,7 +23,7 @@ public class JavaDocSettings implements Serializable {
     public static final String GENERAL = "GENERAL";
 
     private GeneralSettings generalSettings = new GeneralSettings();
-
+    private TemplateSettings templateSettings = new TemplateSettings();
     public JavaDocSettings() {
     }
 
@@ -89,8 +89,8 @@ public class JavaDocSettings implements Serializable {
         return generalSettings;
     }
 
-    public void setGeneralSettings(GeneralSettings generalSettings) {
-        this.generalSettings = generalSettings;
+    public TemplateSettings getTemplateSettings() {
+        return templateSettings;
     }
 
 }
