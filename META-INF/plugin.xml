@@ -48,20 +48,21 @@
     </project-components>
 
     <actions>
-        <action id="com.github.ideajavadocs.action.JavaDocGenerateAction"
-                class="com.github.ideajavadocs.action.JavaDocGenerateAction"
-                text="Generate javadocs"
-                description="Generate javadocs for the selected element.">
+        <group id="com.github.ideajavadocs.action" text="_JavaDocs" description="Generate JavaDocs" popup="true">
+            <action id="com.github.ideajavadocs.action.JavaDocGenerateAction"
+                    class="com.github.ideajavadocs.action.JavaDocGenerateAction"
+                    text="_Current element"
+                    description="Generate javadocs for the selected element.">
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>
+            </action>
+            <action id="com.github.ideajavadocs.action.JavaDocsGenerateAction"
+                    class="com.github.ideajavadocs.action.JavaDocsGenerateAction"
+                    text="_All elements"
+                    description="Generate javadocs for the all elements in the current java file.">
+                <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt J"/>
+            </action>
             <add-to-group group-id="GenerateGroup" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>
-        </action>
-        <action id="com.github.ideajavadocs.action.JavaDocsGenerateAction"
-                class="com.github.ideajavadocs.action.JavaDocsGenerateAction"
-                text="Generate javadocs ..."
-                description="Generate javadocs for the all elements in the current java file.">
-            <add-to-group group-id="GenerateGroup" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt J"/>
-        </action>
+        </group>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
