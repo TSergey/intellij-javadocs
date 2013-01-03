@@ -1,4 +1,4 @@
-package com.github.ideajavadocs.ui.component;
+package com.github.ideajavadocs.configuration;
 
 import com.github.ideajavadocs.model.settings.JavaDocSettings;
 

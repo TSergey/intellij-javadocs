@@ -1,11 +1,11 @@
-package com.github.ideajavadocs.ui.component.impl;
+package com.github.ideajavadocs.configuration.impl;
 
 import com.github.ideajavadocs.model.settings.JavaDocSettings;
 import com.github.ideajavadocs.model.settings.Level;
 import com.github.ideajavadocs.model.settings.Mode;
 import com.github.ideajavadocs.model.settings.Visibility;
 import com.github.ideajavadocs.ui.settings.ConfigPanel;
-import com.github.ideajavadocs.ui.component.JavaDocConfiguration;
+import com.github.ideajavadocs.configuration.JavaDocConfiguration;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;

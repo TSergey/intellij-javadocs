@@ -5,7 +5,7 @@ import com.github.ideajavadocs.generator.impl.ClassJavaDocGenerator;
 import com.github.ideajavadocs.generator.impl.FieldJavaDocGenerator;
 import com.github.ideajavadocs.generator.impl.MethodJavaDocGenerator;
 import com.github.ideajavadocs.operation.JavaDocWriter;
-import com.github.ideajavadocs.ui.component.JavaDocConfiguration;
+import com.github.ideajavadocs.configuration.JavaDocConfiguration;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;

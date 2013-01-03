@@ -7,7 +7,7 @@ import com.github.ideajavadocs.model.settings.Visibility;
 import com.github.ideajavadocs.template.DocTemplateManager;
 import com.github.ideajavadocs.template.DocTemplateProcessor;
 import com.github.ideajavadocs.transformation.JavaDocUtils;
-import com.github.ideajavadocs.ui.component.JavaDocConfiguration;
+import com.github.ideajavadocs.configuration.JavaDocConfiguration;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.pom.PomNamedTarget;

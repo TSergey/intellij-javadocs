@@ -41,8 +41,8 @@
             <implementation-class>com.github.ideajavadocs.template.impl.DocTemplateProcessorImpl</implementation-class>
         </component>
         <component>
-            <interface-class>com.github.ideajavadocs.ui.component.JavaDocConfiguration</interface-class>
-            <implementation-class>com.github.ideajavadocs.ui.component.impl.JavaDocConfigurationImpl
+            <interface-class>com.github.ideajavadocs.configuration.JavaDocConfiguration</interface-class>
+            <implementation-class>com.github.ideajavadocs.configuration.impl.JavaDocConfigurationImpl
             </implementation-class>
         </component>
     </project-components>
