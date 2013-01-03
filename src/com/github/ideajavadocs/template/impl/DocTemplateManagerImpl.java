@@ -39,18 +39,17 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     private static final String METHOD = "method";
     private static final String CONSTRUCTOR = "constructor";
 
-    // TODO add more templates for different cases
     private static final Map<String, Template> CLASS_TEMPLATES = new LinkedHashMap<String, Template>();
     private static final Map<String, Template> FIELD_TEMPLATES = new LinkedHashMap<String, Template>();
     private static final Map<String, Template> METHOD_TEMPLATES = new LinkedHashMap<String, Template>();
     private static final Map<String, Template> CONSTRUCTOR_TEMPLATES = new LinkedHashMap<String, Template>();
 
-    private final RuntimeServices velosityServices;
+    private final RuntimeServices velocityServices;
 
     public DocTemplateManagerImpl() {
         RuntimeInstance ri = new RuntimeInstance();
         ri.init();
-        velosityServices = ri;
+        velocityServices = ri;
     }
 
     @Override
@@ -78,11 +77,11 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         List<Element> elements = root.getChildren(TEMPLATE);
         for (Element element : elements) {
             String name = element.getAttribute(REGEXP).getValue();
-            SimpleNode node = velosityServices.parse(
+            SimpleNode node = velocityServices.parse(
                     XmlUtils.trimElementContent(element),
                     name);
             Template template = new Template();
-            template.setRuntimeServices(velosityServices);
+            template.setRuntimeServices(velocityServices);
             template.setData(node);
             template.setName(node.getTemplateName());
             template.initDocument();
