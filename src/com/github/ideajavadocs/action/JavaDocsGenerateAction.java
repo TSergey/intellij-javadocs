@@ -5,6 +5,8 @@ import com.github.ideajavadocs.generator.impl.ClassJavaDocGenerator;
 import com.github.ideajavadocs.generator.impl.FieldJavaDocGenerator;
 import com.github.ideajavadocs.generator.impl.MethodJavaDocGenerator;
 import com.github.ideajavadocs.operation.JavaDocWriter;
+import com.github.ideajavadocs.ui.component.JavaDocConfiguration;
+import com.github.ideajavadocs.ui.dialog.JavaDocsDialog;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
@@ -16,6 +18,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,6 +31,7 @@ import java.util.List;
 public class JavaDocsGenerateAction extends AnAction {
 
     private JavaDocWriter writer;
+    private JavaDocConfiguration configuration;
 
     /**
      * Instantiates a new Java docs generate action.
@@ -41,22 +46,34 @@ public class JavaDocsGenerateAction extends AnAction {
      * @param e the Event
      */
     public void actionPerformed(AnActionEvent e) {
-        PsiFile file = DataKeys.PSI_FILE.getData(e.getDataContext());
+        final PsiFile file = DataKeys.PSI_FILE.getData(e.getDataContext());
         if (file == null) {
             // TODO show message
             return;
         }
-        List<PsiElement> elements = new LinkedList<PsiElement>();
-        // Find all class elements
-        List<PsiClass> classElements = getClasses(file);
-        elements.addAll(classElements);
-        for (PsiClass classElement : classElements) {
-            elements.addAll(PsiTreeUtil.getChildrenOfTypeAsList(classElement, PsiMethod.class));
-            elements.addAll(PsiTreeUtil.getChildrenOfTypeAsList(classElement, PsiField.class));
+        JavaDocsDialog dialog = new JavaDocsDialog(file.getProject(), getConfiguration(file.getProject()),
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<PsiElement> elements = new LinkedList<PsiElement>();
+                // Find all class elements
+                List<PsiClass> classElements = getClasses(file);
+                elements.addAll(classElements);
+                for (PsiClass classElement : classElements) {
+                    elements.addAll(PsiTreeUtil.getChildrenOfTypeAsList(classElement, PsiMethod.class));
+                    elements.addAll(PsiTreeUtil.getChildrenOfTypeAsList(classElement, PsiField.class));
+                }
+                for (PsiElement element : elements) {
+                    processElement(element);
+                }
+            }
+        });
+        dialog.show();
+        if (!dialog.isOK()) {
+            // TODO Cancel handling
+            return;
         }
-        for (PsiElement element : elements) {
-            processElement(element);
-        }
+        // TODO perform action
     }
 
     /**
@@ -111,4 +128,10 @@ public class JavaDocsGenerateAction extends AnAction {
         }
     }
 
+    private JavaDocConfiguration getConfiguration(Project project) {
+        if (configuration == null) {
+            configuration = ServiceManager.getService(project, JavaDocConfiguration.class);
+        }
+        return configuration;
+    }
 }
