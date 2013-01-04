@@ -1,43 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Ideajavadocs by TSergey</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=640" />
 
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Ideajavadocs by intellij-javadocs</title>
   </head>
+
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/TSergey/ideajavadocs">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/TSergey/ideajavadocs/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/TSergey/ideajavadocs/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
+    <a id="forkme_banner" href="https://github.com/intellij-javadocs/ideajavadocs">View on GitHub</a>
+    <div class="shell">
 
-    <div class="wrapper">
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Ideajavadocs</h1>
+            <h2>Intellij idea javadocs generator</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
 
-      <section>
-        <div id="title">
-          <h1>Ideajavadocs</h1>
-          <p>Intellij idea javadocs generator</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/TSergey">TSergey</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
-        </div>
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/intellij-javadocs/ideajavadocs/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/intellij-javadocs/ideajavadocs/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
 
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
         <h1>ideajavadocs</h1>
 
 <p>Intellij idea javadocs generator plugin</p>
@@ -48,8 +56,20 @@
 <a href="https://github.com/TSergey/ideajavadocs/raw/master/ideajavadocs.jar">https://github.com/TSergey/ideajavadocs/raw/master/ideajavadocs.jar</a></p>
       </section>
 
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/intellij-javadocs">intellij-javadocs</a> can be found on <a href="https://github.com/intellij-javadocs/ideajavadocs">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
     
   </body>
 </html>
