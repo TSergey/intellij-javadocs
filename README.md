@@ -1,9 +1,10 @@
-ideajavadocs
+intellij-javadocs
 ============
 
-Intellij idea javadocs generator plugin
+Intellij idea javadocs generator plugin.
 
-https://github.com/setial/intellij-javadocs/wiki
+Home page: http://setial.github.com/intellij-javadocs/
 
-Last plugin deployment jar:
-https://github.com/setial/intellij-javadocs/raw/master/ideajavadocs.zip
+Wiki: https://github.com/setial/intellij-javadocs/wiki
+
+Last plugin deployment jar: https://github.com/setial/intellij-javadocs/raw/master/ideajavadocs.zip

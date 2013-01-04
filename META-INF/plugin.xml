@@ -2,7 +2,9 @@
     <id>com.github.ideajavadocs</id>
     <name>JavaDoc Generator</name>
     <version>1.0.1</version>
-    <vendor email="s.timofiychuk@gmail.com" url="https://github.com/TSergey/ideajavadocs/wiki">YourCompany</vendor>
+    <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
+        http://setial.github.com/intellij-javadocs
+    </vendor>
 
     <description><![CDATA[
       Plugin that generates java docs on java class elements, like field, method, etc.
