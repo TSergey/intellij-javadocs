@@ -180,9 +180,9 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         if (implementTypes != null && implementTypes.length > 0) {
             builder.append("implements");
             for (int i = 0; i < implementTypes.length; i++) {
-                PsiClassType extendsType = extendsTypes[i];
-                builder.append(extendsType.getClassName());
-                if (i < extendsTypes.length - 1) {
+                PsiClassType implementType = implementTypes[i];
+                builder.append(implementType.getClassName());
+                if (i < implementTypes.length - 1) {
                     builder.append(",");
                 }
                 builder.append(" ");
