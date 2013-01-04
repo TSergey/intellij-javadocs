@@ -2,41 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7133307a-1a1e-43da-9419-cf99f742f88b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/model/settings/Level.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/model/settings/Mode.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/model/settings/Level.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/model/settings/Mode.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/action/JavaDocGenerateAction.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/action/JavaDocGenerateAction.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/action/JavaDocsGenerateAction.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/action/JavaDocsGenerateAction.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/configuration/JavaDocConfiguration.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/configuration/JavaDocConfiguration.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/configuration/impl/JavaDocConfigurationImpl.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/configuration/impl/JavaDocConfigurationImpl.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/generator/JavaDocGenerator.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/JavaDocGenerator.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/generator/impl/AbstractJavaDocGenerator.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/AbstractJavaDocGenerator.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/generator/impl/ClassJavaDocGenerator.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/ClassJavaDocGenerator.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/generator/impl/FieldJavaDocGenerator.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/FieldJavaDocGenerator.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/generator/impl/MethodJavaDocGenerator.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/MethodJavaDocGenerator.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/model/JavaDoc.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/model/JavaDoc.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/model/JavaDocElements.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/model/JavaDocElements.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/model/JavaDocTag.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/model/JavaDocTag.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/model/settings/GeneralSettings.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/model/settings/GeneralSettings.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/model/settings/JavaDocSettings.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/model/settings/JavaDocSettings.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/model/settings/TemplateSettings.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/model/settings/TemplateSettings.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/model/settings/Visibility.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/model/settings/Visibility.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/operation/JavaDocWriter.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/operation/JavaDocWriter.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/operation/impl/JavaDocWriterImpl.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/operation/impl/JavaDocWriterImpl.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/template/DocTemplateManager.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/DocTemplateManager.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/template/DocTemplateProcessor.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/DocTemplateProcessor.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/template/impl/DocTemplateManagerImpl.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/impl/DocTemplateManagerImpl.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/template/impl/DocTemplateProcessorImpl.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/impl/DocTemplateProcessorImpl.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/transformation/JavaDocBuilder.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/transformation/JavaDocBuilder.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/transformation/JavaDocUtils.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/transformation/JavaDocUtils.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/transformation/XmlUtils.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/transformation/XmlUtils.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/ui/component/TemplateConfigDialog.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/ui/component/TemplateConfigDialog.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/ui/component/TemplatesTable.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/ui/component/TemplatesTable.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/ui/settings/ConfigPanel.form" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/ui/settings/ConfigPanel.form" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/github/ideajavadocs/ui/settings/ConfigPanel.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/ui/settings/ConfigPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intellij-javadocs.zip" afterPath="$PROJECT_DIR$/intellij-javadocs.zip" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intellij-javadocs.iws" afterPath="$PROJECT_DIR$/intellij-javadocs.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
     </list>
     <ignored path="intellij-javadocs.iws" />
     <ignored path=".idea/workspace.xml" />
