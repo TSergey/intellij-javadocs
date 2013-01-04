@@ -5,13 +5,16 @@ import com.github.ideajavadocs.model.settings.Level;
 import com.github.ideajavadocs.model.settings.Mode;
 import com.github.ideajavadocs.model.settings.Visibility;
 import com.github.ideajavadocs.ui.component.TemplatesTable;
+import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.table.TableView;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 
 import java.awt.*;
+import java.util.LinkedHashMap;
 
 import javax.swing.*;
 
@@ -38,11 +41,16 @@ public class ConfigPanel extends JPanel {
     private JPanel generalLevelPanel;
     private JPanel generalVisibilityPanel;
     private JPanel generalOtherPanel;
+    private TemplatesTable classTemplatesTable;
+    private TemplatesTable constructorTemplatesTable;
+    private TemplatesTable methodTemplatesTable;
+    private TemplatesTable fieldTemplatesTable;
 
     public ConfigPanel(JavaDocSettings settings) {
         this.settings = settings;
         setLayout(new BorderLayout());
         add(panel, BorderLayout.CENTER);
+        setupBorders();
         setupTemplatesPanel();
     }
 
@@ -158,13 +166,52 @@ public class ConfigPanel extends JPanel {
     public void disposeUIResources() {
     }
 
+    private void setupBorders() {
+        generalModePanel.setBorder(
+                IdeBorderFactory.createTitledBorder("Mode", false, new Insets(10, 10, 10, 10)));
+        generalLevelPanel.setBorder(
+                IdeBorderFactory.createTitledBorder("Level", false, new Insets(10, 10, 10, 10)));
+        generalVisibilityPanel.setBorder(
+                IdeBorderFactory.createTitledBorder("Visibility", false, new Insets(10, 10, 10, 10)));
+        generalOtherPanel.setBorder(
+                IdeBorderFactory.createTitledBorder("Other", false, new Insets(10, 10, 10, 10)));
+    }
+
     private void setupTemplatesPanel() {
-        // TODO create templates panel
-        TemplatesTable templatesTable = new TemplatesTable();
-        JPanel templatesLocalPanel = ToolbarDecorator.createDecorator(templatesTable).createPanel();
-        templatesPanel.setLayout(new BorderLayout());
-        templatesPanel.add(templatesLocalPanel, BorderLayout.CENTER);
-//        settings.getTemplateSettings()
+        // TODO read templates and merge
+
+        classTemplatesTable = new TemplatesTable(new LinkedHashMap<String, String>());
+        JPanel classTemplatesLocalPanel = ToolbarDecorator.createDecorator(classTemplatesTable).createPanel();
+        JPanel classPanel = new JPanel(new BorderLayout());
+        classPanel.setBorder(IdeBorderFactory.createTitledBorder("Class level", false, new Insets(10, 10, 0, 10)));
+        classPanel.add(classTemplatesLocalPanel, BorderLayout.CENTER);
+
+        constructorTemplatesTable = new TemplatesTable(new LinkedHashMap<String, String>());
+        JPanel constructorTemplatesLocalPanel =
+                ToolbarDecorator.createDecorator(constructorTemplatesTable).createPanel();
+        JPanel constructorPanel = new JPanel(new BorderLayout());
+        constructorPanel.setBorder(IdeBorderFactory.createTitledBorder("Constructor level", false,
+                new Insets(10, 10, 0, 10)));
+        constructorPanel.add(constructorTemplatesLocalPanel, BorderLayout.CENTER);
+
+        methodTemplatesTable = new TemplatesTable(new LinkedHashMap<String, String>());
+        JPanel methodTemplatesLocalPanel = ToolbarDecorator.createDecorator(methodTemplatesTable).createPanel();
+        JPanel methodPanel = new JPanel(new BorderLayout());
+        methodPanel.setBorder(IdeBorderFactory.createTitledBorder("Method level", false, new Insets(10, 10, 0, 10)));
+        methodPanel.add(methodTemplatesLocalPanel, BorderLayout.CENTER);
+
+        fieldTemplatesTable = new TemplatesTable(new LinkedHashMap<String, String>());
+        JPanel fieldTemplatesLocalPanel = ToolbarDecorator.createDecorator(fieldTemplatesTable).createPanel();
+        JPanel fieldPanel = new JPanel(new BorderLayout());
+        fieldPanel.setBorder(IdeBorderFactory.createTitledBorder("Field level", false, new Insets(10, 10, 10, 10)));
+        fieldPanel.add(fieldTemplatesLocalPanel, BorderLayout.CENTER);
+
+        templatesPanel = new JPanel(new GridLayout(4, 1));
+        templatesPanel.add(classPanel);
+        templatesPanel.add(constructorPanel);
+        templatesPanel.add(methodPanel);
+        templatesPanel.add(fieldPanel);
+        tabbedPane.addTab("Templates", templatesPanel);
     }
 
     {
@@ -189,11 +236,11 @@ public class ConfigPanel extends JPanel {
         generalPanel = new JPanel();
         generalPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPane.addTab("General", generalPanel);
-        generalPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), null));
+        generalPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), null));
         generalModePanel = new JPanel();
         generalModePanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         generalPanel.add(generalModePanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        generalModePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Mode"));
+        generalModePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3), null));
         generalModeKeepRadioButton = new JRadioButton();
         generalModeKeepRadioButton.setSelected(false);
         generalModeKeepRadioButton.setText("Keep old javadoc");
@@ -208,7 +255,7 @@ public class ConfigPanel extends JPanel {
         generalLevelPanel = new JPanel();
         generalLevelPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         generalPanel.add(generalLevelPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        generalLevelPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Level"));
+        generalLevelPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3), null));
         generalLevelTypeCheckbox = new JCheckBox();
         generalLevelTypeCheckbox.setSelected(false);
         generalLevelTypeCheckbox.setText("Type");
@@ -224,7 +271,7 @@ public class ConfigPanel extends JPanel {
         generalVisibilityPanel = new JPanel();
         generalVisibilityPanel.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         generalPanel.add(generalVisibilityPanel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        generalVisibilityPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Visibility"));
+        generalVisibilityPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3), "Visibility"));
         generalVisibilityPublicCheckbox = new JCheckBox();
         generalVisibilityPublicCheckbox.setSelected(false);
         generalVisibilityPublicCheckbox.setText("Public");
@@ -243,16 +290,12 @@ public class ConfigPanel extends JPanel {
         generalOtherPanel = new JPanel();
         generalOtherPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         generalPanel.add(generalOtherPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        generalOtherPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Other"));
+        generalOtherPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3), "Other"));
         generalOtherOverriddenMethodsCheckbox = new JCheckBox();
         generalOtherOverriddenMethodsCheckbox.setText("Comment overriden methods");
         generalOtherPanel.add(generalOtherOverriddenMethodsCheckbox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         generalPanel.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        templatesPanel = new JPanel();
-        templatesPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        templatesPanel.setEnabled(false);
-        tabbedPane.addTab("Templates", templatesPanel);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(generalModeKeepRadioButton);

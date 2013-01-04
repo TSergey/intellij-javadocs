@@ -1,27 +1,38 @@
 package com.github.ideajavadocs.ui.component;
 
+import com.github.ideajavadocs.model.settings.TemplateSettings;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.EditableModel;
 
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
 public class TemplatesTable extends JBTable {
 
-    public TemplatesTable() {
-        super(new ModelAdapter());
+    private Map<String, String> settings;
+
+    public TemplatesTable(Map<String, String> settings) {
+        super(new TableModel(settings));
         setStriped(true);
         setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
+        this.settings = settings;
     }
 
     @Override
     public boolean editCellAt(int row, int column, EventObject e) {
-        if (e == null ||
-                (e instanceof MouseEvent
-                        && ((MouseEvent)e).getClickCount() == 1)) {
+        if (e == null) {
             return false;
+        }
+        if (e instanceof MouseEvent) {
+            MouseEvent event = (MouseEvent) e;
+            if (event.getClickCount() == 1) {
+                return false;
+            }
         }
         // TODO
 
@@ -30,20 +41,21 @@ public class TemplatesTable extends JBTable {
         return false;
     }
 
-    private static class ModelAdapter extends AbstractTableModel implements EditableModel {
+    private static class TableModel extends AbstractTableModel implements EditableModel {
+
+        private List<String> columnNames;
+        private Map<String, String> settings;
+
+        public TableModel(Map<String, String> settings) {
+            this.settings = settings;
+            columnNames = new LinkedList<String>();
+            columnNames.add("Regular expression");
+            columnNames.add("Preview");
+        }
 
         @Override
         public String getColumnName(int column) {
-            switch (column) {
-                case 0:
-                    return "regexp";
-                case 1:
-                    return "level";
-                case 2:
-                    return "preview";
-                default:
-                    return "";
-            }
+            return columnNames.get(column);
         }
 
         @Override
@@ -72,18 +84,19 @@ public class TemplatesTable extends JBTable {
 
         @Override
         public int getRowCount() {
-            return 1;  // TODO
+            return settings.size();
         }
 
         @Override
         public int getColumnCount() {
-            return 3;  // TODO
+            return columnNames.size();
         }
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             return "1";  // TODO
         }
+
     }
 
 }
