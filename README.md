@@ -3,7 +3,7 @@ ideajavadocs
 
 Intellij idea javadocs generator plugin
 
-https://github.com/TSergey/ideajavadocs/wiki
+https://github.com/setial/intellij-javadocs/wiki
 
 Last plugin deployment jar:
-https://github.com/TSergey/ideajavadocs/raw/master/ideajavadocs.jar
+https://github.com/setial/intellij-javadocs/raw/master/ideajavadocs.zip
