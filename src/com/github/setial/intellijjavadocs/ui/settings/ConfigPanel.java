@@ -1,10 +1,13 @@
 package com.github.setial.intellijjavadocs.ui.settings;
 
 import com.github.setial.intellijjavadocs.model.settings.Visibility;
+import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.ui.component.TemplatesTable;
 import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
 import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.model.settings.Mode;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -19,6 +22,7 @@ import javax.swing.*;
 public class ConfigPanel extends JPanel {
 
     private JavaDocSettings settings;
+    private DocTemplateManager templateManager;
 
     private JTabbedPane tabbedPane;
     private JPanel panel;
@@ -44,8 +48,9 @@ public class ConfigPanel extends JPanel {
     private TemplatesTable methodTemplatesTable;
     private TemplatesTable fieldTemplatesTable;
 
-    public ConfigPanel(JavaDocSettings settings) {
+    public ConfigPanel(JavaDocSettings settings, Project project) {
         this.settings = settings;
+        templateManager = ServiceManager.getService(project, DocTemplateManager.class);
         setLayout(new BorderLayout());
         add(panel, BorderLayout.CENTER);
         setupBorders();
@@ -81,6 +86,8 @@ public class ConfigPanel extends JPanel {
     }
 
     public void apply() {
+        // TODO read templates and merge
+
         if (generalModeKeepRadioButton.isSelected()) {
             settings.getGeneralSettings().setMode(Mode.KEEP);
         } else if (generalModeUpdateRadioButton.isSelected()) {
@@ -166,25 +173,23 @@ public class ConfigPanel extends JPanel {
 
     private void setupBorders() {
         generalModePanel.setBorder(
-                IdeBorderFactory.createTitledBorder("Mode", false, new Insets(10, 10, 10, 10)));
+                IdeBorderFactory.createTitledBorder("Mode", false, new Insets(0, 0, 0, 10)));
         generalLevelPanel.setBorder(
-                IdeBorderFactory.createTitledBorder("Level", false, new Insets(10, 10, 10, 10)));
+                IdeBorderFactory.createTitledBorder("Level", false, new Insets(0, 0, 0, 10)));
         generalVisibilityPanel.setBorder(
-                IdeBorderFactory.createTitledBorder("Visibility", false, new Insets(10, 10, 10, 10)));
+                IdeBorderFactory.createTitledBorder("Visibility", false, new Insets(0, 0, 0, 0)));
         generalOtherPanel.setBorder(
-                IdeBorderFactory.createTitledBorder("Other", false, new Insets(10, 10, 10, 10)));
+                IdeBorderFactory.createTitledBorder("Other", false, new Insets(10, 0, 10, 10)));
     }
 
     private void setupTemplatesPanel() {
-        // TODO read templates and merge
-
-        classTemplatesTable = new TemplatesTable(new LinkedHashMap<String, String>());
+        classTemplatesTable = new TemplatesTable(templateManager.getClassTemplates());
         JPanel classTemplatesLocalPanel = ToolbarDecorator.createDecorator(classTemplatesTable).createPanel();
         JPanel classPanel = new JPanel(new BorderLayout());
         classPanel.setBorder(IdeBorderFactory.createTitledBorder("Class level", false, new Insets(10, 10, 0, 10)));
         classPanel.add(classTemplatesLocalPanel, BorderLayout.CENTER);
 
-        constructorTemplatesTable = new TemplatesTable(new LinkedHashMap<String, String>());
+        constructorTemplatesTable = new TemplatesTable(templateManager.getConstructorTemplates());
         JPanel constructorTemplatesLocalPanel =
                 ToolbarDecorator.createDecorator(constructorTemplatesTable).createPanel();
         JPanel constructorPanel = new JPanel(new BorderLayout());
@@ -192,13 +197,13 @@ public class ConfigPanel extends JPanel {
                 new Insets(10, 10, 0, 10)));
         constructorPanel.add(constructorTemplatesLocalPanel, BorderLayout.CENTER);
 
-        methodTemplatesTable = new TemplatesTable(new LinkedHashMap<String, String>());
+        methodTemplatesTable = new TemplatesTable(templateManager.getMethodTemplates());
         JPanel methodTemplatesLocalPanel = ToolbarDecorator.createDecorator(methodTemplatesTable).createPanel();
         JPanel methodPanel = new JPanel(new BorderLayout());
         methodPanel.setBorder(IdeBorderFactory.createTitledBorder("Method level", false, new Insets(10, 10, 0, 10)));
         methodPanel.add(methodTemplatesLocalPanel, BorderLayout.CENTER);
 
-        fieldTemplatesTable = new TemplatesTable(new LinkedHashMap<String, String>());
+        fieldTemplatesTable = new TemplatesTable(templateManager.getFieldTemplates());
         JPanel fieldTemplatesLocalPanel = ToolbarDecorator.createDecorator(fieldTemplatesTable).createPanel();
         JPanel fieldPanel = new JPanel(new BorderLayout());
         fieldPanel.setBorder(IdeBorderFactory.createTitledBorder("Field level", false, new Insets(10, 10, 10, 10)));
@@ -232,7 +237,7 @@ public class ConfigPanel extends JPanel {
         tabbedPane = new JTabbedPane();
         panel.add(tabbedPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         generalPanel = new JPanel();
-        generalPanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
+        generalPanel.setLayout(new GridLayoutManager(3, 3, new Insets(10, 10, 10, 10), -1, -1));
         tabbedPane.addTab("General", generalPanel);
         generalPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), null));
         generalModePanel = new JPanel();

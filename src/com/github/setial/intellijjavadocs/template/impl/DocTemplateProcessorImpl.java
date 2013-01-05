@@ -21,6 +21,8 @@ import java.util.Map;
  */
 public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectComponent {
 
+    // TODO move the logic to utils classes
+
     @Override
     public void projectOpened() {
     }

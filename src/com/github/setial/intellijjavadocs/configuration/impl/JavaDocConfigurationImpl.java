@@ -9,6 +9,7 @@ import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jdom.Element;
 import org.jetbrains.annotations.Nls;
@@ -36,9 +37,14 @@ import java.util.Set;
 public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectComponent, Configurable,
         PersistentStateComponent<Element> {
 
+    private Project project;
     private JavaDocSettings settings;
     private ConfigPanel configPanel;
     private boolean loadedStoredConfig = false;
+
+    public JavaDocConfigurationImpl(Project project) {
+        this.project = project;
+    }
 
     @Override
     public void initComponent() {
@@ -78,7 +84,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Override
     public JComponent createComponent() {
         if (configPanel == null) {
-            configPanel = new ConfigPanel(getSettings());
+            configPanel = new ConfigPanel(getSettings(), project);
         }
         reset();
         return configPanel;

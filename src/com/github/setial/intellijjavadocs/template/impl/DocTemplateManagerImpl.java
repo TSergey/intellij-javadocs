@@ -4,7 +4,14 @@ import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
 import com.github.setial.intellijjavadocs.transformation.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.psi.*;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiClassType;
+import com.intellij.psi.PsiCodeBlock;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
+import org.apache.commons.collections.MapUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
@@ -18,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,30 +47,29 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     private static final String METHOD = "method";
     private static final String CONSTRUCTOR = "constructor";
 
-    private static final Map<String, Template> CLASS_TEMPLATES = new LinkedHashMap<String, Template>();
-    private static final Map<String, Template> FIELD_TEMPLATES = new LinkedHashMap<String, Template>();
-    private static final Map<String, Template> METHOD_TEMPLATES = new LinkedHashMap<String, Template>();
-    private static final Map<String, Template> CONSTRUCTOR_TEMPLATES = new LinkedHashMap<String, Template>();
+    private Map<String, Template> classTemplates = new LinkedHashMap<String, Template>();
+    private Map<String, Template> fieldTemplates = new LinkedHashMap<String, Template>();
+    private Map<String, Template> methodTemplates = new LinkedHashMap<String, Template>();
+    private Map<String, Template> constructorTemplates = new LinkedHashMap<String, Template>();
 
     private final RuntimeServices velocityServices;
+    private DocTemplateProcessor templateProcessor;
 
-    public DocTemplateManagerImpl() {
+    public DocTemplateManagerImpl(Project project) {
+        templateProcessor = ServiceManager.getService(project, DocTemplateProcessor.class);
         RuntimeInstance ri = new RuntimeInstance();
         ri.init();
         velocityServices = ri;
-    }
 
-    @Override
-    public void projectOpened() {
         try {
             Document document = new SAXBuilder().build(DocTemplateProcessor.class.getResourceAsStream
                     (TEMPLATES_PATH));
             Element root = document.getRootElement();
             if (root != null) {
-                readTemplates(root, CLASS, CLASS_TEMPLATES);
-                readTemplates(root, FIELD, FIELD_TEMPLATES);
-                readTemplates(root, METHOD, METHOD_TEMPLATES);
-                readTemplates(root, CONSTRUCTOR, CONSTRUCTOR_TEMPLATES);
+                readTemplates(root, CLASS, classTemplates);
+                readTemplates(root, FIELD, fieldTemplates);
+                readTemplates(root, METHOD, methodTemplates);
+                readTemplates(root, CONSTRUCTOR, constructorTemplates);
             }
         } catch (Exception e) {
             // TODO throw runtime exception and catch it at top level app
@@ -91,6 +98,10 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     }
 
     @Override
+    public void projectOpened() {
+    }
+
+    @Override
     public void projectClosed() {
     }
 
@@ -113,7 +124,22 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     @Override
     public Template getClassTemplate(@NotNull PsiClass classElement) {
         StringBuilder builder = getClassSignature(classElement);
-        return getMatchingTemplate(builder.toString(), CLASS_TEMPLATES);
+        return getMatchingTemplate(builder.toString(), classTemplates);
+    }
+
+    @NotNull
+    @Override
+    public Map<String, String> getClassTemplates() {
+        Map<String, String> templates = new LinkedHashMap<String, String>();
+        for (Entry<String, Template> entry : classTemplates.entrySet()) {
+            templates.put(entry.getKey(), templateProcessor.merge(entry.getValue(), MapUtils.EMPTY_MAP));
+        }
+        return Collections.unmodifiableMap(templates);
+    }
+
+    @Override
+    public void putClassTemplate(@NotNull String regexp, @NotNull String template) {
+        // TODO
     }
 
     @Nullable
@@ -121,9 +147,9 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     public Template getMethodTemplate(@NotNull PsiMethod methodElement) {
         Map<String, Template> templates;
         if (methodElement.isConstructor()) {
-            templates = CONSTRUCTOR_TEMPLATES;
+            templates = constructorTemplates;
         } else {
-            templates = METHOD_TEMPLATES;
+            templates = methodTemplates;
         }
         String signature = methodElement.getText();
         PsiCodeBlock methodBody = methodElement.getBody();
@@ -134,11 +160,56 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
 
     }
 
+    @NotNull
+    @Override
+    public Map<String, String> getMethodTemplates() {
+        Map<String, String> templates = new LinkedHashMap<String, String>();
+        for (Entry<String, Template> entry : methodTemplates.entrySet()) {
+            templates.put(entry.getKey(), templateProcessor.merge(entry.getValue(), MapUtils.EMPTY_MAP));
+        }
+        return Collections.unmodifiableMap(templates);
+    }
+
+    @Override
+    public void putMethodTemplates(@NotNull String regexp, @NotNull String template) {
+        // TODO
+    }
+
+    @NotNull
+    @Override
+    public Map<String, String> getConstructorTemplates() {
+        Map<String, String> templates = new LinkedHashMap<String, String>();
+        for (Entry<String, Template> entry : constructorTemplates.entrySet()) {
+            templates.put(entry.getKey(), templateProcessor.merge(entry.getValue(), MapUtils.EMPTY_MAP));
+        }
+        return Collections.unmodifiableMap(templates);
+    }
+
+    @Override
+    public void putConstructorTemplates(@NotNull String regexp, @NotNull String template) {
+        // TODO
+    }
+
     @Nullable
     @Override
     public Template getFieldTemplate(@NotNull PsiField psiField) {
-        return getMatchingTemplate(psiField.getText(), FIELD_TEMPLATES);
+        return getMatchingTemplate(psiField.getText(), fieldTemplates);
 
+    }
+
+    @NotNull
+    @Override
+    public Map<String, String> getFieldTemplates() {
+        Map<String, String> templates = new LinkedHashMap<String, String>();
+        for (Entry<String, Template> entry : fieldTemplates.entrySet()) {
+            templates.put(entry.getKey(), templateProcessor.merge(entry.getValue(), MapUtils.EMPTY_MAP));
+        }
+        return Collections.unmodifiableMap(templates);
+    }
+
+    @Override
+    public void putFieldTemplates(@NotNull String regexp, @NotNull String template) {
+        // TODO
     }
 
     @Nullable

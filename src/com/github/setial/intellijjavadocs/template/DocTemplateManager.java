@@ -3,9 +3,10 @@ package com.github.setial.intellijjavadocs.template;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiMethod;
-
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 /**
  * The interface Doc template manager.
@@ -28,6 +29,11 @@ public interface DocTemplateManager {
     @NotNull
     Template getClassTemplate(@NotNull PsiClass classElement);
 
+    @NotNull
+    Map<String, String> getClassTemplates();
+
+    void putClassTemplate(@NotNull String regexp, @NotNull String template);
+
     /**
      * Gets the method template.
      *
@@ -37,6 +43,16 @@ public interface DocTemplateManager {
     @NotNull
     Template getMethodTemplate(@NotNull PsiMethod methodElement);
 
+    @NotNull
+    Map<String, String> getMethodTemplates();
+
+    void putMethodTemplates(@NotNull String regexp, @NotNull String template);
+
+    @NotNull
+    Map<String, String> getConstructorTemplates();
+
+    void putConstructorTemplates(@NotNull String regexp, @NotNull String template);
+
     /**
      * Gets the field template.
      *
@@ -45,5 +61,10 @@ public interface DocTemplateManager {
      */
     @NotNull
     Template getFieldTemplate(@NotNull PsiField psiField);
+
+    @NotNull
+    Map<String, String> getFieldTemplates();
+
+    void putFieldTemplates(@NotNull String regexp, @NotNull String template);
 
 }

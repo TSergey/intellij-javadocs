@@ -2,24 +2,33 @@ package com.github.setial.intellijjavadocs.ui.component;
 
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.EditableModel;
+import org.apache.commons.collections.MapUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.runtime.parser.node.SimpleNode;
 
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.table.AbstractTableModel;
 
 public class TemplatesTable extends JBTable {
 
-    private Map<String, String> settings;
+    private Entry<String, String>[] settings;
 
     public TemplatesTable(Map<String, String> settings) {
-        super(new TableModel(settings));
+        setModel(new TableModel());
         setStriped(true);
         setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
-        this.settings = settings;
+        this.settings = settings.entrySet().toArray(new Entry[settings.entrySet().size()]);
+    }
+
+    public Map<String, String> getSettings() {
+        return MapUtils.putAll(new LinkedHashMap(), settings);
     }
 
     @Override
@@ -40,13 +49,11 @@ public class TemplatesTable extends JBTable {
         return false;
     }
 
-    private static class TableModel extends AbstractTableModel implements EditableModel {
+    private class TableModel extends AbstractTableModel implements EditableModel {
 
         private List<String> columnNames;
-        private Map<String, String> settings;
 
-        public TableModel(Map<String, String> settings) {
-            this.settings = settings;
+        public TableModel() {
             columnNames = new LinkedList<String>();
             columnNames.add("Regular expression");
             columnNames.add("Preview");
@@ -83,7 +90,7 @@ public class TemplatesTable extends JBTable {
 
         @Override
         public int getRowCount() {
-            return settings.size();
+            return settings.length;
         }
 
         @Override
@@ -93,7 +100,7 @@ public class TemplatesTable extends JBTable {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            return "1";  // TODO
+            return columnIndex == 0 ? settings[rowIndex].getKey() : settings[rowIndex].getValue();
         }
 
     }
