@@ -79,7 +79,7 @@ public class JavaDocSettings implements Serializable {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        JavaDocSettings result = (JavaDocSettings) super.clone();
+        JavaDocSettings result = new JavaDocSettings();
         try {
             if (this.generalSettings != null) {
                 result.generalSettings = (GeneralSettings) BeanUtils.cloneBean(this.generalSettings);

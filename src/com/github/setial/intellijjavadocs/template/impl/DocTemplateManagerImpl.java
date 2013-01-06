@@ -98,7 +98,6 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
 
     @Override
     public void initComponent() {
-        // TODO read template from file or app settings
     }
 
     @Override

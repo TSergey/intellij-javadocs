@@ -39,11 +39,12 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
         Template template = getDocTemplateManager().getMethodTemplate(element);
         Map<String, String> paramNames = new HashMap<String, String>();
         for (PsiParameter parameter : element.getParameterList().getParameters()) {
-            paramNames.put(parameter.getName(), getDocTemplateProcessor().buildDescription(parameter.getName()));
+            paramNames.put(parameter.getName(), getDocTemplateProcessor().buildDescription(parameter.getName(), false));
         }
         Map<String, String> exceptionNames = new HashMap<String, String>();
         for (PsiJavaCodeReferenceElement exception : element.getThrowsList().getReferenceElements()) {
-            exceptionNames.put(exception.getReferenceName(), getDocTemplateProcessor().buildDescription(exception.getReferenceName()));
+            exceptionNames.put(exception.getReferenceName(),
+                    getDocTemplateProcessor().buildDescription(exception.getReferenceName(), false));
         }
         String returnDescription = StringUtils.EMPTY;
         PsiTypeElement returnElement = element.getReturnTypeElement();
@@ -53,7 +54,7 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
         Map<String, Object> params = getDefaultParameters(element);
         if (returnElement != null) {
             params.put("isNotVoid", !returnElement.getType().isAssignableFrom(PsiType.VOID));
-            params.put("return", getDocTemplateProcessor().buildDescription(returnDescription));
+            params.put("return", getDocTemplateProcessor().buildDescription(returnDescription, false));
         }
         params.put("paramNames", paramNames);
         params.put("exceptionNames", exceptionNames);

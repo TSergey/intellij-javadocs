@@ -164,7 +164,11 @@
     </option>
   </component>
   <component name="ProjectDictionaryState">
-    <dictionary name="stimofiychuk" />
+    <dictionary name="stimofiychuk">
+      <words>
+        <w>intelli</w>
+      </words>
+    </dictionary>
   </component>
   <component name="ProjectModuleManager">
     <modules>

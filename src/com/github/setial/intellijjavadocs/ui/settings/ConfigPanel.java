@@ -199,6 +199,8 @@ public class ConfigPanel extends JPanel {
                 result = result || !templatesEntries[i].getKey().equals(templatesTableEntries[i].getKey());
                 result = result || !templatesEntries[i].getValue().equals(templatesTableEntries[i].getValue());
             }
+        } else {
+            result = true;
         }
         return result;
     }
@@ -337,7 +339,7 @@ public class ConfigPanel extends JPanel {
         generalPanel.add(generalOtherPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         generalOtherPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3), "Other"));
         generalOtherOverriddenMethodsCheckbox = new JCheckBox();
-        generalOtherOverriddenMethodsCheckbox.setText("Comment overriden methods");
+        generalOtherOverriddenMethodsCheckbox.setText("Comment overridden methods");
         generalOtherPanel.add(generalOtherOverriddenMethodsCheckbox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         generalPanel.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));

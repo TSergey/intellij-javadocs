@@ -2,15 +2,18 @@ package com.github.setial.intellijjavadocs.ui.component;
 
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.EditableModel;
+import com.intellij.util.ui.UIUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.EventObject;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -18,7 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 public class TemplatesTable extends JBTable {
 
@@ -26,11 +32,15 @@ public class TemplatesTable extends JBTable {
 
     @SuppressWarnings("unchecked")
     public TemplatesTable(Map<String, String> model) {
-        setModel(new TableModel());
         setStriped(true);
         setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
         settings = new LinkedList<Entry<String, String>>();
         CollectionUtils.addAll(settings, model.entrySet().toArray(new Entry[model.entrySet().size()]));
+        setModel(new TableModel());
+        Enumeration<TableColumn> columns = getColumnModel().getColumns();
+        while (columns.hasMoreElements()) {
+            columns.nextElement().setCellRenderer(new FieldRenderer());
+        }
     }
 
     /**
@@ -60,10 +70,11 @@ public class TemplatesTable extends JBTable {
                 return false;
             }
         }
-        // TODO
-
-        TemplateConfigDialog dialog = new TemplateConfigDialog();
+        TemplateConfigDialog dialog = new TemplateConfigDialog(settings.get(row));
         dialog.show();
+        if (dialog.isOK()) {
+            settings.set(row, dialog.getModel());
+        }
         return false;
     }
 
@@ -87,7 +98,7 @@ public class TemplatesTable extends JBTable {
             TemplateConfigDialog dialog = new TemplateConfigDialog();
             dialog.show();
             if (dialog.isOK()) {
-                // TODO
+                settings.add(dialog.getModel());
             }
         }
 
@@ -124,5 +135,27 @@ public class TemplatesTable extends JBTable {
         }
 
     }
+
+    private static class FieldRenderer extends JLabel implements TableCellRenderer {
+
+        public FieldRenderer() {
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(
+                JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+            setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+            setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+
+            setBorder(hasFocus ?
+                    UIUtil.getTableFocusCellHighlightBorder() : BorderFactory.createEmptyBorder(1, 1, 1, 1));
+            setText(value == null ? "" : value.toString());
+            return this;
+        }
+
+    }
+
 
 }

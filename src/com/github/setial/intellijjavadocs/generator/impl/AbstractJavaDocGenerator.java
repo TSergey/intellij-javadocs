@@ -156,7 +156,7 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
     protected Map<String, Object> getDefaultParameters(PomNamedTarget element) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("element", element);
-        params.put("name", getDocTemplateProcessor().buildDescription(element.getName()));
+        params.put("name", getDocTemplateProcessor().buildDescription(element.getName(), true));
         params.put("partName", getDocTemplateProcessor().buildPartialDescription(element.getName()));
         params.put("splitNames", StringUtils.splitByCharacterTypeCamelCase(element.getName()));
         return params;

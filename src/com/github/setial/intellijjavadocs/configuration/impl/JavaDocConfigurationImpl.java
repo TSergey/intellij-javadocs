@@ -98,10 +98,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Override
     public void apply() throws ConfigurationException {
         configPanel.apply();
-        templateManager.setClassTemplates(settings.getTemplateSettings().getClassTemplates());
-        templateManager.setConstructorTemplates(settings.getTemplateSettings().getConstructorTemplates());
-        templateManager.setMethodTemplates(settings.getTemplateSettings().getMethodTemplates());
-        templateManager.setFieldTemplates(settings.getTemplateSettings().getFieldTemplates());
+        setupTemplates();
     }
 
     @Override
@@ -140,6 +137,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Override
     public void loadState(Element javaDocSettings) {
         settings = new JavaDocSettings(javaDocSettings);
+        setupTemplates();
         loadedStoredConfig = true;
     }
 
@@ -167,6 +165,13 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
             settings.getTemplateSettings().setFieldTemplates(templateManager.getFieldTemplates());
         }
         return settings;
+    }
+
+    private void setupTemplates() {
+        templateManager.setClassTemplates(settings.getTemplateSettings().getClassTemplates());
+        templateManager.setConstructorTemplates(settings.getTemplateSettings().getConstructorTemplates());
+        templateManager.setMethodTemplates(settings.getTemplateSettings().getMethodTemplates());
+        templateManager.setFieldTemplates(settings.getTemplateSettings().getFieldTemplates());
     }
 
 }

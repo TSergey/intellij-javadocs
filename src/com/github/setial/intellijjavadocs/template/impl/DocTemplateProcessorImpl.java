@@ -65,11 +65,11 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectCo
 
     @NotNull
     @Override
-    public String buildDescription(@NotNull String description) {
+    public String buildDescription(@NotNull String description, boolean capitalizeFirst) {
         if (StringUtils.isBlank(description)) {
             return StringUtils.EMPTY;
         }
-        return buildDescription(description, 0);
+        return buildDescription(description, 0, capitalizeFirst);
     }
 
     @NotNull
@@ -78,14 +78,14 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectCo
         if (StringUtils.isBlank(description)) {
             return StringUtils.EMPTY;
         }
-        return buildDescription(description, 1);
+        return buildDescription(description, 1, false);
     }
 
-    private String buildDescription(String description, int firstElement) {
+    private String buildDescription(String description, int firstElement, boolean capitalizeFirst) {
         String[] parts = StringUtils.splitByCharacterTypeCamelCase(description);
         StringBuilder result = new StringBuilder();
         for (int i = firstElement; i < parts.length; i++) {
-            if (i == firstElement) {
+            if (capitalizeFirst && i == firstElement) {
                 result.append(StringUtils.capitalize(parts[i]));
             } else {
                 result.append(StringUtils.uncapitalize(parts[i]));
