@@ -100,7 +100,10 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Override
     public void apply() throws ConfigurationException {
         configPanel.apply();
-        // TODO move settings to the template manager
+        templateManager.setClassTemplates(settings.getTemplateSettings().getClassTemplates());
+        templateManager.setConstructorTemplates(settings.getTemplateSettings().getConstructorTemplates());
+        templateManager.setMethodTemplates(settings.getTemplateSettings().getMethodTemplates());
+        templateManager.setFieldTemplates(settings.getTemplateSettings().getFieldTemplates());
     }
 
     @Override

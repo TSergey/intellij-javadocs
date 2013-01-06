@@ -11,11 +11,13 @@ import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiCodeBlock;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiMethod;
-import org.apache.commons.collections.MapUtils;
+import com.intellij.psi.PsiModifierList;
 import org.apache.velocity.Template;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.parser.ParseException;
+import org.apache.velocity.runtime.parser.ParserConstants;
+import org.apache.velocity.runtime.parser.Token;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
 import org.jdom.DataConversionException;
 import org.jdom.Document;
@@ -84,16 +86,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         List<Element> elements = root.getChildren(TEMPLATE);
         for (Element element : elements) {
             String name = element.getAttribute(REGEXP).getValue();
-            SimpleNode node = velocityServices.parse(
-                    XmlUtils.trimElementContent(element),
-                    name);
-            Template template = new Template();
-            template.setRuntimeServices(velocityServices);
-            template.setData(node);
-            template.setName(node.getTemplateName());
-            template.initDocument();
-
-            templates.put(name, template);
+            templates.put(name, createTemplate(name, XmlUtils.trimElementContent(element)));
         }
     }
 
@@ -122,24 +115,10 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
 
     @Nullable
     @Override
+    @SuppressWarnings("ConstantConditions")
     public Template getClassTemplate(@NotNull PsiClass classElement) {
         StringBuilder builder = getClassSignature(classElement);
         return getMatchingTemplate(builder.toString(), classTemplates);
-    }
-
-    @NotNull
-    @Override
-    public Map<String, String> getClassTemplates() {
-        Map<String, String> templates = new LinkedHashMap<String, String>();
-        for (Entry<String, Template> entry : classTemplates.entrySet()) {
-            templates.put(entry.getKey(), templateProcessor.merge(entry.getValue(), MapUtils.EMPTY_MAP));
-        }
-        return Collections.unmodifiableMap(templates);
-    }
-
-    @Override
-    public void putClassTemplate(@NotNull String regexp, @NotNull String template) {
-        // TODO
     }
 
     @Nullable
@@ -160,56 +139,11 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
 
     }
 
-    @NotNull
-    @Override
-    public Map<String, String> getMethodTemplates() {
-        Map<String, String> templates = new LinkedHashMap<String, String>();
-        for (Entry<String, Template> entry : methodTemplates.entrySet()) {
-            templates.put(entry.getKey(), templateProcessor.merge(entry.getValue(), MapUtils.EMPTY_MAP));
-        }
-        return Collections.unmodifiableMap(templates);
-    }
-
-    @Override
-    public void putMethodTemplates(@NotNull String regexp, @NotNull String template) {
-        // TODO
-    }
-
-    @NotNull
-    @Override
-    public Map<String, String> getConstructorTemplates() {
-        Map<String, String> templates = new LinkedHashMap<String, String>();
-        for (Entry<String, Template> entry : constructorTemplates.entrySet()) {
-            templates.put(entry.getKey(), templateProcessor.merge(entry.getValue(), MapUtils.EMPTY_MAP));
-        }
-        return Collections.unmodifiableMap(templates);
-    }
-
-    @Override
-    public void putConstructorTemplates(@NotNull String regexp, @NotNull String template) {
-        // TODO
-    }
-
     @Nullable
     @Override
     public Template getFieldTemplate(@NotNull PsiField psiField) {
         return getMatchingTemplate(psiField.getText(), fieldTemplates);
 
-    }
-
-    @NotNull
-    @Override
-    public Map<String, String> getFieldTemplates() {
-        Map<String, String> templates = new LinkedHashMap<String, String>();
-        for (Entry<String, Template> entry : fieldTemplates.entrySet()) {
-            templates.put(entry.getKey(), templateProcessor.merge(entry.getValue(), MapUtils.EMPTY_MAP));
-        }
-        return Collections.unmodifiableMap(templates);
-    }
-
-    @Override
-    public void putFieldTemplates(@NotNull String regexp, @NotNull String template) {
-        // TODO
     }
 
     @Nullable
@@ -224,9 +158,90 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         return result;
     }
 
+    @NotNull
+    @Override
+    public Map<String, String> getClassTemplates() {
+        Map<String, String> templates = new LinkedHashMap<String, String>();
+        for (Entry<String, Template> entry : classTemplates.entrySet()) {
+            String template = extractTemplate(entry.getValue().getData());
+            templates.put(entry.getKey(), template);
+        }
+        return templates;
+    }
+
+    @NotNull
+    @Override
+    public Map<String, String> getConstructorTemplates() {
+        Map<String, String> templates = new LinkedHashMap<String, String>();
+        for (Entry<String, Template> entry : constructorTemplates.entrySet()) {
+            String template = extractTemplate(entry.getValue().getData());
+            templates.put(entry.getKey(), template);
+        }
+        return templates;
+    }
+
+    @NotNull
+    @Override
+    public Map<String, String> getMethodTemplates() {
+        Map<String, String> templates = new LinkedHashMap<String, String>();
+        for (Entry<String, Template> entry : methodTemplates.entrySet()) {
+            String template = extractTemplate(entry.getValue().getData());
+            templates.put(entry.getKey(), template);
+        }
+        return templates;
+    }
+
+    @NotNull
+    @Override
+    public Map<String, String> getFieldTemplates() {
+        Map<String, String> templates = new LinkedHashMap<String, String>();
+        for (Entry<String, Template> entry : fieldTemplates.entrySet()) {
+            String template = extractTemplate(entry.getValue().getData());
+            templates.put(entry.getKey(), template);
+        }
+        return templates;
+    }
+
+    @Override
+    public void setClassTemplates(@NotNull Map<String, String> templates) {
+        setupTemplates(templates, classTemplates);
+    }
+
+    @Override
+    public void setConstructorTemplates(@NotNull Map<String, String> templates) {
+        setupTemplates(templates, constructorTemplates);
+    }
+
+    @Override
+    public void setMethodTemplates(@NotNull Map<String, String> templates) {
+        setupTemplates(templates, methodTemplates);
+    }
+
+    @Override
+    public void setFieldTemplates(@NotNull Map<String, String> templates) {
+        setupTemplates(templates, fieldTemplates);
+    }
+
+    private void setupTemplates(Map<String, String> from, Map<String, Template> to) {
+        Map<String, Template> result = new LinkedHashMap<String, Template>();
+        for (Entry<String, String> entry : from.entrySet()) {
+            try {
+                result.put(entry.getKey(), createTemplate(entry.getKey(), entry.getValue()));
+            } catch (Exception e) {
+                // TODO throw runtime exception and catch it at top level app
+                throw new RuntimeException(e);
+            }
+        }
+        to.clear();
+        to.putAll(result);
+    }
+
     private StringBuilder getClassSignature(PsiClass classElement) {
         StringBuilder builder = new StringBuilder();
-        builder.append(classElement.getModifierList().getText());
+        PsiModifierList modifierList = classElement.getModifierList();
+        if (modifierList != null) {
+            builder.append(modifierList.getText());
+        }
         builder.append(" ");
         if (classElement.isInterface()) {
             builder.append("interface ");
@@ -236,7 +251,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
             builder.append("class ");
         }
         PsiClassType[] extendsTypes = classElement.getExtendsListTypes();
-        if (extendsTypes != null && extendsTypes.length > 0) {
+        if (extendsTypes.length > 0) {
             builder.append("extends ");
             for (int i = 0; i < extendsTypes.length; i++) {
                 PsiClassType extendsType = extendsTypes[i];
@@ -248,7 +263,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
             }
         }
         PsiClassType[] implementTypes = classElement.getImplementsListTypes();
-        if (implementTypes != null && implementTypes.length > 0) {
+        if (implementTypes.length > 0) {
             builder.append("implements");
             for (int i = 0; i < implementTypes.length; i++) {
                 PsiClassType implementType = implementTypes[i];
@@ -260,6 +275,27 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
             }
         }
         return builder;
+    }
+
+    private Template createTemplate(String templateRegexp, String templateContent) throws ParseException, IOException {
+        SimpleNode node = velocityServices.parse(templateContent, templateRegexp);
+        Template template = new Template();
+        template.setRuntimeServices(velocityServices);
+        template.setData(node);
+        template.setName(node.getTemplateName());
+        template.initDocument();
+        return template;
+    }
+
+    private String extractTemplate(Object data) {
+        StringBuilder template = new StringBuilder();
+
+        Token token = ((SimpleNode) data).getFirstToken();
+        while (token != null && token.kind != ParserConstants.EOF) {
+            template.append(token.toString());
+            token = token.next;
+        }
+        return template.toString();
     }
 
 }

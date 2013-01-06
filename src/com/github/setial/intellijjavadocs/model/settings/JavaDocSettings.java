@@ -64,9 +64,9 @@ public class JavaDocSettings implements Serializable {
         Element templates = new Element(TEMPLATES);
         root.addContent(templates);
         templates.addContent(XmlUtils.getElement(CLASSES, CLASS, templateSettings.getClassTemplates()));
-        templates.addContent(XmlUtils.getElement(CONSTRUCTORS, CONSTRUCTOR, templateSettings.getClassTemplates()));
-        templates.addContent(XmlUtils.getElement(METHODS, METHOD, templateSettings.getClassTemplates()));
-        templates.addContent(XmlUtils.getElement(FIELDS, FIELD, templateSettings.getClassTemplates()));
+        templates.addContent(XmlUtils.getElement(CONSTRUCTORS, CONSTRUCTOR, templateSettings.getConstructorTemplates()));
+        templates.addContent(XmlUtils.getElement(METHODS, METHOD, templateSettings.getMethodTemplates()));
+        templates.addContent(XmlUtils.getElement(FIELDS, FIELD, templateSettings.getFieldTemplates()));
     }
 
     public GeneralSettings getGeneralSettings() {

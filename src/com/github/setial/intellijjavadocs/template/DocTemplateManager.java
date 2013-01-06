@@ -5,6 +5,7 @@ import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiMethod;
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -26,13 +27,13 @@ public interface DocTemplateManager {
      * @param classElement the Class element
      * @return the Class template
      */
-    @NotNull
+    @Nullable
     Template getClassTemplate(@NotNull PsiClass classElement);
 
     @NotNull
     Map<String, String> getClassTemplates();
 
-    void putClassTemplate(@NotNull String regexp, @NotNull String template);
+    void setClassTemplates(@NotNull Map<String, String> templates);
 
     /**
      * Gets the method template.
@@ -40,18 +41,18 @@ public interface DocTemplateManager {
      * @param methodElement the Method element
      * @return the Method template
      */
-    @NotNull
+    @Nullable
     Template getMethodTemplate(@NotNull PsiMethod methodElement);
 
     @NotNull
     Map<String, String> getMethodTemplates();
 
-    void putMethodTemplates(@NotNull String regexp, @NotNull String template);
+    void setMethodTemplates(@NotNull Map<String, String> templates);
 
     @NotNull
     Map<String, String> getConstructorTemplates();
 
-    void putConstructorTemplates(@NotNull String regexp, @NotNull String template);
+    void setConstructorTemplates(@NotNull Map<String, String> templates);
 
     /**
      * Gets the field template.
@@ -59,12 +60,12 @@ public interface DocTemplateManager {
      * @param psiField the Field element
      * @return the Field template
      */
-    @NotNull
+    @Nullable
     Template getFieldTemplate(@NotNull PsiField psiField);
 
     @NotNull
     Map<String, String> getFieldTemplates();
 
-    void putFieldTemplates(@NotNull String regexp, @NotNull String template);
+    void setFieldTemplates(@NotNull Map<String, String> templates);
 
 }
