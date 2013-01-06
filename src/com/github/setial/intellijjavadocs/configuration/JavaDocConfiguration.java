@@ -1,6 +1,7 @@
 package com.github.setial.intellijjavadocs.configuration;
 
 import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The interface Java doc configuration.
@@ -16,6 +17,7 @@ public interface JavaDocConfiguration {
      *
      * @return the Configuration
      */
+    @Nullable
     JavaDocSettings getConfiguration();
 
 }

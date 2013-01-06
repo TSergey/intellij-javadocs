@@ -1,7 +1,8 @@
-package com.github.setial.intellijjavadocs.transformation;
+package com.github.setial.intellijjavadocs.utils;
 
 import com.github.setial.intellijjavadocs.model.JavaDoc;
 import com.github.setial.intellijjavadocs.model.JavaDocTag;
+import com.github.setial.intellijjavadocs.transformation.JavaDocBuilder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.impl.source.javadoc.PsiDocMethodOrFieldRef;

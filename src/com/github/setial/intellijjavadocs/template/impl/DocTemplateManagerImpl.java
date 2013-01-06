@@ -2,7 +2,7 @@ package com.github.setial.intellijjavadocs.template.impl;
 
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
-import com.github.setial.intellijjavadocs.transformation.XmlUtils;
+import com.github.setial.intellijjavadocs.utils.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;

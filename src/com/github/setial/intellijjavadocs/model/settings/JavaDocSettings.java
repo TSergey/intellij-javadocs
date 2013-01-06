@@ -1,11 +1,11 @@
 package com.github.setial.intellijjavadocs.model.settings;
 
+import com.github.setial.intellijjavadocs.utils.XmlUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.jdom.Element;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * The type Java doc settings.
@@ -20,7 +20,16 @@ public class JavaDocSettings implements Serializable {
     private static final String VISIBILITIES = "VISIBILITIES";
     private static final String VISIBILITY = "VISIBILITY";
     private static final String OVERRIDDEN_METHODS = "OVERRIDDEN_METHODS";
-    public static final String GENERAL = "GENERAL";
+    private static final String GENERAL = "GENERAL";
+    private static final String TEMPLATES = "TEMPLATES";
+    private static final String CLASS = "CLASS";
+    private static final String CLASSES = "CLASSES";
+    private static final String CONSTRUCTOR = "CONSTRUCTOR";
+    private static final String CONSTRUCTORS = "CONSTRUCTORS";
+    private static final String FIELD = "FIELD";
+    private static final String FIELDS = "FIELDS";
+    private static final String METHOD = "METHOD";
+    private static final String METHODS = "METHODS";
 
     private GeneralSettings generalSettings = new GeneralSettings();
     private TemplateSettings templateSettings = new TemplateSettings();
@@ -30,59 +39,34 @@ public class JavaDocSettings implements Serializable {
     public JavaDocSettings(Element element) {
         Element general = element.getChild(GENERAL);
         if (general != null) {
-            generalSettings.setMode(getValue(general, MODE, Mode.class));
+            generalSettings.setMode(XmlUtils.getValue(general, MODE, Mode.class));
             generalSettings.setOverriddenMethods(Boolean.parseBoolean(general.getChild(OVERRIDDEN_METHODS).getValue()));
-            generalSettings.setLevels(getValues(general, LEVELS, LEVEL, Level.class));
-            generalSettings.setVisibilities(getValues(general, VISIBILITIES, VISIBILITY, Visibility.class));
+            generalSettings.setLevels(XmlUtils.getValues(general, LEVELS, LEVEL, Level.class));
+            generalSettings.setVisibilities(XmlUtils.getValues(general, VISIBILITIES, VISIBILITY, Visibility.class));
+        }
+        Element templates = element.getChild(TEMPLATES);
+        if (templates != null) {
+            templateSettings.setClassTemplates(XmlUtils.getMap(templates, CLASSES, CLASS));
+            templateSettings.setConstructorTemplates(XmlUtils.getMap(templates, CONSTRUCTORS, CONSTRUCTOR));
+            templateSettings.setFieldTemplates(XmlUtils.getMap(templates, FIELDS, FIELD));
+            templateSettings.setMethodTemplates(XmlUtils.getMap(templates, METHODS, METHOD));
         }
     }
 
     public void addToDom(Element root) {
         Element general = new Element(GENERAL);
         root.addContent(general);
-        general.addContent(getElement(MODE, generalSettings.getMode().toString()));
-        general.addContent(getElement(OVERRIDDEN_METHODS, generalSettings.isOverriddenMethods().toString()));
-        general.addContent(getElement(LEVELS, LEVEL, generalSettings.getLevels()));
-        general.addContent(getElement(VISIBILITIES, VISIBILITY, generalSettings.getVisibilities()));
-    }
+        general.addContent(XmlUtils.getElement(MODE, generalSettings.getMode().toString()));
+        general.addContent(XmlUtils.getElement(OVERRIDDEN_METHODS, generalSettings.isOverriddenMethods().toString()));
+        general.addContent(XmlUtils.getElement(LEVELS, LEVEL, generalSettings.getLevels()));
+        general.addContent(XmlUtils.getElement(VISIBILITIES, VISIBILITY, generalSettings.getVisibilities()));
 
-    private Element getElement(String name, String value) {
-        Element element = new Element(name);
-        element.addContent(value);
-        return element;
-    }
-
-    private Element getElement(String nameParent, String nameChild, Collection<?> values) {
-        Element root = new Element(nameParent);
-        for (Object value : values) {
-            root.addContent(getElement(nameChild, value.toString()));
-        }
-        return root;
-    }
-
-    private <T extends Enum<T>> T getValue(Element element, String name, Class<T> type) {
-        T enumVal = null;
-        Element child = element.getChild(name);
-        if (child != null) {
-            String result = child.getValue();
-            if (result != null) {
-                enumVal = Enum.valueOf(type, result);
-            }
-        }
-        return enumVal;
-    }
-
-    private <T extends Enum<T>> Set<T> getValues(Element element, String parentName, String childName, Class<T> type) {
-        Set<T> result = new LinkedHashSet<T>();
-        Element root = element.getChild(parentName);
-        for (Object value : root.getChildren(childName)) {
-            if (value instanceof Element) {
-                Element elem = (Element) value;
-                String name = elem.getValue();
-                result.add(Enum.valueOf(type, name));
-            }
-        }
-        return result;
+        Element templates = new Element(TEMPLATES);
+        root.addContent(templates);
+        templates.addContent(XmlUtils.getElement(CLASSES, CLASS, templateSettings.getClassTemplates()));
+        templates.addContent(XmlUtils.getElement(CONSTRUCTORS, CONSTRUCTOR, templateSettings.getClassTemplates()));
+        templates.addContent(XmlUtils.getElement(METHODS, METHOD, templateSettings.getClassTemplates()));
+        templates.addContent(XmlUtils.getElement(FIELDS, FIELD, templateSettings.getClassTemplates()));
     }
 
     public GeneralSettings getGeneralSettings() {
@@ -91,6 +75,22 @@ public class JavaDocSettings implements Serializable {
 
     public TemplateSettings getTemplateSettings() {
         return templateSettings;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        JavaDocSettings result = new JavaDocSettings();
+        try {
+            if (this.generalSettings != null) {
+                result.generalSettings = (GeneralSettings) BeanUtils.cloneBean(this.generalSettings);
+            }
+            if (this.templateSettings != null) {
+                result.templateSettings = (TemplateSettings) BeanUtils.cloneBean(this.templateSettings);
+            }
+        } catch (Exception e) {
+            throw new CloneNotSupportedException(e.getMessage());
+        }
+        return result;
     }
 
 }

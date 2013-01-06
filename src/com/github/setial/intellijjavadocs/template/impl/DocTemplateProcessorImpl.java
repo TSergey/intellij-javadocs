@@ -1,7 +1,7 @@
 package com.github.setial.intellijjavadocs.template.impl;
 
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
-import com.github.setial.intellijjavadocs.transformation.XmlUtils;
+import com.github.setial.intellijjavadocs.utils.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;

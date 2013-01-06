@@ -1,6 +1,7 @@
 package com.github.setial.intellijjavadocs.configuration.impl;
 
 import com.github.setial.intellijjavadocs.model.settings.Visibility;
+import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.ui.settings.ConfigPanel;
 import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
 import com.github.setial.intellijjavadocs.model.settings.Level;
@@ -10,7 +11,6 @@ import com.intellij.openapi.components.*;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
-import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jdom.Element;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -40,10 +40,12 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     private Project project;
     private JavaDocSettings settings;
     private ConfigPanel configPanel;
+    private DocTemplateManager templateManager;
     private boolean loadedStoredConfig = false;
 
     public JavaDocConfigurationImpl(Project project) {
         this.project = project;
+        templateManager = ServiceManager.getService(project, DocTemplateManager.class);
     }
 
     @Override
@@ -84,7 +86,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Override
     public JComponent createComponent() {
         if (configPanel == null) {
-            configPanel = new ConfigPanel(getSettings(), project);
+            configPanel = new ConfigPanel(getSettings());
         }
         reset();
         return configPanel;
@@ -98,6 +100,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Override
     public void apply() throws ConfigurationException {
         configPanel.apply();
+        // TODO move settings to the template manager
     }
 
     @Override
@@ -113,9 +116,14 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
 
     @Override
     public JavaDocSettings getConfiguration() {
-        JavaDocSettings javaDocSettings = new JavaDocSettings();
-        XmlSerializerUtil.copyBean(getSettings(), javaDocSettings);
-        return javaDocSettings;
+        JavaDocSettings result;
+        try {
+            result = (JavaDocSettings) getSettings().clone();
+        } catch (Exception e) {
+            // return null if cannot clone object
+            result = null;
+        }
+        return result;
     }
 
     @Nullable
@@ -151,6 +159,11 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
             settings.getGeneralSettings().setMode(Mode.UPDATE);
             settings.getGeneralSettings().setLevels(levels);
             settings.getGeneralSettings().setVisibilities(visibilities);
+
+            settings.getTemplateSettings().setClassTemplates(templateManager.getClassTemplates());
+            settings.getTemplateSettings().setConstructorTemplates(templateManager.getConstructorTemplates());
+            settings.getTemplateSettings().setMethodTemplates(templateManager.getMethodTemplates());
+            settings.getTemplateSettings().setFieldTemplates(templateManager.getFieldTemplates());
         }
         return settings;
     }

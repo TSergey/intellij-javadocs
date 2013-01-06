@@ -7,6 +7,8 @@ import org.apache.velocity.Template;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EventObject;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -18,17 +20,35 @@ import javax.swing.table.AbstractTableModel;
 
 public class TemplatesTable extends JBTable {
 
-    private Entry<String, String>[] settings;
+    private List<Entry<String, String>> settings;
 
-    public TemplatesTable(Map<String, String> settings) {
+    @SuppressWarnings("unchecked")
+    public TemplatesTable(Map<String, String> model) {
         setModel(new TableModel());
         setStriped(true);
         setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
-        this.settings = settings.entrySet().toArray(new Entry[settings.entrySet().size()]);
+        settings = new LinkedList<Entry<String, String>>();
+        for (Entry<String, String> entry :model.entrySet().toArray(new Entry[model.entrySet().size()])) {
+            settings.add(entry);
+        }
     }
 
+    /**
+     *
+     * @return clone of the original settings model
+     */
+    @SuppressWarnings("unchecked")
     public Map<String, String> getSettings() {
-        return MapUtils.putAll(new LinkedHashMap(), settings);
+        return MapUtils.putAll(new LinkedHashMap(), settings.toArray());
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setSettingsModel(Map<String, String> model) {
+        settings.clear();
+        for (Entry<String, String> entry : model.entrySet().toArray(new Entry[model.entrySet().size()])) {
+            settings.add(entry);
+        }
+        ((TableModel) getModel()).fireTableDataChanged();
     }
 
     @Override
@@ -75,22 +95,24 @@ public class TemplatesTable extends JBTable {
 
         @Override
         public void removeRow(int index) {
-            // TODO
+            settings.remove(index);
         }
 
         @Override
         public void exchangeRows(int oldIndex, int newIndex) {
-            // TODO
+            Entry<String, String> oldItem = settings.get(oldIndex);
+            settings.set(oldIndex, settings.get(newIndex));
+            settings.set(newIndex, oldItem);
         }
 
         @Override
         public boolean canExchangeRows(int oldIndex, int newIndex) {
-            return true;  // TODO
+            return true;
         }
 
         @Override
         public int getRowCount() {
-            return settings.length;
+            return settings.size();
         }
 
         @Override
@@ -100,7 +122,7 @@ public class TemplatesTable extends JBTable {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            return columnIndex == 0 ? settings[rowIndex].getKey() : settings[rowIndex].getValue();
+            return columnIndex == 0 ? settings.get(rowIndex).getKey() : settings.get(rowIndex).getValue();
         }
 
     }

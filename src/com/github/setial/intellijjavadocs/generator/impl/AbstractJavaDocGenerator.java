@@ -6,7 +6,7 @@ import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
 import com.github.setial.intellijjavadocs.model.JavaDoc;
 import com.github.setial.intellijjavadocs.model.settings.Mode;
-import com.github.setial.intellijjavadocs.transformation.JavaDocUtils;
+import com.github.setial.intellijjavadocs.utils.JavaDocUtils;
 import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;

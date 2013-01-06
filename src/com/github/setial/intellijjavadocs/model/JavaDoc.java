@@ -1,6 +1,6 @@
 package com.github.setial.intellijjavadocs.model;
 
-import com.github.setial.intellijjavadocs.transformation.JavaDocUtils;
+import com.github.setial.intellijjavadocs.utils.JavaDocUtils;
 
 import org.jetbrains.annotations.NotNull;
 

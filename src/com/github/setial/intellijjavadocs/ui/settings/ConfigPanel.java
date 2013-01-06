@@ -1,28 +1,24 @@
 package com.github.setial.intellijjavadocs.ui.settings;
 
-import com.github.setial.intellijjavadocs.model.settings.Visibility;
-import com.github.setial.intellijjavadocs.template.DocTemplateManager;
-import com.github.setial.intellijjavadocs.ui.component.TemplatesTable;
 import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
 import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.model.settings.Mode;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.project.Project;
+import com.github.setial.intellijjavadocs.model.settings.Visibility;
+import com.github.setial.intellijjavadocs.ui.component.TemplatesTable;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 
-import java.awt.*;
-import java.util.LinkedHashMap;
-
 import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class ConfigPanel extends JPanel {
 
     private JavaDocSettings settings;
-    private DocTemplateManager templateManager;
 
     private JTabbedPane tabbedPane;
     private JPanel panel;
@@ -38,7 +34,6 @@ public class ConfigPanel extends JPanel {
     private JCheckBox generalVisibilityPrivateCheckbox;
     private JCheckBox generalOtherOverriddenMethodsCheckbox;
     private JPanel generalPanel;
-    private JPanel templatesPanel;
     private JPanel generalModePanel;
     private JPanel generalLevelPanel;
     private JPanel generalVisibilityPanel;
@@ -48,9 +43,8 @@ public class ConfigPanel extends JPanel {
     private TemplatesTable methodTemplatesTable;
     private TemplatesTable fieldTemplatesTable;
 
-    public ConfigPanel(JavaDocSettings settings, Project project) {
+    public ConfigPanel(JavaDocSettings settings) {
         this.settings = settings;
-        templateManager = ServiceManager.getService(project, DocTemplateManager.class);
         setLayout(new BorderLayout());
         add(panel, BorderLayout.CENTER);
         setupBorders();
@@ -59,6 +53,7 @@ public class ConfigPanel extends JPanel {
 
     public boolean isModified() {
         boolean result = false;
+        // check if general settings are modified
         if (generalModeKeepRadioButton.isSelected()) {
             result = settings.getGeneralSettings().getMode() != Mode.KEEP;
         } else if (generalModeUpdateRadioButton.isSelected()) {
@@ -78,16 +73,22 @@ public class ConfigPanel extends JPanel {
         result = result || isCheckboxModified(
                 generalVisibilityPrivateCheckbox, settings.getGeneralSettings().getVisibilities().contains(Visibility.PRIVATE));
         result = result || isCheckboxModified(generalOtherOverriddenMethodsCheckbox, settings.getGeneralSettings().isOverriddenMethods());
+
+        // check if templates settings are modified
+        result = result || checkIfTableContentModified(classTemplatesTable.getSettings(),
+                settings.getTemplateSettings().getClassTemplates());
+        result = result || checkIfTableContentModified(constructorTemplatesTable.getSettings(),
+                settings.getTemplateSettings().getConstructorTemplates());
+        result = result || checkIfTableContentModified(methodTemplatesTable.getSettings(),
+                settings.getTemplateSettings().getMethodTemplates());
+        result = result || checkIfTableContentModified(fieldTemplatesTable.getSettings(),
+                settings.getTemplateSettings().getFieldTemplates());
+
         return result;
     }
 
-    private boolean isCheckboxModified(JCheckBox checkbox, boolean oldValue) {
-        return checkbox.isSelected() != oldValue;
-    }
-
     public void apply() {
-        // TODO read templates and merge
-
+        // apply general settings
         if (generalModeKeepRadioButton.isSelected()) {
             settings.getGeneralSettings().setMode(Mode.KEEP);
         } else if (generalModeUpdateRadioButton.isSelected()) {
@@ -122,9 +123,16 @@ public class ConfigPanel extends JPanel {
         }
 
         settings.getGeneralSettings().setOverriddenMethods(generalOtherOverriddenMethodsCheckbox.isSelected());
+
+        // apply templates settings
+        settings.getTemplateSettings().setClassTemplates(classTemplatesTable.getSettings());
+        settings.getTemplateSettings().setConstructorTemplates(constructorTemplatesTable.getSettings());
+        settings.getTemplateSettings().setMethodTemplates(methodTemplatesTable.getSettings());
+        settings.getTemplateSettings().setFieldTemplates(fieldTemplatesTable.getSettings());
     }
 
     public void reset() {
+        // reset general settings
         switch (settings.getGeneralSettings().getMode()) {
             case KEEP:
                 generalModeKeepRadioButton.setSelected(true);
@@ -166,9 +174,37 @@ public class ConfigPanel extends JPanel {
             }
         }
         generalOtherOverriddenMethodsCheckbox.setSelected(settings.getGeneralSettings().isOverriddenMethods());
+
+        // reset templates settings
+        classTemplatesTable.setSettingsModel(settings.getTemplateSettings().getClassTemplates());
+        constructorTemplatesTable.setSettingsModel(settings.getTemplateSettings().getConstructorTemplates());
+        methodTemplatesTable.setSettingsModel(settings.getTemplateSettings().getMethodTemplates());
+        fieldTemplatesTable.setSettingsModel(settings.getTemplateSettings().getFieldTemplates());
     }
 
     public void disposeUIResources() {
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean checkIfTableContentModified(Map<String, String> templatesTableSettings,
+                                                Map<String, String> templatesSettings) {
+        boolean result = false;
+
+        Entry<String, String>[] templatesTableEntries =
+                templatesTableSettings.entrySet().toArray(new Entry[templatesTableSettings.size()]);
+        Entry<String, String>[] templatesEntries =
+                templatesSettings.entrySet().toArray(new Entry[templatesSettings.size()]);
+        if (templatesEntries.length == templatesTableEntries.length) {
+            for (int i = 0; i < templatesEntries.length; i++) {
+                result = result || !templatesEntries[i].getKey().equals(templatesTableEntries[i].getKey());
+                result = result || !templatesEntries[i].getValue().equals(templatesTableEntries[i].getValue());
+            }
+        }
+        return result;
+    }
+
+    private boolean isCheckboxModified(JCheckBox checkbox, boolean oldValue) {
+        return checkbox.isSelected() != oldValue;
     }
 
     private void setupBorders() {
@@ -183,38 +219,44 @@ public class ConfigPanel extends JPanel {
     }
 
     private void setupTemplatesPanel() {
-        classTemplatesTable = new TemplatesTable(templateManager.getClassTemplates());
+        classTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getClassTemplates());
         JPanel classTemplatesLocalPanel = ToolbarDecorator.createDecorator(classTemplatesTable).createPanel();
         JPanel classPanel = new JPanel(new BorderLayout());
-        classPanel.setBorder(IdeBorderFactory.createTitledBorder("Class level", false, new Insets(10, 10, 0, 10)));
+        classPanel.setBorder(IdeBorderFactory.createTitledBorder("Class level", false, new Insets(0, 0, 10, 0)));
         classPanel.add(classTemplatesLocalPanel, BorderLayout.CENTER);
 
-        constructorTemplatesTable = new TemplatesTable(templateManager.getConstructorTemplates());
+        constructorTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getConstructorTemplates());
         JPanel constructorTemplatesLocalPanel =
                 ToolbarDecorator.createDecorator(constructorTemplatesTable).createPanel();
         JPanel constructorPanel = new JPanel(new BorderLayout());
         constructorPanel.setBorder(IdeBorderFactory.createTitledBorder("Constructor level", false,
-                new Insets(10, 10, 0, 10)));
+                new Insets(0, 0, 10, 0)));
         constructorPanel.add(constructorTemplatesLocalPanel, BorderLayout.CENTER);
 
-        methodTemplatesTable = new TemplatesTable(templateManager.getMethodTemplates());
+        methodTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getMethodTemplates());
         JPanel methodTemplatesLocalPanel = ToolbarDecorator.createDecorator(methodTemplatesTable).createPanel();
         JPanel methodPanel = new JPanel(new BorderLayout());
-        methodPanel.setBorder(IdeBorderFactory.createTitledBorder("Method level", false, new Insets(10, 10, 0, 10)));
+        methodPanel.setBorder(IdeBorderFactory.createTitledBorder("Method level", false, new Insets(0, 0, 10, 0)));
         methodPanel.add(methodTemplatesLocalPanel, BorderLayout.CENTER);
 
-        fieldTemplatesTable = new TemplatesTable(templateManager.getFieldTemplates());
+        fieldTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getFieldTemplates());
         JPanel fieldTemplatesLocalPanel = ToolbarDecorator.createDecorator(fieldTemplatesTable).createPanel();
         JPanel fieldPanel = new JPanel(new BorderLayout());
-        fieldPanel.setBorder(IdeBorderFactory.createTitledBorder("Field level", false, new Insets(10, 10, 10, 10)));
+        fieldPanel.setBorder(IdeBorderFactory.createTitledBorder("Field level", false, new Insets(0, 0, 0, 0)));
         fieldPanel.add(fieldTemplatesLocalPanel, BorderLayout.CENTER);
 
-        templatesPanel = new JPanel(new GridLayout(4, 1));
-        templatesPanel.add(classPanel);
-        templatesPanel.add(constructorPanel);
-        templatesPanel.add(methodPanel);
-        templatesPanel.add(fieldPanel);
+        JPanel templatesPanel = new JPanel();
+        templatesPanel.setLayout(new GridLayoutManager(4, 1, new Insets(10, 10, 10, 10), -1, -1));
+
+        templatesPanel.add(classPanel, getConstraints(0, 0));
+        templatesPanel.add(constructorPanel, getConstraints(1, 0));
+        templatesPanel.add(methodPanel, getConstraints(2, 0));
+        templatesPanel.add(fieldPanel, getConstraints(3, 0));
         tabbedPane.addTab("Templates", templatesPanel);
+    }
+
+    private GridConstraints getConstraints(int row, int column) {
+        return new GridConstraints(row, column, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false);
     }
 
     {

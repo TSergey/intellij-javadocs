@@ -7,40 +7,40 @@ import java.util.Map;
 
 public class TemplateSettings {
 
-    private Map<String, Template> classTemplates = new LinkedHashMap<String, Template>();
-    private Map<String, Template> fieldTemplates = new LinkedHashMap<String, Template>();
-    private Map<String, Template> methodTemplates = new LinkedHashMap<String, Template>();
-    private Map<String, Template> constructorTemplates = new LinkedHashMap<String, Template>();
+    private Map<String, String> classTemplates = new LinkedHashMap<String, String>();
+    private Map<String, String> fieldTemplates = new LinkedHashMap<String, String>();
+    private Map<String, String> methodTemplates = new LinkedHashMap<String, String>();
+    private Map<String, String> constructorTemplates = new LinkedHashMap<String, String>();
 
-    public Map<String, Template> getClassTemplates() {
+    public Map<String, String> getClassTemplates() {
         return classTemplates;
     }
 
-    public void setClassTemplates(Map<String, Template> classTemplates) {
+    public void setClassTemplates(Map<String, String> classTemplates) {
         this.classTemplates = classTemplates;
     }
 
-    public Map<String, Template> getConstructorTemplates() {
+    public Map<String, String> getConstructorTemplates() {
         return constructorTemplates;
     }
 
-    public void setConstructorTemplates(Map<String, Template> constructorTemplates) {
+    public void setConstructorTemplates(Map<String, String> constructorTemplates) {
         this.constructorTemplates = constructorTemplates;
     }
 
-    public Map<String, Template> getFieldTemplates() {
+    public Map<String, String> getFieldTemplates() {
         return fieldTemplates;
     }
 
-    public void setFieldTemplates(Map<String, Template> fieldTemplates) {
+    public void setFieldTemplates(Map<String, String> fieldTemplates) {
         this.fieldTemplates = fieldTemplates;
     }
 
-    public Map<String, Template> getMethodTemplates() {
+    public Map<String, String> getMethodTemplates() {
         return methodTemplates;
     }
 
-    public void setMethodTemplates(Map<String, Template> methodTemplates) {
+    public void setMethodTemplates(Map<String, String> methodTemplates) {
         this.methodTemplates = methodTemplates;
     }
 

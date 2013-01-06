@@ -180,6 +180,21 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
   <component name="libraryTable">
+    <library name="commons-beanutils:commons-beanutils:1.8.3" type="repository">
+      <properties maven-id="commons-beanutils:commons-beanutils:1.8.3" />
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/commons-beanutils-1.8.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/commons-logging-1.1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/lib/commons-beanutils-1.8.3-javadoc.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/commons-logging-1.1.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/lib/commons-beanutils-1.8.3-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/commons-logging-1.1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="commons-collections:commons-collections:3.2.1">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/commons-collections-3.2.1.jar!/" />
