@@ -2,6 +2,7 @@ package com.github.setial.intellijjavadocs.ui.component;
 
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.EditableModel;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
@@ -9,6 +10,7 @@ import org.apache.velocity.runtime.parser.node.SimpleNode;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EventObject;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -28,9 +30,7 @@ public class TemplatesTable extends JBTable {
         setStriped(true);
         setAutoResizeMode(AUTO_RESIZE_ALL_COLUMNS);
         settings = new LinkedList<Entry<String, String>>();
-        for (Entry<String, String> entry :model.entrySet().toArray(new Entry[model.entrySet().size()])) {
-            settings.add(entry);
-        }
+        CollectionUtils.addAll(settings, model.entrySet().toArray(new Entry[model.entrySet().size()]));
     }
 
     /**
@@ -45,9 +45,7 @@ public class TemplatesTable extends JBTable {
     @SuppressWarnings("unchecked")
     public void setSettingsModel(Map<String, String> model) {
         settings.clear();
-        for (Entry<String, String> entry : model.entrySet().toArray(new Entry[model.entrySet().size()])) {
-            settings.add(entry);
-        }
+        CollectionUtils.addAll(settings, model.entrySet().toArray(new Entry[model.entrySet().size()]));
         ((TableModel) getModel()).fireTableDataChanged();
     }
 

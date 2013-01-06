@@ -1,6 +1,7 @@
 package com.github.setial.intellijjavadocs.generator.impl;
 
 import com.github.setial.intellijjavadocs.model.JavaDoc;
+import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
 import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.utils.JavaDocUtils;
 import com.intellij.openapi.project.Project;
@@ -30,7 +31,8 @@ public class FieldJavaDocGenerator extends AbstractJavaDocGenerator<PsiField> {
     @Nullable
     @Override
     protected JavaDoc generateJavaDoc(@NotNull PsiField element) {
-        if (!getSettings().getConfiguration().getGeneralSettings().getLevels().contains(Level.FIELD) ||
+        JavaDocSettings configuration = getSettings().getConfiguration();
+        if (configuration != null && !configuration.getGeneralSettings().getLevels().contains(Level.FIELD) ||
                 !shouldGenerate(element.getModifierList())) {
             return null;
         }

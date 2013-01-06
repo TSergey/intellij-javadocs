@@ -118,10 +118,4 @@ public class JavaDocsGenerateAction extends AnAction {
         }
     }
 
-    private JavaDocConfiguration getConfiguration(Project project) {
-        if (configuration == null) {
-            configuration = ServiceManager.getService(project, JavaDocConfiguration.class);
-        }
-        return configuration;
-    }
 }

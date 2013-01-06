@@ -37,14 +37,12 @@ import java.util.Set;
 public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectComponent, Configurable,
         PersistentStateComponent<Element> {
 
-    private Project project;
     private JavaDocSettings settings;
     private ConfigPanel configPanel;
     private DocTemplateManager templateManager;
     private boolean loadedStoredConfig = false;
 
     public JavaDocConfigurationImpl(Project project) {
-        this.project = project;
         templateManager = ServiceManager.getService(project, DocTemplateManager.class);
     }
 

@@ -1,6 +1,7 @@
 package com.github.setial.intellijjavadocs.generator.impl;
 
 import com.github.setial.intellijjavadocs.generator.JavaDocGenerator;
+import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
 import com.github.setial.intellijjavadocs.model.settings.Visibility;
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
@@ -58,23 +59,26 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
             oldDocComment = (PsiDocComment) firstElement;
         }
 
-        Mode mode = settings.getConfiguration().getGeneralSettings().getMode();
-        switch (mode) {
-            case KEEP:
-                if (oldDocComment != null) {
-                    break;
-                }
-            case REPLACE:
-                result = replaceJavaDocAction(element);
-                break;
-            case UPDATE:
-            default:
-                if (oldDocComment != null) {
-                    result = updateJavaDocAction(element, oldDocComment);
-                } else {
+        JavaDocSettings configuration = settings.getConfiguration();
+        if (configuration != null) {
+            Mode mode = configuration.getGeneralSettings().getMode();
+            switch (mode) {
+                case KEEP:
+                    if (oldDocComment != null) {
+                        break;
+                    }
+                case REPLACE:
                     result = replaceJavaDocAction(element);
-                }
-                break;
+                    break;
+                case UPDATE:
+                default:
+                    if (oldDocComment != null) {
+                        result = updateJavaDocAction(element, oldDocComment);
+                    } else {
+                        result = replaceJavaDocAction(element);
+                    }
+                    break;
+            }
         }
         return result;
     }
@@ -144,8 +148,9 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
     }
 
     private boolean checkModifiers(PsiModifierList modifiers, String modifier, Visibility visibility) {
-        return modifiers != null && modifiers.hasModifierProperty(modifier) &&
-                getSettings().getConfiguration().getGeneralSettings().getVisibilities().contains(visibility);
+        JavaDocSettings configuration = getSettings().getConfiguration();
+        return modifiers != null && modifiers.hasModifierProperty(modifier) && configuration != null &&
+                configuration.getGeneralSettings().getVisibilities().contains(visibility);
     }
 
     protected Map<String, Object> getDefaultParameters(PomNamedTarget element) {

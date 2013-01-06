@@ -55,10 +55,8 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     private Map<String, Template> constructorTemplates = new LinkedHashMap<String, Template>();
 
     private final RuntimeServices velocityServices;
-    private DocTemplateProcessor templateProcessor;
 
-    public DocTemplateManagerImpl(Project project) {
-        templateProcessor = ServiceManager.getService(project, DocTemplateProcessor.class);
+    public DocTemplateManagerImpl() {
         RuntimeInstance ri = new RuntimeInstance();
         ri.init();
         velocityServices = ri;
@@ -80,7 +78,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     }
 
     private void readTemplates(Element document, String elementName, Map<String, Template> templates)
-            throws IOException, DataConversionException, ParseException {
+            throws IOException, ParseException {
         Element root = document.getChild(elementName);
         @SuppressWarnings("unchecked")
         List<Element> elements = root.getChildren(TEMPLATE);
@@ -277,7 +275,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         return builder;
     }
 
-    private Template createTemplate(String templateRegexp, String templateContent) throws ParseException, IOException {
+    private Template createTemplate(String templateRegexp, String templateContent) throws ParseException {
         SimpleNode node = velocityServices.parse(templateContent, templateRegexp);
         Template template = new Template();
         template.setRuntimeServices(velocityServices);

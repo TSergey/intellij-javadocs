@@ -1,6 +1,7 @@
 package com.github.setial.intellijjavadocs.generator.impl;
 
 import com.github.setial.intellijjavadocs.model.JavaDoc;
+import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
 import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.utils.JavaDocUtils;
 import com.intellij.openapi.project.Project;
@@ -64,8 +65,10 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
 
     private boolean shouldGenerate(@NotNull PsiMethod element) {
         PsiMethod[] superMethods = element.findSuperMethods();
-        boolean overriddenMethods = superMethods.length > 0 && !getSettings().getConfiguration().getGeneralSettings().isOverriddenMethods();
-        boolean level = getSettings().getConfiguration().getGeneralSettings().getLevels().contains(Level.METHOD);
+        JavaDocSettings configuration = getSettings().getConfiguration();
+        boolean overriddenMethods = superMethods.length > 0 && configuration != null &&
+                !configuration.getGeneralSettings().isOverriddenMethods();
+        boolean level = configuration != null && configuration.getGeneralSettings().getLevels().contains(Level.METHOD);
         return !level || !overriddenMethods;
     }
 
