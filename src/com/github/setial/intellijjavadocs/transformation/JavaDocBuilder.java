@@ -83,6 +83,19 @@ public class JavaDocBuilder {
         return this;
     }
 
+    public JavaDocBuilder addTagDescription(List<String> descriptions) {
+        for (int i = 0; i < descriptions.size(); i++) {
+            String description = descriptions.get(i);
+            if (StringUtils.isNotBlank(description)) {
+                if (i != 0) {
+                    addNewLine();
+                }
+                builder.append(description);
+            }
+        }
+        return this;
+    }
+
     /**
      * Add tag to javadoc section.
      *
@@ -103,7 +116,7 @@ public class JavaDocBuilder {
         }
 
         builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
-        addDescription(tag.getDescription());
+        addTagDescription(tag.getDescription());
         return this;
     }
 
