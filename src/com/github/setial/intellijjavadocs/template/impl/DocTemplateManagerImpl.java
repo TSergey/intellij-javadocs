@@ -247,6 +247,8 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         } else {
             builder.append("class ");
         }
+        builder.append(classElement.getName());
+        builder.append(" ");
         PsiClassType[] extendsTypes = classElement.getExtendsListTypes();
         if (extendsTypes.length > 0) {
             builder.append("extends ");
