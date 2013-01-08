@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7133307a-1a1e-43da-9419-cf99f742f88b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/XmlUtils.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/XmlUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/intellij-javadocs.iws" afterPath="$PROJECT_DIR$/intellij-javadocs.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/impl/DocTemplateManagerImpl.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/impl/DocTemplateManagerImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/JavaDocUtils.java" afterPath="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/JavaDocUtils.java" />
     </list>
     <ignored path="intellij-javadocs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -17,7 +17,7 @@
     <file path="/TemplatesTable.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357496446131" ignored="false" />
     <file path="/ConfigPanel.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357487421683" ignored="false" />
     <file path="/DocTemplateManager.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357443208225" ignored="false" />
-    <file path="/DocTemplateManagerImpl.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357651234930" ignored="false" />
+    <file path="/DocTemplateManagerImpl.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357654071176" ignored="false" />
     <file path="/JavaDocConfigurationImpl.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357640857194" ignored="false" />
     <file path="/fragment.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357653442374" ignored="false" />
     <file path="/DocTemplateProcessorImpl.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357651799485" ignored="false" />
@@ -34,7 +34,7 @@
     <file path="/JavaDocBuilder.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357590672601" ignored="false" />
     <file path="$PROJECT_DIR$/../test/src/com/test/Test.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357590997433" ignored="false" />
     <file path="$PROJECT_DIR$/../party-core/party-api/src/main/java/com/copyright/rup/party/api/service/user/IUserService.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357638214636" ignored="false" />
-    <file path="/JavaDocUtils.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357639830814" ignored="false" />
+    <file path="/JavaDocUtils.java" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357653979212" ignored="false" />
     <file path="/a.dummy" changelist="7133307a-1a1e-43da-9419-cf99f742f88b" time="1357641924685" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -94,65 +94,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AbstractJavaDocGenerator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/AbstractJavaDocGenerator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="99" column="38" selection-start="3958" selection-end="3958" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DocTemplateProcessorImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/impl/DocTemplateProcessorImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="0" selection-start="1556" selection-end="1556" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="XmlUtils.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/XmlUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="36" selection-start="819" selection-end="819" vertical-scroll-proportion="0.32629558">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DocTemplateManagerImpl.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="DocTemplateManagerImpl.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/impl/DocTemplateManagerImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="281" column="59" selection-start="10352" selection-end="10352" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClassJavaDocGenerator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/ClassJavaDocGenerator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="0" selection-start="1427" selection-end="1427" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JavaDocUtils.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/JavaDocUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="93" column="32" selection-start="3596" selection-end="3596" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JavaDocConfigurationImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/configuration/impl/JavaDocConfigurationImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="82" selection-start="1129" selection-end="1129" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="154" column="40" selection-start="5584" selection-end="5584" vertical-scroll-proportion="0.59309024">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -187,10 +135,10 @@
         <option value="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/ui/component/TemplateConfigDialog.java" />
         <option value="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/ui/component/TemplatesTable.java" />
         <option value="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/transformation/JavaDocBuilder.java" />
-        <option value="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/JavaDocUtils.java" />
         <option value="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/configuration/JavaDocConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/impl/DocTemplateManagerImpl.java" />
         <option value="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/XmlUtils.java" />
+        <option value="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/JavaDocUtils.java" />
+        <option value="$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/impl/DocTemplateManagerImpl.java" />
       </list>
     </option>
   </component>
@@ -284,6 +232,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij-javadocs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intellij-javadocs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -521,12 +487,13 @@
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15454546" sideWeight="0.6009539" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32703003" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39154616" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26864535" sideWeight="0.23472668" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32814237" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32646593" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3259177" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290938" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26969698" sideWeight="0.23529412" order="1" side_tool="true" content_ui="tabs" />
@@ -537,7 +504,6 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.6009539" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32741398" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.6073132" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3990461" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -618,21 +584,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/MethodJavaDocGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="32" selection-start="2169" selection-end="2169" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intellij-community/java/java-psi-api/src/com/intellij/psi/javadoc/PsiDocTag.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="17" selection-start="858" selection-end="858" vertical-scroll-proportion="0.19577736" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../intellij-community/java/java-psi-impl/src/com/intellij/psi/impl/source/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="37" selection-start="878" selection-end="878" vertical-scroll-proportion="0.19577736" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../intellij-community/java/java-psi-impl/src/com/intellij/psi/impl/source/javadoc/PsiDocTagImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="34" column="82" selection-start="1498" selection-end="1498" vertical-scroll-proportion="0.16314779" />
@@ -651,13 +602,6 @@
     <entry file="file://$PROJECT_DIR$/../intellij-community/java/java-impl/src/com/intellij/psi/impl/source/javadoc/ReturnDocTagInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="41" column="32" selection-start="1287" selection-end="1287" vertical-scroll-proportion="0.4089347" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/JavaDocUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="32" selection-start="3596" selection-end="3596" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/configuration/JavaDocConfiguration.java">
@@ -681,13 +625,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/ClassJavaDocGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="0" selection-start="1427" selection-end="1427" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/jdom.jar!/org/jdom/output/XMLOutputter.class">
       <provider selected="true" editor-type-id="text-editor">
         <state line="53" column="16" selection-start="2879" selection-end="2879" vertical-scroll-proportion="0.33264887">
@@ -695,9 +632,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/impl/DocTemplateManagerImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/XmlUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="281" column="59" selection-start="10352" selection-end="10352" vertical-scroll-proportion="0.0">
+        <state line="27" column="26" selection-start="809" selection-end="809" vertical-scroll-proportion="0.5220729">
           <folding />
         </state>
       </provider>
@@ -709,10 +646,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/XmlUtils.java">
+    <entry file="file://$PROJECT_DIR$/../intellij-community/java/java-psi-impl/src/com/intellij/psi/impl/PsiJavaParserFacadeImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="36" selection-start="819" selection-end="819" vertical-scroll-proportion="0.32629558">
+        <state line="187" column="8" selection-start="7799" selection-end="7799" vertical-scroll-proportion="0.33205375">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/utils/JavaDocUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="242" column="58" selection-start="8134" selection-end="8134" vertical-scroll-proportion="0.23416507">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/MethodJavaDocGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="28" selection-start="2660" selection-end="2660" vertical-scroll-proportion="1.3723608">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/FieldJavaDocGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="28" selection-start="1534" selection-end="1534" vertical-scroll-proportion="0.7850288">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/generator/impl/ClassJavaDocGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="26" selection-start="957" selection-end="957" vertical-scroll-proportion="0.49136275">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/github/setial/intellijjavadocs/template/impl/DocTemplateManagerImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="154" column="40" selection-start="5584" selection-end="5584" vertical-scroll-proportion="0.59309024">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

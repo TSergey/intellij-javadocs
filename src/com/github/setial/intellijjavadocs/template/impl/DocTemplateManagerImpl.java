@@ -152,6 +152,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
                 break;
             }
         }
+        // TODO throw exception if not found template and show a message.
         return result;
     }
 

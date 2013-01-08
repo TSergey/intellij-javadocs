@@ -239,10 +239,14 @@ public class JavaDocUtils {
      * @param psiElementFactory the Psi element factory
      * @return the Java doc
      */
-    @NotNull
-    public static JavaDoc toJavaDoc(@NotNull String javaDocText, @NotNull PsiElementFactory psiElementFactory) {
-        PsiDocComment javaDocComment = psiElementFactory.createDocCommentFromText(javaDocText);
-        return createJavaDoc(javaDocComment);
+    @Nullable
+    public static JavaDoc toJavaDoc(@Nullable String javaDocText, @NotNull PsiElementFactory psiElementFactory) {
+        JavaDoc result = null;
+        if (StringUtils.isNotBlank(javaDocText)) {
+            PsiDocComment javaDocComment = psiElementFactory.createDocCommentFromText(javaDocText);
+            result = createJavaDoc(javaDocComment);
+        }
+        return result;
     }
 
     @Nullable
