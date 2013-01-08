@@ -52,7 +52,7 @@ public class JavaDocUtils {
      */
     @NotNull
     public static JavaDoc mergeJavaDocs(@NotNull JavaDoc oldJavaDoc, @NotNull JavaDoc newJavaDoc) {
-            List<String> description = oldJavaDoc.getDescription();
+        List<String> description = oldJavaDoc.getDescription();
         if (CollectionUtils.isEmpty(description)) {
             description = newJavaDoc.getDescription();
         }
@@ -70,7 +70,12 @@ public class JavaDocUtils {
                 if (oldTags.containsKey(name)) {
                     // the case when old tag exists
                     List<JavaDocTag> oldTagsEntry = oldTags.get(name);
-                    JavaDocTag oldTag = findOldTag(oldTagsEntry, tag.getValue(), tag.getRefParam());
+                    JavaDocTag oldTag;
+                    if ("return".equals(name)) {
+                        oldTag = oldTagsEntry.get(0);
+                    } else {
+                        oldTag = findOldTag(oldTagsEntry, tag.getValue(), tag.getRefParam());
+                    }
                     if (oldTag != null) {
                         // the case when old tag is ok
                         tags.get(name).add(mergeJavaDocTag(oldTag, tag));

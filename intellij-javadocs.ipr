@@ -3,6 +3,13 @@
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
   </component>
+  <component name="CheckStyle-IDEA">
+    <option name="configuration">
+      <map>
+        <entry key="location-0" value="CLASSPATH:/sun_checks.xml:The default CheckStyle rules" />
+      </map>
+    </option>
+  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions />
@@ -48,175 +55,10 @@
       </VISIBILITIES>
     </GENERAL>
     <TEMPLATES>
-      <CLASSES>
-        <CLASS>
-          <KEY>^.*(public|protected|private)*.+interface\s+\w+.*</KEY>
-          <VALUE>/**\n
- * The interface $name.\n
- */</VALUE>
-        </CLASS>
-        <CLASS>
-          <KEY>^.*(public|protected|private)*.+enum\s+\w+.*</KEY>
-          <VALUE>/**\n
- * The enum $name.\n
- */</VALUE>
-        </CLASS>
-        <CLASS>
-          <KEY>^.*(public|protected|private)*.+class\s+\w+.*</KEY>
-          <VALUE>/**\n
- * The type $name.\n
- */</VALUE>
-        </CLASS>
-        <CLASS>
-          <KEY>.+</KEY>
-          <VALUE>/**\n
- * The type $name.\n
- */</VALUE>
-        </CLASS>
-      </CLASSES>
-      <CONSTRUCTORS>
-        <CONSTRUCTOR>
-          <KEY>.+</KEY>
-          <VALUE>/**\n
- * Instantiates a new $name.\n
-
-     #if(!$element.parameterList.parameters.isEmpty())
-         *\n
-     #end
-     #foreach($parameter in $element.parameterList.parameters)
-         * @param $parameter.name the $paramNames[$parameter.name]\n
-     #end
-
-     #if(!$element.throwsList.referenceElements.isEmpty())
-         *\n
-     #end
-     #foreach($exception in $element.throwsList.referenceElements)
-         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
-     #end
-
- */</VALUE>
-        </CONSTRUCTOR>
-      </CONSTRUCTORS>
-      <METHODS>
-        <METHOD>
-          <KEY>^.*(public|protected|private)*\s*.*\w+\s+get\w+\(.*\).+</KEY>
-          <VALUE>/**\n
- * Gets $partName.\n
-
-     #if(!$element.parameterList.parameters.isEmpty())
-         *\n
-     #end
-     #foreach($parameter in $element.parameterList.parameters)
-         * @param $parameter.name the $paramNames[$parameter.name]\n
-     #end
-
-     #if($isNotVoid)
-         *\n
-         * @return the $partName\n
-     #end
-
-     #if(!$element.throwsList.referenceElements.isEmpty())
-         *\n
-     #end
-     #foreach($exception in $element.throwsList.referenceElements)
-         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
-     #end
-
- */</VALUE>
-        </METHOD>
-        <METHOD>
-          <KEY>^.*(public|protected|private)*\s*.*(void|\w)+\s+set\w+\(.*\).+</KEY>
-          <VALUE>/**\n
- * Sets $partName.\n
-
-     #if(!$element.parameterList.parameters.isEmpty())
-         *\n
-     #end
-     #foreach($parameter in $element.parameterList.parameters)
-         * @param $parameter.name the $paramNames[$parameter.name]\n
-     #end
-
-     #if($isNotVoid)
-         *\n
-         * @return the $partName\n
-     #end
-
-     #if(!$element.throwsList.referenceElements.isEmpty())
-         *\n
-     #end
-     #foreach($exception in $element.throwsList.referenceElements)
-         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
-     #end
-
- */</VALUE>
-        </METHOD>
-        <METHOD>
-          <KEY>^.*(public|protected|private)*\s*static+\s+void\s+main+\(String\s*(\[\]|\.\.\.)\s+\w+\).+</KEY>
-          <VALUE>/**\n
- * The entry point of application.\n
-
-     #if(!$element.parameterList.parameters.isEmpty())
-         *\n
-     #end
-
-     * @param $element.parameterList.parameters[0].name the input arguments\n
-
-     #if(!$element.throwsList.referenceElements.isEmpty())
-         *\n
-     #end
-     #foreach($exception in $element.throwsList.referenceElements)
-         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
-     #end
-
- */</VALUE>
-        </METHOD>
-        <METHOD>
-          <KEY>.+</KEY>
-          <VALUE>/**\n
- * $name#if($partName.isEmpty())$return#end.\n
-
-     #if(!$element.parameterList.parameters.isEmpty())
-         *\n
-     #end
-     #foreach($parameter in $element.parameterList.parameters)
-         * @param $parameter.name the $paramNames[$parameter.name]\n
-     #end
-
-     #if($isNotVoid)
-         *\n
-         * @return the $return\n
-     #end
-
-     #if(!$element.throwsList.referenceElements.isEmpty())
-         *\n
-     #end
-     #foreach($exception in $element.throwsList.referenceElements)
-         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
-     #end
-
- */</VALUE>
-        </METHOD>
-      </METHODS>
-      <FIELDS>
-        <FIELD>
-          <KEY>^.*(public|protected|private)*.+static.*(\w\s\w)+.+</KEY>
-          <VALUE>/**\n
- * The constant $element.getName().\n
- */</VALUE>
-        </FIELD>
-        <FIELD>
-          <KEY>^.*(public|protected|private)*.*(\w\s\w)+.+</KEY>
-          <VALUE>/**\n
- * The $name.\n
- */</VALUE>
-        </FIELD>
-        <FIELD>
-          <KEY>.+</KEY>
-          <VALUE>/**\n
- * The $name.\n
- */</VALUE>
-        </FIELD>
-      </FIELDS>
+      <CLASSES />
+      <CONSTRUCTORS />
+      <METHODS />
+      <FIELDS />
     </TEMPLATES>
   </component>
   <component name="Palette2">
@@ -361,7 +203,7 @@
       <module fileurl="file://$PROJECT_DIR$/intellij-javadocs.iml" filepath="$PROJECT_DIR$/intellij-javadocs.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IC-123.94" project-jdk-type="IDEA JDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IC-123.72" project-jdk-type="IDEA JDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="RegexUtilComponent" text="1900-01-01 2007/08/13 1900.01.01 1900 01 01 1900-01.01 1900 13 01 1900 02 31" flags="0" regex="(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])" mode="0" />
