@@ -130,6 +130,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
         Element root = new Element("JAVA_DOC_SETTINGS_PLUGIN");
         if (settings != null) {
             settings.addToDom(root);
+            loadedStoredConfig = true;
         }
         return root;
     }

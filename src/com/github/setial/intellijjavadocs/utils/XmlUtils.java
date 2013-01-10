@@ -25,7 +25,7 @@ public class XmlUtils {
     public static String normalizeTemplate(String template) throws IOException {
         Element element = new Element("template");
         element.addContent(template);
-        return element.getText().replaceAll("\\\\n", "\n").replaceAll("\n\n", "\n");
+        return element.getTextNormalize().replaceAll("\\\\n", "\n");
     }
 
     public static Element getElement(String name, String value) {
