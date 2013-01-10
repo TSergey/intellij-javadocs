@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.github.setial.intellijjavadocs.ui.settings.ConfigPanel">
+  <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <tabbedpane id="a340d" binding="tabbedPane">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="d83ee" binding="generalPanel" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="10" left="10" bottom="10" right="10"/>
+            <constraints>
+              <tabbedpane title="General"/>
+            </constraints>
+            <properties/>
+            <border type="empty">
+              <size top="0" left="0" bottom="0" right="0"/>
+            </border>
+            <children>
+              <grid id="be41b" binding="generalModePanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="empty">
+                  <size top="3" left="3" bottom="3" right="3"/>
+                </border>
+                <children>
+                  <component id="a88a" class="javax.swing.JRadioButton" binding="generalModeKeepRadioButton">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="false"/>
+                      <text value="Keep old javadoc"/>
+                    </properties>
+                  </component>
+                  <component id="9b5b1" class="javax.swing.JRadioButton" binding="generalModeUpdateRadioButton">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="false"/>
+                      <text value="Update old javadoc"/>
+                    </properties>
+                  </component>
+                  <component id="9ba92" class="javax.swing.JRadioButton" binding="generalModeReplaceRadioButton">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Replace old javadoc"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="cc1ce" binding="generalLevelPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="empty">
+                  <size top="3" left="3" bottom="3" right="3"/>
+                </border>
+                <children>
+                  <component id="78cc1" class="javax.swing.JCheckBox" binding="generalLevelTypeCheckbox">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="false"/>
+                      <text value="Type"/>
+                    </properties>
+                  </component>
+                  <component id="12a83" class="javax.swing.JCheckBox" binding="generalLevelMethodCheckbox">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="false"/>
+                      <text value="Method"/>
+                    </properties>
+                  </component>
+                  <component id="5d41f" class="javax.swing.JCheckBox" binding="generalLevelFieldCheckbox">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="false"/>
+                      <text value="Field"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="dc510" binding="generalVisibilityPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="empty" title="Visibility">
+                  <size top="3" left="3" bottom="3" right="3"/>
+                </border>
+                <children>
+                  <component id="fc704" class="javax.swing.JCheckBox" binding="generalVisibilityPublicCheckbox">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="false"/>
+                      <text value="Public"/>
+                    </properties>
+                  </component>
+                  <component id="debdd" class="javax.swing.JCheckBox" binding="generalVisibilityProtectedCheckbox">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="false"/>
+                      <text value="Protected"/>
+                    </properties>
+                  </component>
+                  <component id="4f00f" class="javax.swing.JCheckBox" binding="generalVisibilityDefaultCheckbox">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="false"/>
+                      <text value="Default"/>
+                    </properties>
+                  </component>
+                  <component id="e1070" class="javax.swing.JCheckBox" binding="generalVisibilityPrivateCheckbox">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Private"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="c14f7" binding="generalOtherPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="empty" title="Other">
+                  <size top="3" left="3" bottom="3" right="3"/>
+                </border>
+                <children>
+                  <component id="2f4b9" class="javax.swing.JCheckBox" binding="generalOtherOverriddenMethodsCheckbox">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Comment overridden methods"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <vspacer id="d1710">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+    </children>
+  </grid>
+  <buttonGroups>
+    <group name="generalModeKeepRadiogroup">
+      <member id="a88a"/>
+      <member id="9b5b1"/>
+      <member id="9ba92"/>
+    </group>
+  </buttonGroups>
+</form>
