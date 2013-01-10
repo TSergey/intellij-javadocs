@@ -82,7 +82,7 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor, ProjectCo
     }
 
     private String buildDescription(String description, int firstElement, boolean capitalizeFirst) {
-        String[] parts = StringUtils.splitByCharacterTypeCamelCase(description);
+        String[] parts = StringUtils.splitByCharacterTypeCamelCase(description.replaceAll("<.+>", ""));
         StringBuilder result = new StringBuilder();
         for (int i = firstElement; i < parts.length; i++) {
             if (capitalizeFirst && i == firstElement) {
