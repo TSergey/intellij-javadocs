@@ -1,6 +1,6 @@
 <idea-plugin version="2">
     <id>com.github.setial</id>
-    <name>JavaDoc Generator</name>
+    <name>JavaDoc</name>
     <version>1.0.1</version>
     <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
         http://setial.github.com/intellij-javadocs
@@ -12,7 +12,7 @@
 
     <change-notes><![CDATA[
           <ul>
-            <li>1.0.1: Initial implementation of "JavaDoc Generator" plugin</li>
+            <li>1.0.1: Initial implementation of "JavaDoc" plugin</li>
           </ul>
       ]]>
     </change-notes>

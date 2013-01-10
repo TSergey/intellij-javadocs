@@ -57,7 +57,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Nls
     @Override
     public String getDisplayName() {
-        return "JavaDoc Generator";
+        return "JavaDoc";
     }
 
     @Nullable
