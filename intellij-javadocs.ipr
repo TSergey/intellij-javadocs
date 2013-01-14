@@ -29,6 +29,9 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="intellij-javadocs" target="1.6" />
+    </bytecodeTargetLevel>
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
