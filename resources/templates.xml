@@ -42,7 +42,7 @@
     </field>
 
     <method>
-        <template regexp="^.*(public|protected|private)*\s*.*(\w(\s*<.+>)*)+\s+get\w+\s*\(.*\).+">
+        <template regexp="^.*(public|protected|private)*\s*.*(\w(\s*&lt;.+&gt;)*)+\s+get\w+\s*\(.*\).+">
 /**\n
  * Gets $partName.\n
 
@@ -67,7 +67,7 @@
 
  */
         </template>
-        <template regexp="^.*(public|protected|private)*\s*.*(void|\w(\s*<.+>)*)+\s+set\w+\s*\(.*\).+">
+        <template regexp="^.*(public|protected|private)*\s*.*(void|\w(\s*&lt;.+&gt;)*)+\s+set\w+\s*\(.*\).+">
 /**\n
  * Sets $partName.\n
 
