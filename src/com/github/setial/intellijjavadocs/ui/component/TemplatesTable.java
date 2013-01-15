@@ -26,10 +26,20 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+/**
+ * The type Templates table.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class TemplatesTable extends JBTable {
 
     private List<Entry<String, String>> settings;
 
+    /**
+     * Instantiates a new Templates table.
+     *
+     * @param model the model
+     */
     @SuppressWarnings("unchecked")
     public TemplatesTable(Map<String, String> model) {
         setStriped(true);
@@ -44,6 +54,7 @@ public class TemplatesTable extends JBTable {
     }
 
     /**
+     * Gets settings model.
      *
      * @return clone of the original settings model
      */
@@ -52,6 +63,11 @@ public class TemplatesTable extends JBTable {
         return MapUtils.putAll(new LinkedHashMap(), settings.toArray());
     }
 
+    /**
+     * Sets settings model.
+     *
+     * @param model the model
+     */
     @SuppressWarnings("unchecked")
     public void setSettingsModel(Map<String, String> model) {
         settings.clear();
@@ -82,6 +98,9 @@ public class TemplatesTable extends JBTable {
 
         private List<String> columnNames;
 
+        /**
+         * Instantiates a new Table model.
+         */
         public TableModel() {
             columnNames = new LinkedList<String>();
             columnNames.add("Regular expression");
@@ -138,6 +157,9 @@ public class TemplatesTable extends JBTable {
 
     private static class FieldRenderer extends JLabel implements TableCellRenderer {
 
+        /**
+         * Instantiates a new Field renderer.
+         */
         public FieldRenderer() {
             setOpaque(true);
         }

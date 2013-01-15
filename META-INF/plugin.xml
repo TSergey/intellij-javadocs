@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="http://setial.github.com/intellij-javadocs">
     <id>com.github.setial</id>
     <name>JavaDoc</name>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
         Sergey Timofiychuk
     </vendor>
@@ -11,10 +11,19 @@
       ]]></description>
 
     <change-notes><![CDATA[
-          <ul>
-            <li>1.0.2: Recompile plugin with java 1.6 support</li>
-            <li>1.0.1: Initial implementation of "JavaDoc" plugin</li>
-          </ul>
+        <h3>Changes in intellij-javadoc-1.0.3</h3>
+        <ul>
+            <li>Improve regular expressions to better methods recognition</li>
+        </ul>
+        <h3>Changes in intellij-javadoc-1.0.2</h3>
+        <ul>
+            <li>Recompile plugin with java 1.6 support</li>
+        </ul>
+        <h3>Changes in intellij-javadoc-1.0.1</h3>
+        <ul>
+            <li>Initial implementation of "JavaDoc" plugin</li>
+        </ul>
+        <h3></h3>
       ]]>
     </change-notes>
 

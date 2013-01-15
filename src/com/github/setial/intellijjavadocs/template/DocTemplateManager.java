@@ -30,9 +30,19 @@ public interface DocTemplateManager {
     @Nullable
     Template getClassTemplate(@NotNull PsiClass classElement);
 
+    /**
+     * Gets class templates.
+     *
+     * @return the class templates
+     */
     @NotNull
     Map<String, String> getClassTemplates();
 
+    /**
+     * Sets class templates.
+     *
+     * @param templates the templates
+     */
     void setClassTemplates(@NotNull Map<String, String> templates);
 
     /**
@@ -44,14 +54,34 @@ public interface DocTemplateManager {
     @Nullable
     Template getMethodTemplate(@NotNull PsiMethod methodElement);
 
+    /**
+     * Gets method templates.
+     *
+     * @return the method templates
+     */
     @NotNull
     Map<String, String> getMethodTemplates();
 
+    /**
+     * Sets method templates.
+     *
+     * @param templates the templates
+     */
     void setMethodTemplates(@NotNull Map<String, String> templates);
 
+    /**
+     * Gets constructor templates.
+     *
+     * @return the constructor templates
+     */
     @NotNull
     Map<String, String> getConstructorTemplates();
 
+    /**
+     * Sets constructor templates.
+     *
+     * @param templates the templates
+     */
     void setConstructorTemplates(@NotNull Map<String, String> templates);
 
     /**
@@ -63,9 +93,19 @@ public interface DocTemplateManager {
     @Nullable
     Template getFieldTemplate(@NotNull PsiField psiField);
 
+    /**
+     * Gets field templates.
+     *
+     * @return the field templates
+     */
     @NotNull
     Map<String, String> getFieldTemplates();
 
+    /**
+     * Sets field templates.
+     *
+     * @param templates the templates
+     */
     void setFieldTemplates(@NotNull Map<String, String> templates);
 
 }

@@ -2,7 +2,6 @@ package com.github.setial.intellijjavadocs.ui.component;
 
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.IdeBorderFactory;
-import com.intellij.ui.components.JBTextField;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.jetbrains.annotations.Nullable;
@@ -13,6 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * The type Template config dialog.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class TemplateConfigDialog extends DialogWrapper {
 
     private Entry<String, String> model;
@@ -20,10 +24,18 @@ public class TemplateConfigDialog extends DialogWrapper {
     private JTextField nameField;
     private JTextArea templateField;
 
+    /**
+     * Instantiates a new Template config dialog.
+     */
     public TemplateConfigDialog() {
         this(null);
     }
 
+    /**
+     * Instantiates a new Template config dialog.
+     *
+     * @param model the model
+     */
     public TemplateConfigDialog(Entry<String, String> model) {
         super(true);
         if (model != null) {
@@ -34,6 +46,11 @@ public class TemplateConfigDialog extends DialogWrapper {
         init();
     }
 
+    /**
+     * Gets table model.
+     *
+     * @return the model
+     */
     public Entry<String, String> getModel() {
         Map<String, String> model = new HashMap<String, String>();
         model.put(nameField.getText(), templateField.getText());

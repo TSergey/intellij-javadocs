@@ -4,8 +4,6 @@ import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
 import com.github.setial.intellijjavadocs.utils.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiCodeBlock;
@@ -19,7 +17,6 @@ import org.apache.velocity.runtime.parser.ParseException;
 import org.apache.velocity.runtime.parser.ParserConstants;
 import org.apache.velocity.runtime.parser.Token;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
-import org.jdom.DataConversionException;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -27,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +52,9 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
 
     private final RuntimeServices velocityServices;
 
+    /**
+     * Instantiates a new Doc template manager object.
+     */
     public DocTemplateManagerImpl() {
         RuntimeInstance ri = new RuntimeInstance();
         ri.init();
@@ -74,17 +73,6 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         } catch (Exception e) {
             // TODO throw runtime exception and catch it at top level app
             throw new RuntimeException(e);
-        }
-    }
-
-    private void readTemplates(Element document, String elementName, Map<String, Template> templates)
-            throws IOException, ParseException {
-        Element root = document.getChild(elementName);
-        @SuppressWarnings("unchecked")
-        List<Element> elements = root.getChildren(TEMPLATE);
-        for (Element element : elements) {
-            String name = element.getAttribute(REGEXP).getValue();
-            templates.put(name, createTemplate(name, XmlUtils.trimElementContent(element)));
         }
     }
 
@@ -141,19 +129,6 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     public Template getFieldTemplate(@NotNull PsiField psiField) {
         return getMatchingTemplate(psiField.getText(), fieldTemplates);
 
-    }
-
-    @Nullable
-    private Template getMatchingTemplate(@NotNull String elementText, @NotNull Map<String, Template> templates) {
-        Template result = null;
-        for (Entry<String, Template> entry : templates.entrySet()) {
-            if (Pattern.compile(entry.getKey(), Pattern.DOTALL | Pattern.MULTILINE).matcher(elementText).matches()) {
-                result = entry.getValue();
-                break;
-            }
-        }
-        // TODO throw exception if not found template and show a message.
-        return result;
     }
 
     @NotNull
@@ -218,6 +193,30 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
     @Override
     public void setFieldTemplates(@NotNull Map<String, String> templates) {
         setupTemplates(templates, fieldTemplates);
+    }
+
+    private void readTemplates(Element document, String elementName, Map<String, Template> templates)
+            throws IOException, ParseException {
+        Element root = document.getChild(elementName);
+        @SuppressWarnings("unchecked")
+        List<Element> elements = root.getChildren(TEMPLATE);
+        for (Element element : elements) {
+            String name = element.getAttribute(REGEXP).getValue();
+            templates.put(name, createTemplate(name, XmlUtils.trimElementContent(element)));
+        }
+    }
+
+    @Nullable
+    private Template getMatchingTemplate(@NotNull String elementText, @NotNull Map<String, Template> templates) {
+        Template result = null;
+        for (Entry<String, Template> entry : templates.entrySet()) {
+            if (Pattern.compile(entry.getKey(), Pattern.DOTALL | Pattern.MULTILINE).matcher(elementText).matches()) {
+                result = entry.getValue();
+                break;
+            }
+        }
+        // TODO throw exception if not found template and show a message.
+        return result;
     }
 
     private void setupTemplates(Map<String, String> from, Map<String, Template> to) {

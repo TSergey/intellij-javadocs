@@ -1,7 +1,6 @@
 package com.github.setial.intellijjavadocs.model;
 
 import com.github.setial.intellijjavadocs.utils.JavaDocUtils;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class JavaDoc {
      * Instantiates a new Java doc.
      *
      * @param description the Description
-     * @param tags        the Tags
+     * @param tags the Tags
      */
     public JavaDoc(@NotNull List<String> description, @NotNull Map<String, List<JavaDocTag>> tags) {
         this.description = description;

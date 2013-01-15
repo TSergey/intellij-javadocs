@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * The interface Doc template processor.
+ *
+ * @author Sergey Timofiychuk
  */
 public interface DocTemplateProcessor {
 

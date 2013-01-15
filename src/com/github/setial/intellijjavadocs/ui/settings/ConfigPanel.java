@@ -16,6 +16,11 @@ import java.awt.*;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * The type Config panel.
+ *
+ * @author Sergey Timofiychuk
+ */
 public class ConfigPanel extends JPanel {
 
     private JavaDocSettings settings;
@@ -43,6 +48,11 @@ public class ConfigPanel extends JPanel {
     private TemplatesTable methodTemplatesTable;
     private TemplatesTable fieldTemplatesTable;
 
+    /**
+     * Instantiates a new Config panel.
+     *
+     * @param settings the settings
+     */
     public ConfigPanel(JavaDocSettings settings) {
         this.settings = settings;
         setLayout(new BorderLayout());
@@ -51,6 +61,11 @@ public class ConfigPanel extends JPanel {
         setupTemplatesPanel();
     }
 
+    /**
+     * Checks if form is modified.
+     *
+     * @return the boolean
+     */
     public boolean isModified() {
         boolean result = false;
         // check if general settings are modified
@@ -87,6 +102,9 @@ public class ConfigPanel extends JPanel {
         return result;
     }
 
+    /**
+     * Apply settings to the form.
+     */
     public void apply() {
         // apply general settings
         if (generalModeKeepRadioButton.isSelected()) {
@@ -131,6 +149,9 @@ public class ConfigPanel extends JPanel {
         settings.getTemplateSettings().setFieldTemplates(fieldTemplatesTable.getSettings());
     }
 
+    /**
+     * Reset form selection.
+     */
     public void reset() {
         // reset general settings
         switch (settings.getGeneralSettings().getMode()) {
@@ -182,6 +203,9 @@ public class ConfigPanel extends JPanel {
         fieldTemplatesTable.setSettingsModel(settings.getTemplateSettings().getFieldTemplates());
     }
 
+    /**
+     * Dispose uI resources.
+     */
     public void disposeUIResources() {
     }
 

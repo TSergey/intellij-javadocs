@@ -1,11 +1,11 @@
 package com.github.setial.intellijjavadocs.action;
 
+import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
 import com.github.setial.intellijjavadocs.generator.JavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.ClassJavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.FieldJavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.MethodJavaDocGenerator;
 import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
-import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
@@ -18,7 +18,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

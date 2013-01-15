@@ -5,7 +5,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.jdom.Element;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * The type Java doc settings.
@@ -33,9 +32,18 @@ public class JavaDocSettings implements Serializable {
 
     private GeneralSettings generalSettings = new GeneralSettings();
     private TemplateSettings templateSettings = new TemplateSettings();
+
+    /**
+     * Instantiates a new Java doc settings object.
+     */
     public JavaDocSettings() {
     }
 
+    /**
+     * Instantiates a new Java doc settings.
+     *
+     * @param element the element
+     */
     public JavaDocSettings(Element element) {
         Element general = element.getChild(GENERAL);
         if (general != null) {
@@ -53,11 +61,16 @@ public class JavaDocSettings implements Serializable {
         }
     }
 
+    /**
+     * Create dom model from this object and add it to root element passed as parameter.
+     *
+     * @param root the root
+     */
     public void addToDom(Element root) {
         Element general = new Element(GENERAL);
         root.addContent(general);
         general.addContent(XmlUtils.getElement(MODE, generalSettings.getMode().toString()));
-        general.addContent(XmlUtils.getElement(OVERRIDDEN_METHODS, generalSettings.isOverriddenMethods().toString()));
+        general.addContent(XmlUtils.getElement(OVERRIDDEN_METHODS, String.valueOf(generalSettings.isOverriddenMethods())));
         general.addContent(XmlUtils.getElement(LEVELS, LEVEL, generalSettings.getLevels()));
         general.addContent(XmlUtils.getElement(VISIBILITIES, VISIBILITY, generalSettings.getVisibilities()));
 
@@ -69,10 +82,20 @@ public class JavaDocSettings implements Serializable {
         templates.addContent(XmlUtils.getElement(FIELDS, FIELD, templateSettings.getFieldTemplates()));
     }
 
+    /**
+     * Gets general settings.
+     *
+     * @return the general settings
+     */
     public GeneralSettings getGeneralSettings() {
         return generalSettings;
     }
 
+    /**
+     * Gets template settings.
+     *
+     * @return the template settings
+     */
     public TemplateSettings getTemplateSettings() {
         return templateSettings;
     }

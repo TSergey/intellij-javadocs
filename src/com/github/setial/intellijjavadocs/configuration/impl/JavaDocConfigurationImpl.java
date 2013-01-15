@@ -1,13 +1,18 @@
 package com.github.setial.intellijjavadocs.configuration.impl;
 
-import com.github.setial.intellijjavadocs.model.settings.Visibility;
-import com.github.setial.intellijjavadocs.template.DocTemplateManager;
-import com.github.setial.intellijjavadocs.ui.settings.ConfigPanel;
+import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
 import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
 import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.model.settings.Mode;
-import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
-import com.intellij.openapi.components.*;
+import com.github.setial.intellijjavadocs.model.settings.Visibility;
+import com.github.setial.intellijjavadocs.template.DocTemplateManager;
+import com.github.setial.intellijjavadocs.ui.settings.ConfigPanel;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
@@ -42,6 +47,11 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     private DocTemplateManager templateManager;
     private boolean loadedStoredConfig = false;
 
+    /**
+     * Instantiates a new Java doc configuration object.
+     *
+     * @param project the opened project
+     */
     public JavaDocConfigurationImpl(Project project) {
         templateManager = ServiceManager.getService(project, DocTemplateManager.class);
     }

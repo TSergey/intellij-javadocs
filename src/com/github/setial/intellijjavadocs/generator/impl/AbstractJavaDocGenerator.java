@@ -1,14 +1,14 @@
 package com.github.setial.intellijjavadocs.generator.impl;
 
+import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
 import com.github.setial.intellijjavadocs.generator.JavaDocGenerator;
+import com.github.setial.intellijjavadocs.model.JavaDoc;
 import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
+import com.github.setial.intellijjavadocs.model.settings.Mode;
 import com.github.setial.intellijjavadocs.model.settings.Visibility;
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
-import com.github.setial.intellijjavadocs.model.JavaDoc;
-import com.github.setial.intellijjavadocs.model.settings.Mode;
 import com.github.setial.intellijjavadocs.utils.JavaDocUtils;
-import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.pom.PomNamedTarget;
@@ -17,7 +17,6 @@ import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.javadoc.PsiDocComment;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -83,28 +82,6 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
         return result;
     }
 
-    private PsiDocComment updateJavaDocAction(T element, PsiDocComment oldDocComment) {
-        PsiDocComment result = null;
-        JavaDoc newJavaDoc = generateJavaDoc(element);
-        JavaDoc oldJavaDoc = JavaDocUtils.createJavaDoc(oldDocComment);
-        if (newJavaDoc != null) {
-            newJavaDoc = JavaDocUtils.mergeJavaDocs(oldJavaDoc, newJavaDoc);
-            String javaDoc = newJavaDoc.toJavaDoc();
-            result = psiElementFactory.createDocCommentFromText(javaDoc);
-        }
-        return result;
-    }
-
-    private PsiDocComment replaceJavaDocAction(T element) {
-        PsiDocComment result = null;
-        JavaDoc newJavaDoc = generateJavaDoc(element);
-        if (newJavaDoc != null) {
-            String javaDoc = newJavaDoc.toJavaDoc();
-            result = psiElementFactory.createDocCommentFromText(javaDoc);
-        }
-        return result;
-    }
-
     /**
      * Gets the doc template manager.
      *
@@ -140,6 +117,12 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
         return settings;
     }
 
+    /**
+     * Check whether javadoc should be generated.
+     *
+     * @param modifiers the modifiers
+     * @return the boolean
+     */
     protected boolean shouldGenerate(PsiModifierList modifiers) {
         return checkModifiers(modifiers, PsiModifier.PUBLIC, Visibility.PUBLIC) ||
                 checkModifiers(modifiers, PsiModifier.PROTECTED, Visibility.PROTECTED) ||
@@ -147,12 +130,12 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
                 checkModifiers(modifiers, PsiModifier.PRIVATE, Visibility.PRIVATE);
     }
 
-    private boolean checkModifiers(PsiModifierList modifiers, String modifier, Visibility visibility) {
-        JavaDocSettings configuration = getSettings().getConfiguration();
-        return modifiers != null && modifiers.hasModifierProperty(modifier) && configuration != null &&
-                configuration.getGeneralSettings().getVisibilities().contains(visibility);
-    }
-
+    /**
+     * Gets default parameters used to build template.
+     *
+     * @param element the element
+     * @return the default parameters
+     */
     protected Map<String, Object> getDefaultParameters(PomNamedTarget element) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("element", element);
@@ -160,6 +143,34 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
         params.put("partName", getDocTemplateProcessor().buildPartialDescription(element.getName()));
         params.put("splitNames", StringUtils.splitByCharacterTypeCamelCase(element.getName()));
         return params;
+    }
+
+    private PsiDocComment updateJavaDocAction(T element, PsiDocComment oldDocComment) {
+        PsiDocComment result = null;
+        JavaDoc newJavaDoc = generateJavaDoc(element);
+        JavaDoc oldJavaDoc = JavaDocUtils.createJavaDoc(oldDocComment);
+        if (newJavaDoc != null) {
+            newJavaDoc = JavaDocUtils.mergeJavaDocs(oldJavaDoc, newJavaDoc);
+            String javaDoc = newJavaDoc.toJavaDoc();
+            result = psiElementFactory.createDocCommentFromText(javaDoc);
+        }
+        return result;
+    }
+
+    private PsiDocComment replaceJavaDocAction(T element) {
+        PsiDocComment result = null;
+        JavaDoc newJavaDoc = generateJavaDoc(element);
+        if (newJavaDoc != null) {
+            String javaDoc = newJavaDoc.toJavaDoc();
+            result = psiElementFactory.createDocCommentFromText(javaDoc);
+        }
+        return result;
+    }
+
+    private boolean checkModifiers(PsiModifierList modifiers, String modifier, Visibility visibility) {
+        JavaDocSettings configuration = getSettings().getConfiguration();
+        return modifiers != null && modifiers.hasModifierProperty(modifier) && configuration != null &&
+                configuration.getGeneralSettings().getVisibilities().contains(visibility);
     }
 
     /**

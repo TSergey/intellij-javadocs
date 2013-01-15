@@ -262,4 +262,6 @@ public class JavaDocUtils {
         return result;
     }
 
+    private JavaDocUtils() {}
+
 }

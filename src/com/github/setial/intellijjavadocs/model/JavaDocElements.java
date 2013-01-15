@@ -2,6 +2,11 @@ package com.github.setial.intellijjavadocs.model;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The enum Java doc elements.
+ *
+ * @author Sergey Timofiychuk
+ */
 public enum JavaDocElements {
 
     STARTING("/*"),
@@ -16,10 +21,10 @@ public enum JavaDocElements {
     /**
      * Instantiates a new Java doc elements.
      *
-     * @param s the S
+     * @param value the value
      */
-    JavaDocElements(String s) {
-        presentation = s;
+    JavaDocElements(String value) {
+        presentation = value;
     }
 
     /**
