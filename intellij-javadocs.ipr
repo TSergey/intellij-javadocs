@@ -395,7 +395,7 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IC-123.72" project-jdk-type="IDEA JDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
-  <component name="RegexUtilComponent" text="protected Map&lt;String, Object&gt; setDefaultParameters(PomNamedTarget element) {" flags="40" regex="^.*(public|protected|private)*\s*.*(void|\w(&lt;.+&gt;)*)+\s+set\w+\(.*\).+" mode="1" />
+  <component name="RegexUtilComponent" text="public Map&lt;String, ?&gt; getIdentifiers() {" flags="40" regex="^.*(public|protected|private)*\s*.*(\w(\s*&lt;.+&gt;)*)+\s+get\w+\s*\(.*\).+" mode="1" />
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
