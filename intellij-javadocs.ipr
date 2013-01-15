@@ -43,39 +43,18 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
-  <component name="JavaDocConfiguration">
+  <component name="JavaDocConfiguration_1.0.2">
     <GENERAL>
       <MODE>UPDATE</MODE>
       <OVERRIDDEN_METHODS>false</OVERRIDDEN_METHODS>
       <LEVELS>
+        <LEVEL>FIELD</LEVEL>
         <LEVEL>METHOD</LEVEL>
         <LEVEL>TYPE</LEVEL>
-        <LEVEL>FIELD</LEVEL>
       </LEVELS>
       <VISIBILITIES>
         <VISIBILITY>PUBLIC</VISIBILITY>
         <VISIBILITY>PROTECTED</VISIBILITY>
-      </VISIBILITIES>
-    </GENERAL>
-    <TEMPLATES>
-      <CLASSES />
-      <CONSTRUCTORS />
-      <METHODS />
-      <FIELDS />
-    </TEMPLATES>
-  </component>
-  <component name="JavaDocConfiguration_1.0">
-    <GENERAL>
-      <MODE>UPDATE</MODE>
-      <OVERRIDDEN_METHODS>false</OVERRIDDEN_METHODS>
-      <LEVELS>
-        <LEVEL>METHOD</LEVEL>
-        <LEVEL>TYPE</LEVEL>
-        <LEVEL>FIELD</LEVEL>
-      </LEVELS>
-      <VISIBILITIES>
-        <VISIBILITY>PROTECTED</VISIBILITY>
-        <VISIBILITY>PUBLIC</VISIBILITY>
       </VISIBILITIES>
     </GENERAL>
     <TEMPLATES>
@@ -130,7 +109,7 @@
       </CONSTRUCTORS>
       <METHODS>
         <METHOD>
-          <KEY>^.*(public|protected|private)*\s*.*\w+\s+get\w+\(.*\).+</KEY>
+          <KEY>^.*(public|protected|private)*\s*.*(\w(\s*&lt;.+&gt;)*)+\s+get\w+\s*\(.*\).+</KEY>
           <VALUE>/**\n
  * Gets $partName.\n
 
@@ -156,7 +135,7 @@
  */</VALUE>
         </METHOD>
         <METHOD>
-          <KEY>^.*(public|protected|private)*\s*.*(void|\w)+\s+set\w+\(.*\).+</KEY>
+          <KEY>^.*(public|protected|private)*\s*.*(void|\w(\s*&lt;.+&gt;)*)+\s+set\w+\s*\(.*\).+</KEY>
           <VALUE>/**\n
  * Sets $partName.\n
 
@@ -182,7 +161,7 @@
  */</VALUE>
         </METHOD>
         <METHOD>
-          <KEY>^.*(public|protected|private)*\s*static+\s+void\s+main+\(String\s*(\[\]|\.\.\.)\s+\w+\).+</KEY>
+          <KEY>^.*((public\s+static)|(static\s+public))\s+void\s+main\s*\(\s*String\s*(\[\s*\]|\.\.\.)\s+\w+\s*\).+</KEY>
           <VALUE>/**\n
  * The entry point of application.\n
 
@@ -204,7 +183,7 @@
         <METHOD>
           <KEY>.+</KEY>
           <VALUE>/**\n
- * $name#if($partName.isEmpty())$return#end.\n
+ * $name#if($partName.isEmpty()) $return#end.\n
 
      #if(!$element.parameterList.parameters.isEmpty())
          *\n
@@ -384,6 +363,7 @@
     <dictionary name="stimofiychuk">
       <words>
         <w>intelli</w>
+        <w>javadoc's</w>
       </words>
     </dictionary>
   </component>
@@ -392,7 +372,7 @@
       <module fileurl="file://$PROJECT_DIR$/intellij-javadocs.iml" filepath="$PROJECT_DIR$/intellij-javadocs.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IC-123.72" project-jdk-type="IDEA JDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA_SDK" project-jdk-type="IDEA JDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="RegexUtilComponent" text="public Map&lt;String, ?&gt; getIdentifiers() {" flags="40" regex="^.*(public|protected|private)*\s*.*(\w(\s*&lt;.+&gt;)*)+\s+get\w+\s*\(.*\).+" mode="1" />
