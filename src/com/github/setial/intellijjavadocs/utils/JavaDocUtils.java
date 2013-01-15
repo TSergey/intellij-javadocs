@@ -53,7 +53,7 @@ public class JavaDocUtils {
     @NotNull
     public static JavaDoc mergeJavaDocs(@NotNull JavaDoc oldJavaDoc, @NotNull JavaDoc newJavaDoc) {
         List<String> description = oldJavaDoc.getDescription();
-        if (CollectionUtils.isEmpty(description)) {
+        if (descriptionIsEmpty(description)) {
             description = newJavaDoc.getDescription();
         }
         Map<String, List<JavaDocTag>> oldTags = oldJavaDoc.getTags();
@@ -109,7 +109,7 @@ public class JavaDocUtils {
     @NotNull
     public static JavaDocTag mergeJavaDocTag(@NotNull JavaDocTag oldJavaDocTag, @NotNull JavaDocTag newJavaDocTag) {
         List<String> description = oldJavaDocTag.getDescription();
-        if (CollectionUtils.isEmpty(description)) {
+        if (descriptionIsEmpty(description)) {
             description = newJavaDocTag.getDescription();
         }
         return new JavaDocTag(oldJavaDocTag.getRefParam(), oldJavaDocTag.getValue(), description);
@@ -257,6 +257,16 @@ public class JavaDocUtils {
                     StringUtils.equals(oldTag.getRefParam(), refParam)) {
                 result = oldTag;
                 break;
+            }
+        }
+        return result;
+    }
+
+    private static boolean descriptionIsEmpty(List<String> description) {
+        boolean result = true;
+        if(!CollectionUtils.isEmpty(description)) {
+            for (String item : description) {
+                result = result && StringUtils.isBlank(item);
             }
         }
         return result;
