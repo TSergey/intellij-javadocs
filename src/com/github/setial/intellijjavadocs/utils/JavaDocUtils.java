@@ -71,7 +71,7 @@ public class JavaDocUtils {
                     // the case when old tag exists
                     List<JavaDocTag> oldTagsEntry = oldTags.get(name);
                     JavaDocTag oldTag;
-                    if ("return".equals(name)) {
+                    if (!"param".equals(name)) {
                         oldTag = oldTagsEntry.get(0);
                     } else {
                         oldTag = findOldTag(oldTagsEntry, tag.getValue(), tag.getRefParam());
