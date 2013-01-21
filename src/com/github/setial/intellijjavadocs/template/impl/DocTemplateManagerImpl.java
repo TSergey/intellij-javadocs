@@ -4,6 +4,8 @@ import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
 import com.github.setial.intellijjavadocs.utils.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiCodeBlock;
@@ -56,24 +58,8 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
      * Instantiates a new Doc template manager object.
      */
     public DocTemplateManagerImpl() {
-        RuntimeInstance ri = new RuntimeInstance();
-        ri.init();
-        velocityServices = ri;
-
-        try {
-            Document document = new SAXBuilder().build(DocTemplateProcessor.class.getResourceAsStream
-                    (TEMPLATES_PATH));
-            Element root = document.getRootElement();
-            if (root != null) {
-                readTemplates(root, CLASS, classTemplates);
-                readTemplates(root, FIELD, fieldTemplates);
-                readTemplates(root, METHOD, methodTemplates);
-                readTemplates(root, CONSTRUCTOR, constructorTemplates);
-            }
-        } catch (Exception e) {
-            // TODO throw runtime exception and catch it at top level app
-            throw new RuntimeException(e);
-        }
+        velocityServices = new RuntimeInstance();
+        velocityServices.init();
     }
 
     @Override
@@ -86,6 +72,19 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
 
     @Override
     public void initComponent() {
+        try {
+            Document document = new SAXBuilder().build(DocTemplateProcessor.class.getResourceAsStream
+                    (TEMPLATES_PATH));
+            Element root = document.getRootElement();
+            if (root != null) {
+                readTemplates(root, CLASS, classTemplates);
+                readTemplates(root, FIELD, fieldTemplates);
+                readTemplates(root, METHOD, methodTemplates);
+                readTemplates(root, CONSTRUCTOR, constructorTemplates);
+            }
+        } catch (Exception e) {
+            Logger.getInstance(DocTemplateManagerImpl.class).error(e);
+        }
     }
 
     @Override
