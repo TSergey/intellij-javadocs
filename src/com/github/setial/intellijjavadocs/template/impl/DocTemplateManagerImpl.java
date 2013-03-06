@@ -2,10 +2,10 @@ package com.github.setial.intellijjavadocs.template.impl;
 
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
+import com.github.setial.intellijjavadocs.template.logging.IntellijPluginLogSystem;
 import com.github.setial.intellijjavadocs.utils.XmlUtils;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiCodeBlock;
@@ -13,6 +13,7 @@ import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiModifierList;
 import org.apache.velocity.Template;
+import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.parser.ParseException;
@@ -59,6 +60,9 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
      */
     public DocTemplateManagerImpl() {
         velocityServices = new RuntimeInstance();
+        velocityServices.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new IntellijPluginLogSystem());
+        velocityServices.setProperty(IntellijPluginLogSystem.RUNTIME_LOG_LEVEL_KEY,
+                IntellijPluginLogSystem.WARN_LEVEL);
         velocityServices.init();
     }
 

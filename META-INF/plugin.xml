@@ -55,8 +55,7 @@
         </component>
         <component>
             <interface-class>com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration</interface-class>
-            <implementation-class>com.github.setial.intellijjavadocs.configuration.impl.JavaDocConfigurationImpl
-            </implementation-class>
+            <implementation-class>com.github.setial.intellijjavadocs.configuration.impl.JavaDocConfigurationImpl</implementation-class>
         </component>
     </project-components>
 
