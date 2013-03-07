@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="http://setial.github.com/intellij-javadocs">
     <id>com.github.setial</id>
     <name>JavaDoc</name>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
         Sergey Timofiychuk
     </vendor>
