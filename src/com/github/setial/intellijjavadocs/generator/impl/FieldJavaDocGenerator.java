@@ -5,6 +5,7 @@ import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
 import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.utils.JavaDocUtils;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiEnumConstant;
 import com.intellij.psi.PsiField;
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +39,9 @@ public class FieldJavaDocGenerator extends AbstractJavaDocGenerator<PsiField> {
         }
         Template template = getDocTemplateManager().getFieldTemplate(element);
         Map<String, Object> params = getDefaultParameters(element);
+        if (PsiEnumConstant.class.isAssignableFrom(element.getClass())) {
+            params.put("name", element.getName());
+        }
         String javaDocText = getDocTemplateProcessor().merge(template, params);
         return JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());
     }
