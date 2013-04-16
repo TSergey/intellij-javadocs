@@ -45,7 +45,8 @@ public class JavaDocBuilder {
      * @return the Java doc builder
      */
     public JavaDocBuilder closeJavaDoc() {
-        if (builder.lastIndexOf(JavaDocElements.LINE_START.getPresentation()) != builder.length() - 1) {
+        if (builder.lastIndexOf(JavaDocElements.LINE_START.getPresentation()) != builder.length() - 1 &&
+                builder.lastIndexOf(JavaDocElements.NEW_LINE.getPresentation()) >= 0) {
             builder.append(JavaDocElements.NEW_LINE.getPresentation());
             builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
             builder.append(JavaDocElements.LINE_START.getPresentation());
