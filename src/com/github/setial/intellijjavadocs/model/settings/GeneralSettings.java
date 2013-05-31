@@ -13,6 +13,7 @@ public class GeneralSettings {
     private Set<Level> levels;
     private Set<Visibility> visibilities;
     private boolean overriddenMethods;
+    private boolean splittedClassName;
 
     /**
      * Gets javadoc update mode.
@@ -84,6 +85,14 @@ public class GeneralSettings {
      */
     public void setOverriddenMethods(boolean overriddenMethods) {
         this.overriddenMethods = overriddenMethods;
+    }
+
+    public boolean isSplittedClassName() {
+        return splittedClassName;
+    }
+
+    public void setSplittedClassName(boolean splittedClassName) {
+        this.splittedClassName = splittedClassName;
     }
 
 }

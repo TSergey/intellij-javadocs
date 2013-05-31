@@ -151,7 +151,7 @@
                   </component>
                 </children>
               </grid>
-              <grid id="c14f7" binding="generalOtherPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="c14f7" binding="generalOtherPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -167,6 +167,15 @@
                     </constraints>
                     <properties>
                       <text value="Comment overridden methods"/>
+                    </properties>
+                  </component>
+                  <component id="32f1e" class="javax.swing.JCheckBox" binding="generalOtherSplittedClassName">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="Generate splitted class name"/>
                     </properties>
                   </component>
                 </children>

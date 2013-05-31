@@ -38,6 +38,7 @@ public class ConfigPanel extends JPanel {
     private JCheckBox generalVisibilityDefaultCheckbox;
     private JCheckBox generalVisibilityPrivateCheckbox;
     private JCheckBox generalOtherOverriddenMethodsCheckbox;
+    private JCheckBox generalOtherSplittedClassName;
     private JPanel generalPanel;
     private JPanel generalModePanel;
     private JPanel generalLevelPanel;
@@ -88,6 +89,7 @@ public class ConfigPanel extends JPanel {
         result = result || isCheckboxModified(
                 generalVisibilityPrivateCheckbox, settings.getGeneralSettings().getVisibilities().contains(Visibility.PRIVATE));
         result = result || isCheckboxModified(generalOtherOverriddenMethodsCheckbox, settings.getGeneralSettings().isOverriddenMethods());
+        result = result || isCheckboxModified(generalOtherSplittedClassName, settings.getGeneralSettings().isSplittedClassName());
 
         // check if templates settings are modified
         result = result || checkIfTableContentModified(classTemplatesTable.getSettings(),
@@ -141,6 +143,7 @@ public class ConfigPanel extends JPanel {
         }
 
         settings.getGeneralSettings().setOverriddenMethods(generalOtherOverriddenMethodsCheckbox.isSelected());
+        settings.getGeneralSettings().setSplittedClassName(generalOtherSplittedClassName.isSelected());
 
         // apply templates settings
         settings.getTemplateSettings().setClassTemplates(classTemplatesTable.getSettings());
@@ -195,6 +198,7 @@ public class ConfigPanel extends JPanel {
             }
         }
         generalOtherOverriddenMethodsCheckbox.setSelected(settings.getGeneralSettings().isOverriddenMethods());
+        generalOtherSplittedClassName.setSelected(settings.getGeneralSettings().isSplittedClassName());
 
         // reset templates settings
         classTemplatesTable.setSettingsModel(settings.getTemplateSettings().getClassTemplates());
@@ -359,12 +363,16 @@ public class ConfigPanel extends JPanel {
         generalVisibilityPrivateCheckbox.setText("Private");
         generalVisibilityPanel.add(generalVisibilityPrivateCheckbox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         generalOtherPanel = new JPanel();
-        generalOtherPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        generalOtherPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         generalPanel.add(generalOtherPanel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         generalOtherPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3), "Other"));
         generalOtherOverriddenMethodsCheckbox = new JCheckBox();
         generalOtherOverriddenMethodsCheckbox.setText("Comment overridden methods");
         generalOtherPanel.add(generalOtherOverriddenMethodsCheckbox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        generalOtherSplittedClassName = new JCheckBox();
+        generalOtherSplittedClassName.setSelected(true);
+        generalOtherSplittedClassName.setText("Generate splitted class name");
+        generalOtherPanel.add(generalOtherSplittedClassName, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         generalPanel.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         ButtonGroup buttonGroup;

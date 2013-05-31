@@ -165,7 +165,8 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
             visibilities.add(Visibility.PUBLIC);
             visibilities.add(Visibility.PROTECTED);
 
-            settings.getGeneralSettings().setOverriddenMethods(Boolean.FALSE);
+            settings.getGeneralSettings().setOverriddenMethods(false);
+            settings.getGeneralSettings().setSplittedClassName(true);
             settings.getGeneralSettings().setMode(Mode.UPDATE);
             settings.getGeneralSettings().setLevels(levels);
             settings.getGeneralSettings().setVisibilities(visibilities);

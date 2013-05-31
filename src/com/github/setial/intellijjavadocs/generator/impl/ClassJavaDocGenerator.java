@@ -38,6 +38,9 @@ public class ClassJavaDocGenerator extends AbstractJavaDocGenerator<PsiClass> {
         }
         Template template = getDocTemplateManager().getClassTemplate(element);
         Map<String, Object> params = getDefaultParameters(element);
+        if (!configuration.getGeneralSettings().isSplittedClassName()) {
+            params.put("name", element.getName());
+        }
         String javaDocText = getDocTemplateProcessor().merge(template, params);
         return JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());
     }

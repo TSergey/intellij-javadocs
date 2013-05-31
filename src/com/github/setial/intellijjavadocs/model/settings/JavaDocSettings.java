@@ -19,6 +19,7 @@ public class JavaDocSettings implements Serializable {
     private static final String VISIBILITIES = "VISIBILITIES";
     private static final String VISIBILITY = "VISIBILITY";
     private static final String OVERRIDDEN_METHODS = "OVERRIDDEN_METHODS";
+    private static final String SPLITTED_CLASS_NAME = "SPLITTED_CLASS_NAME";
     private static final String GENERAL = "GENERAL";
     private static final String TEMPLATES = "TEMPLATES";
     private static final String CLASS = "CLASS";
@@ -49,6 +50,7 @@ public class JavaDocSettings implements Serializable {
         if (general != null) {
             generalSettings.setMode(XmlUtils.getValue(general, MODE, Mode.class));
             generalSettings.setOverriddenMethods(Boolean.parseBoolean(general.getChild(OVERRIDDEN_METHODS).getValue()));
+            generalSettings.setSplittedClassName(Boolean.parseBoolean(general.getChild(SPLITTED_CLASS_NAME).getValue()));
             generalSettings.setLevels(XmlUtils.getValues(general, LEVELS, LEVEL, Level.class));
             generalSettings.setVisibilities(XmlUtils.getValues(general, VISIBILITIES, VISIBILITY, Visibility.class));
         }
@@ -71,6 +73,7 @@ public class JavaDocSettings implements Serializable {
         root.addContent(general);
         general.addContent(XmlUtils.getElement(MODE, generalSettings.getMode().toString()));
         general.addContent(XmlUtils.getElement(OVERRIDDEN_METHODS, String.valueOf(generalSettings.isOverriddenMethods())));
+        general.addContent(XmlUtils.getElement(SPLITTED_CLASS_NAME, String.valueOf(generalSettings.isSplittedClassName())));
         general.addContent(XmlUtils.getElement(LEVELS, LEVEL, generalSettings.getLevels()));
         general.addContent(XmlUtils.getElement(VISIBILITIES, VISIBILITY, generalSettings.getVisibilities()));
 
