@@ -22,6 +22,9 @@ import com.intellij.psi.util.PsiUtilCore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * The type Java doc generate action.
  *
@@ -49,13 +52,35 @@ public class JavaDocGenerateAction extends AnAction {
             // TODO show message
             return;
         }
-        int offset = editor.getCaretModel().getOffset();
+        int startPosition = editor.getSelectionModel().getSelectionStart();
+        int endPosition = editor.getSelectionModel().getSelectionEnd();
         PsiFile file = DataKeys.PSI_FILE.getData(e.getDataContext());
         if (file == null) {
             // TODO show message
             return;
         }
-        PsiElement element = getJavaElement(PsiUtilCore.getElementAtOffset(file, offset));
+        List<PsiElement> elements = new LinkedList<PsiElement>();
+        PsiElement firstElement = getJavaElement(PsiUtilCore.getElementAtOffset(file, startPosition));
+        if (firstElement != null) {
+            PsiElement element = firstElement;
+            do {
+                if (isAllowedElementType(element)) {
+                    elements.add(element);
+                }
+                element = element.getNextSibling();
+            } while (isElementInSelection(element, startPosition, endPosition));
+        }
+        for (PsiElement element : elements) {
+            processElement(element);
+        }
+    }
+
+    /**
+     * Process element.
+     *
+     * @param element the Element
+     */
+    protected void processElement(@NotNull PsiElement element) {
         JavaDocGenerator generator = getGenerator(element);
         if (generator != null) {
             @SuppressWarnings("unchecked")
@@ -64,6 +89,26 @@ public class JavaDocGenerateAction extends AnAction {
                 writer.write(javaDoc, element);
             }
         }
+    }
+
+    /**
+     * Gets the generator.
+     *
+     * @param element the Element
+     * @return the Generator
+     */
+    @Nullable
+    protected JavaDocGenerator getGenerator(@NotNull PsiElement element) {
+        Project project = element.getProject();
+        JavaDocGenerator generator = null;
+        if (PsiClass.class.isAssignableFrom(element.getClass())) {
+            generator = new ClassJavaDocGenerator(project);
+        } else if (PsiMethod.class.isAssignableFrom(element.getClass())) {
+            generator = new MethodJavaDocGenerator(project);
+        } else if (PsiField.class.isAssignableFrom(element.getClass())) {
+            generator = new FieldJavaDocGenerator(project);
+        }
+        return generator;
     }
 
     /**
@@ -88,24 +133,24 @@ public class JavaDocGenerateAction extends AnAction {
         return result;
     }
 
-    /**
-     * Gets the generator.
-     *
-     * @param element the Element
-     * @return the Generator
-     */
-    @Nullable
-    private JavaDocGenerator getGenerator(@NotNull PsiElement element) {
-        Project project = element.getProject();
-        JavaDocGenerator generator = null;
-        if (PsiClass.class.isAssignableFrom(element.getClass())) {
-            generator = new ClassJavaDocGenerator(project);
-        } else if (PsiMethod.class.isAssignableFrom(element.getClass())) {
-            generator = new MethodJavaDocGenerator(project);
-        } else if (PsiField.class.isAssignableFrom(element.getClass())) {
-            generator = new FieldJavaDocGenerator(project);
+    private boolean isElementInSelection(@NotNull PsiElement element, int startPosition, int endPosition) {
+        boolean result = false;
+        int elementTextOffset = element.getTextRange().getStartOffset();
+        if (elementTextOffset >= startPosition &&
+                elementTextOffset <= endPosition) {
+            result = true;
         }
-        return generator;
+        return result;
+    }
+
+    private boolean isAllowedElementType(@NotNull PsiElement element) {
+        boolean result = false;
+        if (element instanceof PsiClass ||
+                element instanceof PsiField ||
+                element instanceof PsiMethod) {
+            result = true;
+        }
+        return result;
     }
 
 }
