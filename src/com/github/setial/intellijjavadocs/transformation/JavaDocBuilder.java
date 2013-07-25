@@ -45,11 +45,9 @@ public class JavaDocBuilder {
      * @return the Java doc builder
      */
     public JavaDocBuilder closeJavaDoc() {
-        if (builder.lastIndexOf(JavaDocElements.LINE_START.getPresentation()) != builder.length() - 1 &&
-                builder.lastIndexOf(JavaDocElements.NEW_LINE.getPresentation()) >= 0) {
-            builder.append(JavaDocElements.NEW_LINE.getPresentation());
-            builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
-            builder.append(JavaDocElements.LINE_START.getPresentation());
+        // add new line with asterisk if it's not new line
+        if (!closeRegularJavaDoc()) {
+            closeOneLineJavaDoc();
         }
         builder.append(JavaDocElements.ENDING.getPresentation());
         return this;
@@ -73,10 +71,12 @@ public class JavaDocBuilder {
      * @return the Java doc builder
      */
     public JavaDocBuilder addDescription(List<String> descriptions) {
-        for (String description : descriptions) {
-            if (StringUtils.isNotBlank(description) || StringUtils.contains(description, "\n")) {
+        Iterator<String> iterator = descriptions.iterator();
+        while (iterator.hasNext()){
+            String description = iterator.next();
+            if (isAcceptedDescription(description, iterator.hasNext())) {
                 builder.append(description);
-                if (StringUtils.isWhitespace(description)) {
+                if (StringUtils.contains(description, JavaDocElements.NEW_LINE.getPresentation())) {
                     builder.append(JavaDocElements.LINE_START.getPresentation());
                 }
             }
@@ -84,6 +84,12 @@ public class JavaDocBuilder {
         return this;
     }
 
+    /**
+     * Add tag description to javadoc section.
+     *
+     * @param descriptions the Descriptions
+     * @return the Java doc builder
+     */
     public JavaDocBuilder addTagDescription(List<String> descriptions) {
         for (int i = 0; i < descriptions.size(); i++) {
             String description = descriptions.get(i);
@@ -169,6 +175,37 @@ public class JavaDocBuilder {
     @NotNull
     public String build() {
         return builder.toString();
+    }
+
+    private boolean closeRegularJavaDoc() {
+        boolean result = false;
+        if (builder.lastIndexOf(JavaDocElements.LINE_START.getPresentation()) != builder.length() - 1 &&
+                builder.lastIndexOf(JavaDocElements.NEW_LINE.getPresentation()) >= 0) {
+            builder.append(JavaDocElements.NEW_LINE.getPresentation());
+            builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
+            builder.append(JavaDocElements.LINE_START.getPresentation());
+            result = true;
+        }
+        return result;
+    }
+
+    private boolean closeOneLineJavaDoc() {
+        boolean result = false;
+        if (builder.indexOf(JavaDocElements.NEW_LINE.getPresentation()) < 0) {
+            builder.append(JavaDocElements.LINE_START.getPresentation());
+            result = true;
+        }
+        return result;
+    }
+
+    private boolean isAcceptedDescription(String description, boolean hasNext) {
+        boolean result = false;
+        // add any not empty string (it could be blank), but do not add last string if this is a space
+        if ((hasNext && StringUtils.isNotEmpty(description)) ||
+                (!hasNext && !description.matches(" +"))) {
+            result = true;
+        }
+        return result;
     }
 
 }
