@@ -8,8 +8,11 @@ import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler.OperationStatus;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.codeStyle.CodeStyleManager;
+import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -93,8 +96,22 @@ public class JavaDocWriterImpl implements JavaDocWriter, ApplicationComponent {
             } else {
                 element.getNode().addChild(javaDoc.getNode(), element.getFirstChild().getNode());
             }
+
+            ensureWhitespaceAfterJavaDoc(element);
             CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(element.getProject());
             codeStyleManager.reformatNewlyAddedElement(element.getNode(), element.getFirstChild().getNode());
+        }
+
+        private void ensureWhitespaceAfterJavaDoc(PsiElement element) {
+            PsiElement firstChild = element.getFirstChild();
+            if (!PsiDocComment.class.isAssignableFrom(firstChild.getClass())) {
+                return;
+            }
+            PsiElement nextElement = firstChild.getNextSibling();
+            if (PsiWhiteSpace.class.isAssignableFrom(nextElement.getClass())) {
+                return;
+            }
+            element.getNode().addChild(new PsiWhiteSpaceImpl("\n"), nextElement.getNode());
         }
     }
 }
