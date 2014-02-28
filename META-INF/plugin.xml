@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="http://setial.github.com/intellij-javadocs">
     <id>com.github.setial</id>
     <name>JavaDoc</name>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
         Sergey Timofiychuk
     </vendor>
@@ -11,6 +11,11 @@
       ]]></description>
 
     <change-notes><![CDATA[
+        <h3>Changes in intellij-javadoc-1.0.7</h3>
+        <ul>
+            <li>Fixed issue with line breaks on javadocs for enum values.</li>
+            <li>Fixed exception on try to generate javadoc on last line of class.</li>
+        </ul>
         <h3>Changes in intellij-javadoc-1.0.6</h3>
         <ul>
             <li>Fixed issue with generating javadocs formatted as single line.</li>
