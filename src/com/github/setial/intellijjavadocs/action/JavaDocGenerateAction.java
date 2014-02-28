@@ -19,6 +19,7 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilCore;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,6 +69,9 @@ public class JavaDocGenerateAction extends AnAction {
                     elements.add(element);
                 }
                 element = element.getNextSibling();
+                if (element == null) {
+                    break;
+                }
             } while (isElementInSelection(element, startPosition, endPosition));
         }
         for (PsiElement element : elements) {
