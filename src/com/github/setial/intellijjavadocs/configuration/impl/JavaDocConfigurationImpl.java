@@ -35,7 +35,7 @@ import java.util.Set;
         storages = {
                 @Storage(
                         id = "other",
-                        file = StoragePathMacros.PROJECT_FILE
+                        file = StoragePathMacros.APP_CONFIG + "/intellij-javadocs.xml"
                 )
         }
 )
