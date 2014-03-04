@@ -11,12 +11,15 @@
       ]]></description>
 
     <change-notes><![CDATA[
+        <h3>Changes in intellij-javadoc-1.0.8</h3>
+        <ul>
+            <li>Persist javadocs settings on a global level</li>
+        </ul>
         <h3>Changes in intellij-javadoc-1.0.7</h3>
         <ul>
             <li>Fixed issue with line breaks on javadocs for enum values.</li>
             <li>Fixed exception on try to generate javadoc on last line of class.</li>
             <li>Add generic types support</li>
-            <li>Persist javadocs settings on a global level</li>
         </ul>
         <h3>Changes in intellij-javadoc-1.0.6</h3>
         <ul>
@@ -63,20 +66,20 @@
             <interface-class>com.github.setial.intellijjavadocs.operation.JavaDocWriter</interface-class>
             <implementation-class>com.github.setial.intellijjavadocs.operation.impl.JavaDocWriterImpl</implementation-class>
         </component>
-    </application-components>
-
-    <project-components>
+        <component>
+            <interface-class>com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration</interface-class>
+            <implementation-class>com.github.setial.intellijjavadocs.configuration.impl.JavaDocConfigurationImpl</implementation-class>
+        </component>
         <component>
             <interface-class>com.github.setial.intellijjavadocs.template.DocTemplateManager</interface-class>
             <implementation-class>com.github.setial.intellijjavadocs.template.impl.DocTemplateManagerImpl</implementation-class>
         </component>
+    </application-components>
+
+    <project-components>
         <component>
             <interface-class>com.github.setial.intellijjavadocs.template.DocTemplateProcessor</interface-class>
             <implementation-class>com.github.setial.intellijjavadocs.template.impl.DocTemplateProcessorImpl</implementation-class>
-        </component>
-        <component>
-            <interface-class>com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration</interface-class>
-            <implementation-class>com.github.setial.intellijjavadocs.configuration.impl.JavaDocConfigurationImpl</implementation-class>
         </component>
     </project-components>
 

@@ -4,14 +4,8 @@ import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
 import com.github.setial.intellijjavadocs.template.logging.IntellijPluginLogSystem;
 import com.github.setial.intellijjavadocs.utils.XmlUtils;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiClassType;
-import com.intellij.psi.PsiCodeBlock;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiModifierList;
+import com.intellij.psi.*;
 import org.apache.velocity.Template;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeInstance;
@@ -38,7 +32,7 @@ import java.util.regex.Pattern;
  *
  * @author Sergey Timofiychuk
  */
-public class DocTemplateManagerImpl implements DocTemplateManager, ProjectComponent {
+public class DocTemplateManagerImpl implements DocTemplateManager {
 
     private static final String TEMPLATES_PATH = "/templates.xml";
     private static final String TEMPLATE = "template";
@@ -64,14 +58,6 @@ public class DocTemplateManagerImpl implements DocTemplateManager, ProjectCompon
         velocityServices.setProperty(IntellijPluginLogSystem.RUNTIME_LOG_LEVEL_KEY,
                 IntellijPluginLogSystem.WARN_LEVEL);
         velocityServices.init();
-    }
-
-    @Override
-    public void projectOpened() {
-    }
-
-    @Override
-    public void projectClosed() {
     }
 
     @Override

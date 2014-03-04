@@ -1,5 +1,6 @@
 package com.github.setial.intellijjavadocs.template;
 
+import com.intellij.openapi.components.ProjectComponent;
 import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,7 +12,7 @@ import java.util.Map;
  *
  * @author Sergey Timofiychuk
  */
-public interface DocTemplateProcessor {
+public interface DocTemplateProcessor extends ProjectComponent {
 
     /**
      * The constant COMPONENT_NAME.

@@ -9,7 +9,7 @@
         * @param &lt;$typeParameter.name&gt; the type parameter\n
     #end
 
-            */
+ */
         </template>
         <template regexp="^.*(public|protected|private)*.+enum\s+\w+.*">
 /**\n

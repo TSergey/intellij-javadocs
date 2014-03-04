@@ -1,5 +1,6 @@
 package com.github.setial.intellijjavadocs.template;
 
+import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiMethod;
@@ -14,7 +15,7 @@ import java.util.Map;
  *
  * @author Sergey Timofiychuk
  */
-public interface DocTemplateManager {
+public interface DocTemplateManager extends ApplicationComponent {
 
     /**
      * The constant COMPONENT_NAME.

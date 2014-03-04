@@ -7,15 +7,9 @@ import com.github.setial.intellijjavadocs.model.settings.Mode;
 import com.github.setial.intellijjavadocs.model.settings.Visibility;
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.ui.settings.ConfigPanel;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
+import com.intellij.openapi.components.*;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
 import org.jdom.Element;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +33,7 @@ import java.util.Set;
                 )
         }
 )
-public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectComponent, Configurable,
+public class JavaDocConfigurationImpl implements JavaDocConfiguration, Configurable,
         PersistentStateComponent<Element> {
 
     private JavaDocSettings settings;
@@ -50,10 +44,9 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     /**
      * Instantiates a new Java doc configuration object.
      *
-     * @param project the opened project
      */
-    public JavaDocConfigurationImpl(Project project) {
-        templateManager = ServiceManager.getService(project, DocTemplateManager.class);
+    public JavaDocConfigurationImpl() {
+        templateManager = ServiceManager.getService(DocTemplateManager.class);
     }
 
     @Override
@@ -74,14 +67,6 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, ProjectCo
     @Override
     public String getHelpTopic() {
         return null;
-    }
-
-    @Override
-    public void projectOpened() {
-    }
-
-    @Override
-    public void projectClosed() {
     }
 
     @NotNull

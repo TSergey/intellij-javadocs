@@ -4,7 +4,6 @@ import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.application.RunResult;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler.OperationStatus;
 import com.intellij.psi.PsiElement;
@@ -12,7 +11,6 @@ import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -22,7 +20,7 @@ import java.util.Arrays;
  *
  * @author Sergey Timofiychuk
  */
-public class JavaDocWriterImpl implements JavaDocWriter, ApplicationComponent {
+public class JavaDocWriterImpl implements JavaDocWriter {
 
     /**
      * The constant COMPONENT_NAME.

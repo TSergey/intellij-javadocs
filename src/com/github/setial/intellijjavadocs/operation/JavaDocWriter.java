@@ -1,5 +1,6 @@
 package com.github.setial.intellijjavadocs.operation;
 
+import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.javadoc.PsiDocComment;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Sergey Timofiychuk
  */
-public interface JavaDocWriter {
+public interface JavaDocWriter extends ApplicationComponent {
 
     String WRITE_JAVADOC_COMMAND_NAME = "JavaDocWriter";
     String WRITE_JAVADOC_COMMAND_GROUP = "com.github.setial.operation";
