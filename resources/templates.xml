@@ -4,7 +4,12 @@
         <template regexp="^.*(public|protected|private)*.+interface\s+\w+.*">
 /**\n
  * The interface $name.\n
- */
+
+    #foreach($typeParameter in $element.typeParameters)
+        * @param &lt;$typeParameter.name&gt; the type parameter\n
+    #end
+
+            */
         </template>
         <template regexp="^.*(public|protected|private)*.+enum\s+\w+.*">
 /**\n
@@ -14,6 +19,11 @@
         <template regexp="^.*(public|protected|private)*.+class\s+\w+.*">
 /**\n
  * The type $name.\n
+
+    #foreach($typeParameter in $element.typeParameters)
+        * @param &lt;$typeParameter.name&gt; the type parameter\n
+    #end
+
  */
         </template>
         <template regexp=".+">
@@ -118,6 +128,11 @@
      #if(!$element.parameterList.parameters.isEmpty())
          *\n
      #end
+
+     #foreach($typeParameter in $element.typeParameters)
+         * @param &lt;$typeParameter.name&gt; the type parameter\n
+     #end
+
      #foreach($parameter in $element.parameterList.parameters)
          * @param $parameter.name the $paramNames[$parameter.name]\n
      #end

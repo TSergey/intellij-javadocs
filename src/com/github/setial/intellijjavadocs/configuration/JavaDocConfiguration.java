@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface JavaDocConfiguration {
 
-    String COMPONENT_VERSION = "1.0.5";
+    String COMPONENT_VERSION = "1.0.7";
     String COMPONENT_NAME = "JavaDocConfiguration_" + COMPONENT_VERSION;
 
     /**
