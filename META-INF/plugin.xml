@@ -15,6 +15,8 @@
         <ul>
             <li>Fixed issue with line breaks on javadocs for enum values.</li>
             <li>Fixed exception on try to generate javadoc on last line of class.</li>
+            <li>Add generic types support</li>
+            <li>Persist javadocs settings on a global level</li>
         </ul>
         <h3>Changes in intellij-javadoc-1.0.6</h3>
         <ul>
