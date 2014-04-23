@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="http://setial.github.com/intellij-javadocs">
     <id>com.github.setial</id>
     <name>JavaDoc</name>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
         Sergey Timofiychuk
     </vendor>
@@ -11,6 +11,14 @@
       ]]></description>
 
     <change-notes><![CDATA[
+        <h3>Changes in intellij-javadoc-1.0.9</h3>
+        <ul>
+            <li>
+                Change key mappings, since previous are reserved by intellij idea 13.<br/>
+                Details about new mapping please find on <a href="https://github.com/setial/intellij-javadocs/wiki">wiki page</a>
+            </li>
+            <li>Fix bug to show menu only in generate menu of java sources</li>
+        </ul>
         <h3>Changes in intellij-javadoc-1.0.8</h3>
         <ul>
             <li>Persist javadocs settings on a global level</li>
@@ -85,18 +93,20 @@
 
     <actions>
         <group id="com.github.setial.action" text="_JavaDocs" description="Generate JavaDocs" popup="true">
+            <separator/>
             <action id="com.github.setial.intellijjavadocs.action.JavaDocGenerateAction"
                     class="com.github.setial.intellijjavadocs.action.JavaDocGenerateAction"
-                    text="_Selected element"
+                    text="JavaDocs for the selected element"
                     description="Generate javadocs for the selected element.">
-                <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt G"/>
             </action>
             <action id="com.github.setial.intellijjavadocs.action.JavaDocsGenerateAction"
                     class="com.github.setial.intellijjavadocs.action.JavaDocsGenerateAction"
-                    text="_All elements"
+                    text="JavaDocs for all elements"
                     description="Generate javadocs for all elements in the current java file.">
-                <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt J"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt G"/>
             </action>
+            <separator/>
             <add-to-group group-id="GenerateGroup" anchor="last"/>
         </group>
     </actions>
