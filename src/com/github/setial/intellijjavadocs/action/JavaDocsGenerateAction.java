@@ -1,14 +1,8 @@
 package com.github.setial.intellijjavadocs.action;
 
-import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 
 import java.util.LinkedList;
@@ -21,13 +15,11 @@ import java.util.List;
  */
 public class JavaDocsGenerateAction extends JavaDocGenerateAction {
 
-    private JavaDocWriter writer;
-
     /**
      * Instantiates a new Java docs generate action.
      */
     public JavaDocsGenerateAction() {
-        writer = ServiceManager.getService(JavaDocWriter.class);
+        super(new JavaDocsGenerateHandler());
     }
 
     /**

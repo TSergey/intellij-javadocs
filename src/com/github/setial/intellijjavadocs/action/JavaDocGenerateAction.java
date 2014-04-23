@@ -5,21 +5,17 @@ import com.github.setial.intellijjavadocs.generator.impl.ClassJavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.FieldJavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.MethodJavaDocGenerator;
 import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
-import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.codeInsight.CodeInsightActionHandler;
+import com.intellij.codeInsight.generation.actions.BaseGenerateAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilCore;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +27,7 @@ import java.util.List;
  *
  * @author Sergey Timofiychuk
  */
-public class JavaDocGenerateAction extends AnAction {
+public class JavaDocGenerateAction extends BaseGenerateAction {
 
     private JavaDocWriter writer;
 
@@ -39,6 +35,16 @@ public class JavaDocGenerateAction extends AnAction {
      * Instantiates a new Java doc generate action.
      */
     public JavaDocGenerateAction() {
+        this(new JavaDocGenerateHandler());
+    }
+
+    /**
+     * Instantiates a new Java doc generate action.
+     *
+     * @param handler the handler
+     */
+    public JavaDocGenerateAction(CodeInsightActionHandler handler) {
+        super(handler);
         writer = ServiceManager.getService(JavaDocWriter.class);
     }
 

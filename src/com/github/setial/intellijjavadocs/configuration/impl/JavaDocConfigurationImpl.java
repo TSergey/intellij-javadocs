@@ -149,6 +149,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, Configura
             Set<Visibility> visibilities = new HashSet<Visibility>();
             visibilities.add(Visibility.PUBLIC);
             visibilities.add(Visibility.PROTECTED);
+            visibilities.add(Visibility.DEFAULT);
 
             settings.getGeneralSettings().setOverriddenMethods(false);
             settings.getGeneralSettings().setSplittedClassName(true);
