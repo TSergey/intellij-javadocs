@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="http://setial.github.com/intellij-javadocs">
     <id>com.github.setial</id>
     <name>JavaDoc</name>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
     <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
         Sergey Timofiychuk
     </vendor>
@@ -11,6 +11,10 @@
       ]]></description>
 
     <change-notes><![CDATA[
+        <h3>Changes in intellij-javadoc-1.0.10</h3>
+        <ul>
+            <li>Fix critical issue on generate javadocs in interfaces</li>
+        </ul>
         <h3>Changes in intellij-javadoc-1.0.9</h3>
         <ul>
             <li>
