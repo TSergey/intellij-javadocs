@@ -6,7 +6,6 @@ import com.github.setial.intellijjavadocs.generator.impl.FieldJavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.MethodJavaDocGenerator;
 import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
 import com.intellij.codeInsight.CodeInsightActionHandler;
-import com.intellij.codeInsight.generation.actions.BaseGenerateAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.components.ServiceManager;
@@ -27,7 +26,7 @@ import java.util.List;
  *
  * @author Sergey Timofiychuk
  */
-public class JavaDocGenerateAction extends BaseGenerateAction {
+public class JavaDocGenerateAction extends BaseAction {
 
     private JavaDocWriter writer;
 
