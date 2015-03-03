@@ -100,15 +100,28 @@
             <separator/>
             <action id="com.github.setial.intellijjavadocs.action.JavaDocGenerateAction"
                     class="com.github.setial.intellijjavadocs.action.JavaDocGenerateAction"
-                    text="JavaDocs for the selected element"
+                    text="Create JavaDocs for the selected element"
                     description="Generate javadocs for the selected element.">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt G"/>
             </action>
             <action id="com.github.setial.intellijjavadocs.action.JavaDocsGenerateAction"
                     class="com.github.setial.intellijjavadocs.action.JavaDocsGenerateAction"
-                    text="JavaDocs for all elements"
+                    text="Create JavaDocs for all elements"
                     description="Generate javadocs for all elements in the current java file.">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt G"/>
+            </action>
+
+            <action id="com.github.setial.intellijjavadocs.action.JavaDocRemoveAction"
+                    class="com.github.setial.intellijjavadocs.action.JavaDocRemoveAction"
+                    text="Remove JavaDocs for the selected element"
+                    description="Remove javadocs for the selected element.">
+                <keyboard-shortcut keymap="$default" first-keystroke="shift alt Z"/>
+            </action>
+            <action id="com.github.setial.intellijjavadocs.action.JavaDocsRemoveAction"
+                    class="com.github.setial.intellijjavadocs.action.JavaDocsRemoveAction"
+                    text="Remove JavaDocs for all elements"
+                    description="Remove javadocs for all elements in the current java file.">
+                <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt Z"/>
             </action>
             <separator/>
             <add-to-group group-id="GenerateGroup" anchor="last"/>

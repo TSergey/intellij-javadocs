@@ -19,7 +19,7 @@ public class JavaDocsGenerateAction extends JavaDocGenerateAction {
      * Instantiates a new Java docs generate action.
      */
     public JavaDocsGenerateAction() {
-        super(new JavaDocsGenerateHandler());
+        super(new JavaDocHandler());
     }
 
     /**

@@ -34,7 +34,7 @@ public class JavaDocGenerateAction extends BaseAction {
      * Instantiates a new Java doc generate action.
      */
     public JavaDocGenerateAction() {
-        this(new JavaDocGenerateHandler());
+        this(new JavaDocHandler());
     }
 
     /**
@@ -52,6 +52,7 @@ public class JavaDocGenerateAction extends BaseAction {
      *
      * @param e the Event
      */
+    @Override
     public void actionPerformed(AnActionEvent e) {
         Editor editor = DataKeys.EDITOR.getData(e.getDataContext());
         if (editor == null) {

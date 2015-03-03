@@ -23,4 +23,11 @@ public interface JavaDocWriter extends ApplicationComponent {
      */
     void write(@NotNull PsiDocComment javaDoc, @NotNull PsiElement beforeElement);
 
+    /**
+     * Remove void.
+     *
+     * @param beforeElement the before element
+     */
+    void remove(@NotNull PsiElement beforeElement);
+
 }

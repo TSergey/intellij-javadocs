@@ -7,14 +7,16 @@ import com.intellij.psi.PsiClass;
 import com.intellij.util.IncorrectOperationException;
 
 /**
- * The type Java docs generate handler.
+ * The type Java doc handler.
+ *
+ * @author Sergey Timofiychuk
  */
-public class JavaDocsGenerateHandler extends GenerateMembersHandlerBase {
+public class JavaDocHandler extends GenerateMembersHandlerBase {
 
     /**
      * Instantiates a new Java docs generate handler.
      */
-    public JavaDocsGenerateHandler() {
+    public JavaDocHandler() {
         super("");
     }
 

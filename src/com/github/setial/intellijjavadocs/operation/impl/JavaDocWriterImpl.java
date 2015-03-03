@@ -51,7 +51,22 @@ public class JavaDocWriterImpl implements JavaDocWriter {
             // TODO stop execution
         }
 
-        WriteCommandAction command = new WriteCommandActionImpl(javaDoc, beforeElement);
+        WriteCommandAction command = new WriteJavaDocActionImpl(javaDoc, beforeElement);
+        RunResult result = command.execute();
+
+        // TODO check result and show warning if there was some errors
+    }
+
+    @Override
+    public void remove(@NotNull PsiElement beforeElement) {
+        OperationStatus status = ReadonlyStatusHandler.getInstance(beforeElement.getProject()).
+                ensureFilesWritable(Arrays.asList(beforeElement.getContainingFile().getVirtualFile()));
+        if (status.hasReadonlyFiles()) {
+            // TODO show error message
+            // TODO stop execution
+        }
+
+        WriteCommandAction command = new RemoveJavaDocActionImpl(beforeElement);
         RunResult result = command.execute();
 
         // TODO check result and show warning if there was some errors
@@ -62,18 +77,18 @@ public class JavaDocWriterImpl implements JavaDocWriter {
      *
      * @author Sergey Timofiychuk
      */
-    private static class WriteCommandActionImpl extends WriteCommandAction {
+    private static class WriteJavaDocActionImpl extends WriteCommandAction {
 
         private PsiDocComment javaDoc;
         private PsiElement element;
 
         /**
-         * Instantiates a new Write command action impl.
+         * Instantiates a new Write java doc action impl.
          *
-         * @param javaDoc the Java doc
-         * @param element the Element
+         * @param javaDoc the java doc
+         * @param element the element
          */
-        public WriteCommandActionImpl(@NotNull PsiDocComment javaDoc, @NotNull PsiElement element) {
+        protected WriteJavaDocActionImpl(@NotNull PsiDocComment javaDoc, @NotNull PsiElement element) {
             super(
                     element.getProject(),
                     WRITE_JAVADOC_COMMAND_NAME,
@@ -84,7 +99,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         }
 
         @Override
-        protected void run(Result result) throws Throwable {
+        protected void run(@NotNull Result result) throws Throwable {
             if (javaDoc == null) {
                 // TODO create result object
                 return;
@@ -110,6 +125,34 @@ public class JavaDocWriterImpl implements JavaDocWriter {
                 return;
             }
             element.getNode().addChild(new PsiWhiteSpaceImpl("\n"), nextElement.getNode());
+        }
+    }
+
+    private static class RemoveJavaDocActionImpl extends WriteCommandAction {
+
+        private PsiElement element;
+
+        /**
+         * Instantiates a new Remove java doc action impl.
+         *
+         * @param element the element
+         */
+        protected RemoveJavaDocActionImpl(PsiElement element) {
+            super(
+                    element.getProject(),
+                    WRITE_JAVADOC_COMMAND_NAME,
+                    WRITE_JAVADOC_COMMAND_GROUP,
+                    element.getContainingFile());
+            this.element = element;
+        }
+
+        @Override
+        protected void run(@NotNull Result result) throws Throwable {
+            if (element.getFirstChild() instanceof PsiDocComment) {
+                element.getFirstChild().delete();
+            }
+            CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(element.getProject());
+            codeStyleManager.reformatNewlyAddedElement(element.getNode(), element.getFirstChild().getNode());
         }
     }
 }
