@@ -96,28 +96,28 @@
     </project-components>
 
     <actions>
-        <group id="com.github.setial.action" text="_JavaDocs" description="Generate JavaDocs" popup="true">
+        <group id="com.github.setial.action.file_content" text="_JavaDocs" description="Generate JavaDocs" popup="true">
             <separator/>
-            <action id="com.github.setial.intellijjavadocs.action.JavaDocGenerateAction"
+            <action id="com.github.setial.intellijjavadocs.action.JavaDocGenerateActionOnEditor"
                     class="com.github.setial.intellijjavadocs.action.JavaDocGenerateAction"
                     text="Create JavaDocs for the selected element"
                     description="Generate javadocs for the selected element.">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt G"/>
             </action>
-            <action id="com.github.setial.intellijjavadocs.action.JavaDocsGenerateAction"
+            <action id="com.github.setial.intellijjavadocs.action.JavaDocsGenerateActionOnEditor"
                     class="com.github.setial.intellijjavadocs.action.JavaDocsGenerateAction"
                     text="Create JavaDocs for all elements"
                     description="Generate javadocs for all elements in the current java file.">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt G"/>
             </action>
 
-            <action id="com.github.setial.intellijjavadocs.action.JavaDocRemoveAction"
+            <action id="com.github.setial.intellijjavadocs.action.JavaDocRemoveActionOnEditor"
                     class="com.github.setial.intellijjavadocs.action.JavaDocRemoveAction"
                     text="Remove JavaDocs for the selected element"
                     description="Remove javadocs for the selected element.">
                 <keyboard-shortcut keymap="$default" first-keystroke="shift alt Z"/>
             </action>
-            <action id="com.github.setial.intellijjavadocs.action.JavaDocsRemoveAction"
+            <action id="com.github.setial.intellijjavadocs.action.JavaDocsRemoveActionOnEditor"
                     class="com.github.setial.intellijjavadocs.action.JavaDocsRemoveAction"
                     text="Remove JavaDocs for all elements"
                     description="Remove javadocs for all elements in the current java file.">
@@ -125,6 +125,20 @@
             </action>
             <separator/>
             <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </group>
+        <group id="com.github.setial.action.file_tree" text="_JavaDocs" description="Generate JavaDocs" popup="true">
+            <action id="com.github.setial.intellijjavadocs.action.JavaDocsGenerateActionOnProject"
+                    class="com.github.setial.intellijjavadocs.action.JavaDocsGenerateAction"
+                    text="Create JavaDocs for all elements"
+                    description="Generate javadocs for all elements in the current java file.">
+            </action>
+            <action id="com.github.setial.intellijjavadocs.action.JavaDocsRemoveActionOnProject"
+                    class="com.github.setial.intellijjavadocs.action.JavaDocsRemoveAction"
+                    text="Remove JavaDocs for all elements"
+                    description="Remove javadocs for all elements in the current java file.">
+            </action>
+            <add-to-group group-id="CodeFormatGroup" anchor="last" />
+            <add-to-group group-id="ProjectViewPopupMenuModifyGroup" anchor="last" />
         </group>
     </actions>
 
