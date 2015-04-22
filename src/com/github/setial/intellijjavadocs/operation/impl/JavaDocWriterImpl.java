@@ -4,13 +4,16 @@ import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.application.RunResult;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler.OperationStatus;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
+import com.intellij.psi.util.PsiUtilBase;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -49,6 +52,13 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         if (status.hasReadonlyFiles()) {
             // TODO show error message
             // TODO stop execution
+        }
+
+        // perform all postponed operations on document
+        Editor editor = PsiUtilBase.findEditor(beforeElement.getContainingFile());
+        if (editor != null) {
+            PsiDocumentManager.getInstance(beforeElement.getProject())
+                    .doPostponedOperationsAndUnblockDocument(editor.getDocument());
         }
 
         WriteCommandAction command = new WriteJavaDocActionImpl(javaDoc, beforeElement);
