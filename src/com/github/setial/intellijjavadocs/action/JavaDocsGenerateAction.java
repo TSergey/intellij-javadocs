@@ -36,9 +36,9 @@ public class JavaDocsGenerateAction extends JavaDocGenerateAction implements Dum
         final PsiFile file = DataKeys.PSI_FILE.getData(e.getDataContext());
         DataContext dataContext = e.getDataContext();
 
-        final Project project = CommonDataKeys.PROJECT.getData(dataContext);
-        final Editor editor = CommonDataKeys.EDITOR.getData(dataContext);
-        final VirtualFile[] files = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
+        final Project project = PlatformDataKeys.PROJECT.getData(dataContext);
+        final Editor editor = PlatformDataKeys.EDITOR.getData(dataContext);
+        final VirtualFile[] files = PlatformDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
 
         if (editor != null && file != null) {
             processFile(file);
@@ -85,14 +85,14 @@ public class JavaDocsGenerateAction extends JavaDocGenerateAction implements Dum
         Presentation presentation = event.getPresentation();
         presentation.setEnabled(false);
         DataContext dataContext = event.getDataContext();
-        Project project = CommonDataKeys.PROJECT.getData(dataContext);
+        Project project = PlatformDataKeys.PROJECT.getData(dataContext);
         if (project == null){
             presentation.setEnabled(false);
             return;
         }
-        Editor editor = CommonDataKeys.EDITOR.getData(dataContext);
+        Editor editor = PlatformDataKeys.EDITOR.getData(dataContext);
 
-        final VirtualFile[] files = CommonDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
+        final VirtualFile[] files = PlatformDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
 
         if (editor != null) {
             PsiFile file = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
