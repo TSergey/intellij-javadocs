@@ -7,7 +7,7 @@ import com.github.setial.intellijjavadocs.utils.JavaDocUtils;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiEnumConstant;
 import com.intellij.psi.PsiField;
-import org.apache.velocity.Template;
+import freemarker.template.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -11,6 +11,11 @@
       ]]></description>
 
     <change-notes><![CDATA[
+        <h3>Changes in intellij-javadoc-1.0.13</h3>
+        <ul>
+            <li>Fix issue related to File Locked Exception</li>
+            <li>Change template engine to freemarker</li>
+        </ul>
         <h3>Changes in intellij-javadoc-1.0.12</h3>
         <ul>
             <li>Support of intellij idea 12 since build version 107.105 till the 132.102</li>

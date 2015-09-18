@@ -6,7 +6,7 @@ import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.utils.JavaDocUtils;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
-import org.apache.velocity.Template;
+import freemarker.template.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,179 +1,255 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
+
     <class>
+
         <template regexp="^.*(public|protected|private)*.+interface\s+\w+.*">
 /**\n
- * The interface $name.\n
+ * The interface ${name}.\n
+    &lt;#if element.typeParameters?has_content&gt;
+        * \n
+    &lt;/#if&gt;
 
-    #foreach($typeParameter in $element.typeParameters)
-        * @param &lt;$typeParameter.name&gt; the type parameter\n
-    #end
+    &lt;#list element.typeParameters as typeParameter&gt;
+
+        * @param &lt;${typeParameter.name}&gt; the type parameter\n
+    &lt;/#list&gt;
 
  */
         </template>
+
         <template regexp="^.*(public|protected|private)*.+enum\s+\w+.*">
 /**\n
- * The enum $name.\n
+ * The enum ${name}.\n
  */
         </template>
+
         <template regexp="^.*(public|protected|private)*.+class\s+\w+.*">
 /**\n
- * The type $name.\n
+ * The type ${name}.\n
+    &lt;#if element.typeParameters?has_content&gt;
+        * \n
+    &lt;/#if&gt;
 
-    #foreach($typeParameter in $element.typeParameters)
-        * @param &lt;$typeParameter.name&gt; the type parameter\n
-    #end
+    &lt;#list element.typeParameters as typeParameter&gt;
+
+        * @param &lt;${typeParameter.name}&gt; the type parameter\n
+    &lt;/#list&gt;
 
  */
         </template>
+
         <template regexp=".+">
 /**\n
- * The type $name.\n
+ * The type ${name}.\n
  */
         </template>
+
     </class>
 
+
     <field>
+
         <template regexp="^.*(public|protected|private)*.+static.*(\w\s\w)+.+">
 /**\n
- * The constant $element.getName().\n
+ * The constant ${element.getName()}.\n
  */
         </template>
+
         <template regexp="^.*(public|protected|private)*.*(\w\s\w)+.+">
 /**\n
- * The $name.\n
+ * The ${name}.\n
  */
         </template>
+
         <template regexp=".+">
 /**\n
- * The $name.\n
+ * The ${name}.\n
  */
         </template>
+
     </field>
 
+
     <method>
+
         <template regexp="^.*(public|protected|private)*\s*.*(\w(\s*&lt;.+&gt;)*)+\s+get\w+\s*\(.*\).+">
 /**\n
- * Gets $partName.\n
+ * Gets ${partName}.\n
+     &lt;#if element.typeParameters?has_content&gt;
+         * \n
+     &lt;/#if&gt;
 
-     #if(!$element.parameterList.parameters.isEmpty())
-         *\n
-     #end
-     #foreach($parameter in $element.parameterList.parameters)
-         * @param $parameter.name the $paramNames[$parameter.name]\n
-     #end
+     &lt;#list element.typeParameters as typeParameter&gt;
 
-     #if($isNotVoid)
-         *\n
-         * @return the $partName\n
-     #end
+         * @param &lt;${typeParameter.name}&gt; the type parameter\n
+     &lt;/#list&gt;
 
-     #if(!$element.throwsList.referenceElements.isEmpty())
+     &lt;#if element.parameterList.parameters?has_content&gt;
+
          *\n
-     #end
-     #foreach($exception in $element.throwsList.referenceElements)
-         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
-     #end
+     &lt;/#if&gt;
+
+     &lt;#list element.parameterList.parameters as parameter&gt;
+
+         * @param ${parameter.name} the ${paramNames[parameter.name]}\n
+     &lt;/#list&gt;
+
+     &lt;#if isNotVoid&gt;
+
+         *\n
+         * @return the ${partName}\n
+     &lt;/#if&gt;
+
+     &lt;#if element.throwsList.referenceElements?has_content&gt;
+
+         *\n
+     &lt;/#if&gt;
+
+     &lt;#list element.throwsList.referenceElements as exception&gt;
+
+         * @throws ${exception.referenceName} the ${exceptionNames[exception.referenceName]}\n
+     &lt;/#list&gt;
 
  */
         </template>
+
         <template regexp="^.*(public|protected|private)*\s*.*(void|\w(\s*&lt;.+&gt;)*)+\s+set\w+\s*\(.*\).+">
 /**\n
- * Sets $partName.\n
+ * Sets ${partName}.\n
+     &lt;#if element.typeParameters?has_content&gt;
+         * \n
+     &lt;/#if&gt;
 
-     #if(!$element.parameterList.parameters.isEmpty())
-         *\n
-     #end
-     #foreach($parameter in $element.parameterList.parameters)
-         * @param $parameter.name the $paramNames[$parameter.name]\n
-     #end
+     &lt;#list element.typeParameters as typeParameter&gt;
 
-     #if($isNotVoid)
-         *\n
-         * @return the $partName\n
-     #end
+         * @param &lt;${typeParameter.name}&gt; the type parameter\n
+     &lt;/#list&gt;
 
-     #if(!$element.throwsList.referenceElements.isEmpty())
+     &lt;#if element.parameterList.parameters?has_content&gt;
+
          *\n
-     #end
-     #foreach($exception in $element.throwsList.referenceElements)
-         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
-     #end
+     &lt;/#if&gt;
+
+     &lt;#list element.parameterList.parameters as parameter&gt;
+
+         * @param ${parameter.name} the ${paramNames[parameter.name]}\n
+     &lt;/#list&gt;
+
+     &lt;#if isNotVoid&gt;
+
+         *\n
+         * @return the ${partName}\n
+     &lt;/#if&gt;
+
+     &lt;#if element.throwsList.referenceElements?has_content&gt;
+
+         *\n
+     &lt;/#if&gt;
+
+     &lt;#list element.throwsList.referenceElements as exception&gt;
+
+         * @throws ${exception.referenceName} the ${exceptionNames[exception.referenceName]}\n
+     &lt;/#list&gt;
 
  */
         </template>
+
         <template regexp="^.*((public\s+static)|(static\s+public))\s+void\s+main\s*\(\s*String\s*(\[\s*\]|\.\.\.)\s+\w+\s*\).+">
 /**\n
  * The entry point of application.\n
 
-     #if(!$element.parameterList.parameters.isEmpty())
-         *\n
-     #end
+     &lt;#if element.parameterList.parameters?has_content&gt;
 
-     * @param $element.parameterList.parameters[0].name the input arguments\n
-
-     #if(!$element.throwsList.referenceElements.isEmpty())
          *\n
-     #end
-     #foreach($exception in $element.throwsList.referenceElements)
-         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
-     #end
+     &lt;/#if&gt;
+
+     * @param ${element.parameterList.parameters[0].name} the input arguments\n
+     &lt;#if element.throwsList.referenceElements?has_content&gt;
+
+         *\n
+     &lt;/#if&gt;
+
+     &lt;#list element.throwsList.referenceElements as exception&gt;
+
+         * @throws ${exception.referenceName} the ${exceptionNames[exception.referenceName]}\n
+     &lt;/#list&gt;
 
  */
         </template>
+
         <template regexp=".+">
 /**\n
- * $name#if($partName.isEmpty()) $return#end.\n
+ * ${name}&lt;#if !partName?has_content&gt; ${return}&lt;/#if&gt;.\n
+     &lt;#if element.typeParameters?has_content&gt;
+         * \n
+     &lt;/#if&gt;
 
-     #if(!$element.parameterList.parameters.isEmpty())
+     &lt;#list element.typeParameters as typeParameter&gt;
+
+         * @param &lt;${typeParameter.name}&gt; the type parameter\n
+     &lt;/#list&gt;
+
+     &lt;#if element.parameterList.parameters?has_content&gt;
+
          *\n
-     #end
+     &lt;/#if&gt;
 
-     #foreach($typeParameter in $element.typeParameters)
-         * @param &lt;$typeParameter.name&gt; the type parameter\n
-     #end
+     &lt;#list element.parameterList.parameters as parameter&gt;
 
-     #foreach($parameter in $element.parameterList.parameters)
-         * @param $parameter.name the $paramNames[$parameter.name]\n
-     #end
+         * @param ${parameter.name} the ${paramNames[parameter.name]}\n
+     &lt;/#list&gt;
 
-     #if($isNotVoid)
+     &lt;#if isNotVoid&gt;
+
          *\n
-         * @return the $return\n
-     #end
+         * @return the ${return}\n
+     &lt;/#if&gt;
 
-     #if(!$element.throwsList.referenceElements.isEmpty())
+     &lt;#if element.throwsList.referenceElements?has_content&gt;
+
          *\n
-     #end
-     #foreach($exception in $element.throwsList.referenceElements)
-         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
-     #end
+     &lt;/#if&gt;
+
+     &lt;#list element.throwsList.referenceElements as exception&gt;
+
+         * @throws ${exception.referenceName} the ${exceptionNames[exception.referenceName]}\n
+     &lt;/#list&gt;
 
  */
         </template>
+
     </method>
 
+
     <constructor>
+
         <template regexp=".+">
 /**\n
- * Instantiates a new $name.\n
+ * Instantiates a new ${name}.\n
+     &lt;#if element.parameterList.parameters?has_content&gt;
 
-     #if(!$element.parameterList.parameters.isEmpty())
          *\n
-     #end
-     #foreach($parameter in $element.parameterList.parameters)
-         * @param $parameter.name the $paramNames[$parameter.name]\n
-     #end
+     &lt;/#if&gt;
 
-     #if(!$element.throwsList.referenceElements.isEmpty())
+     &lt;#list element.parameterList.parameters as parameter&gt;
+
+         * @param ${parameter.name} the ${paramNames[parameter.name]}\n
+     &lt;/#list&gt;
+
+     &lt;#if element.throwsList.referenceElements?has_content&gt;
+
          *\n
-     #end
-     #foreach($exception in $element.throwsList.referenceElements)
-         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
-     #end
+     &lt;/#if&gt;
+
+     &lt;#list element.throwsList.referenceElements as exception&gt;
+
+         * @throws ${exception.referenceName} the ${exceptionNames[exception.referenceName]}\n
+     &lt;/#list&gt;
 
  */
         </template>
+
     </constructor>
 
 </templates>
