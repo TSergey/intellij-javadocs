@@ -4,7 +4,7 @@ import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiMethod;
-import org.apache.velocity.Template;
+import freemarker.template.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

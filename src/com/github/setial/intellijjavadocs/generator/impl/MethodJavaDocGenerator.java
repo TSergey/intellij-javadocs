@@ -10,8 +10,8 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.PsiTypeElement;
+import freemarker.template.Template;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.velocity.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

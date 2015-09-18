@@ -54,13 +54,6 @@ public class JavaDocWriterImpl implements JavaDocWriter {
             // TODO stop execution
         }
 
-        // perform all postponed operations on document
-        Editor editor = PsiUtilBase.findEditor(beforeElement.getContainingFile());
-        if (editor != null) {
-            PsiDocumentManager.getInstance(beforeElement.getProject())
-                    .doPostponedOperationsAndUnblockDocument(editor.getDocument());
-        }
-
         WriteCommandAction command = new WriteJavaDocActionImpl(javaDoc, beforeElement);
         RunResult result = command.execute();
 
@@ -115,14 +108,23 @@ public class JavaDocWriterImpl implements JavaDocWriter {
                 return;
             }
             if (element.getFirstChild() instanceof PsiDocComment) {
-                element.getFirstChild().replace(javaDoc);
+                replaceJavaDoc(element, javaDoc);
             } else {
-                element.getNode().addChild(javaDoc.getNode(), element.getFirstChild().getNode());
+                addJavaDoc(element, javaDoc);
             }
 
             ensureWhitespaceAfterJavaDoc(element);
-            CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(element.getProject());
-            codeStyleManager.reformatNewlyAddedElement(element.getNode(), element.getFirstChild().getNode());
+            reformatJavaDoc(element);
+        }
+
+        private void replaceJavaDoc(PsiElement theElement, PsiDocComment theJavaDoc) {
+            pushPostponedChanges(theElement);
+            theElement.getFirstChild().replace(theJavaDoc);
+        }
+
+        private void addJavaDoc(PsiElement theElement, PsiDocComment theJavaDoc) {
+            pushPostponedChanges(theElement);
+            theElement.getNode().addChild(theJavaDoc.getNode(), theElement.getFirstChild().getNode());
         }
 
         private void ensureWhitespaceAfterJavaDoc(PsiElement element) {
@@ -134,6 +136,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
             if (PsiWhiteSpace.class.isAssignableFrom(nextElement.getClass())) {
                 return;
             }
+            pushPostponedChanges(element);
             element.getNode().addChild(new PsiWhiteSpaceImpl("\n"), nextElement.getNode());
         }
     }
@@ -159,10 +162,24 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         @Override
         protected void run(@NotNull Result result) throws Throwable {
             if (element.getFirstChild() instanceof PsiDocComment) {
+                pushPostponedChanges(element);
                 element.getFirstChild().delete();
             }
-            CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(element.getProject());
-            codeStyleManager.reformatNewlyAddedElement(element.getNode(), element.getFirstChild().getNode());
+            reformatJavaDoc(element);
+        }
+    }
+
+    private static void reformatJavaDoc(PsiElement theElement) {
+        CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(theElement.getProject());
+        pushPostponedChanges(theElement);
+        codeStyleManager.reformatNewlyAddedElement(theElement.getNode(), theElement.getFirstChild().getNode());
+    }
+
+    private static void pushPostponedChanges(PsiElement element) {
+        Editor editor = PsiUtilBase.findEditor(element.getContainingFile());
+        if (editor != null) {
+            PsiDocumentManager.getInstance(element.getProject())
+                    .doPostponedOperationsAndUnblockDocument(editor.getDocument());
         }
     }
 }

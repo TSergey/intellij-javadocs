@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="http://setial.github.com/intellij-javadocs">
     <id>com.github.setial</id>
     <name>JavaDoc</name>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
         Sergey Timofiychuk
     </vendor>
@@ -11,6 +11,10 @@
       ]]></description>
 
     <change-notes><![CDATA[
+        <h3>Changes in intellij-javadoc-2.0.1</h3>
+        <ul>
+            <li>Fix issue related to File Locked Exception</li>
+        </ul>
         <h3>Changes in intellij-javadoc-2.0.0</h3>
         <ul>
             <li>Update support build versions (supported intellij idea build versions 132.102+)</li>

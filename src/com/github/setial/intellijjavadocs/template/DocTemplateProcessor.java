@@ -1,7 +1,7 @@
 package com.github.setial.intellijjavadocs.template;
 
 import com.intellij.openapi.components.ProjectComponent;
-import org.apache.velocity.Template;
+import freemarker.template.Template;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

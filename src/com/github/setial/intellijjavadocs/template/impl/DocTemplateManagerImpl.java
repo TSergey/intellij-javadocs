@@ -2,18 +2,18 @@ package com.github.setial.intellijjavadocs.template.impl;
 
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
-import com.github.setial.intellijjavadocs.template.logging.IntellijPluginLogSystem;
 import com.github.setial.intellijjavadocs.utils.XmlUtils;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.*;
-import org.apache.velocity.Template;
-import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.RuntimeInstance;
-import org.apache.velocity.runtime.RuntimeServices;
-import org.apache.velocity.runtime.parser.ParseException;
-import org.apache.velocity.runtime.parser.ParserConstants;
-import org.apache.velocity.runtime.parser.Token;
-import org.apache.velocity.runtime.parser.node.SimpleNode;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiClassType;
+import com.intellij.psi.PsiCodeBlock;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiModifierList;
+import freemarker.cache.StringTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,17 +49,18 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
     private Map<String, Template> methodTemplates = new LinkedHashMap<String, Template>();
     private Map<String, Template> constructorTemplates = new LinkedHashMap<String, Template>();
 
-    private final RuntimeServices velocityServices;
+    private Configuration config;
+    private StringTemplateLoader templateLoader;
 
     /**
      * Instantiates a new Doc template manager object.
      */
     public DocTemplateManagerImpl() {
-        velocityServices = new RuntimeInstance();
-        velocityServices.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM, new IntellijPluginLogSystem());
-        velocityServices.setProperty(IntellijPluginLogSystem.RUNTIME_LOG_LEVEL_KEY,
-                IntellijPluginLogSystem.WARN_LEVEL);
-        velocityServices.init();
+        config = new Configuration();
+        config.setDefaultEncoding("UTF-8");
+        config.setLocalizedLookup(false);
+        templateLoader = new StringTemplateLoader();
+        config.setTemplateLoader(templateLoader);
     }
 
     @Override
@@ -125,7 +128,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
     public Map<String, String> getClassTemplates() {
         Map<String, String> templates = new LinkedHashMap<String, String>();
         for (Entry<String, Template> entry : classTemplates.entrySet()) {
-            String template = extractTemplate(entry.getValue().getData());
+            String template = extractTemplate(entry.getValue());
             templates.put(entry.getKey(), template);
         }
         return templates;
@@ -136,7 +139,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
     public Map<String, String> getConstructorTemplates() {
         Map<String, String> templates = new LinkedHashMap<String, String>();
         for (Entry<String, Template> entry : constructorTemplates.entrySet()) {
-            String template = extractTemplate(entry.getValue().getData());
+            String template = extractTemplate(entry.getValue());
             templates.put(entry.getKey(), template);
         }
         return templates;
@@ -147,7 +150,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
     public Map<String, String> getMethodTemplates() {
         Map<String, String> templates = new LinkedHashMap<String, String>();
         for (Entry<String, Template> entry : methodTemplates.entrySet()) {
-            String template = extractTemplate(entry.getValue().getData());
+            String template = extractTemplate(entry.getValue());
             templates.put(entry.getKey(), template);
         }
         return templates;
@@ -158,7 +161,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
     public Map<String, String> getFieldTemplates() {
         Map<String, String> templates = new LinkedHashMap<String, String>();
         for (Entry<String, Template> entry : fieldTemplates.entrySet()) {
-            String template = extractTemplate(entry.getValue().getData());
+            String template = extractTemplate(entry.getValue());
             templates.put(entry.getKey(), template);
         }
         return templates;
@@ -166,32 +169,32 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
 
     @Override
     public void setClassTemplates(@NotNull Map<String, String> templates) {
-        setupTemplates(templates, classTemplates);
+        setupTemplates(templates, classTemplates, CLASS);
     }
 
     @Override
     public void setConstructorTemplates(@NotNull Map<String, String> templates) {
-        setupTemplates(templates, constructorTemplates);
+        setupTemplates(templates, constructorTemplates, CONSTRUCTOR);
     }
 
     @Override
     public void setMethodTemplates(@NotNull Map<String, String> templates) {
-        setupTemplates(templates, methodTemplates);
+        setupTemplates(templates, methodTemplates, METHOD);
     }
 
     @Override
     public void setFieldTemplates(@NotNull Map<String, String> templates) {
-        setupTemplates(templates, fieldTemplates);
+        setupTemplates(templates, fieldTemplates, FIELD);
     }
 
     private void readTemplates(Element document, String elementName, Map<String, Template> templates)
-            throws IOException, ParseException {
+            throws IOException {
         Element root = document.getChild(elementName);
         @SuppressWarnings("unchecked")
         List<Element> elements = root.getChildren(TEMPLATE);
         for (Element element : elements) {
             String name = element.getAttribute(REGEXP).getValue();
-            templates.put(name, createTemplate(name, XmlUtils.trimElementContent(element)));
+            templates.put(name, createTemplate(name, elementName, XmlUtils.trimElementContent(element)));
         }
     }
 
@@ -208,11 +211,11 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
         return result;
     }
 
-    private void setupTemplates(Map<String, String> from, Map<String, Template> to) {
+    private void setupTemplates(Map<String, String> from, Map<String, Template> to, String elementName) {
         Map<String, Template> result = new LinkedHashMap<String, Template>();
         for (Entry<String, String> entry : from.entrySet()) {
             try {
-                result.put(entry.getKey(), createTemplate(entry.getKey(), entry.getValue()));
+                result.put(entry.getKey(), createTemplate(entry.getKey(), elementName, entry.getValue()));
             } catch (Exception e) {
                 // TODO throw runtime exception and catch it at top level app
                 throw new RuntimeException(e);
@@ -265,25 +268,26 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
         return builder;
     }
 
-    private Template createTemplate(String templateRegexp, String templateContent) throws ParseException {
-        SimpleNode node = velocityServices.parse(templateContent, templateRegexp);
-        Template template = new Template();
-        template.setRuntimeServices(velocityServices);
-        template.setData(node);
-        template.setName(node.getTemplateName());
-        template.initDocument();
-        return template;
+    private Template createTemplate(String templateRegexp, String elementName, String templateContent) throws IOException {
+        String templateName = normalizeName(elementName + templateRegexp);
+        templateLoader.putTemplate(templateName, templateContent);
+        return config.getTemplate(templateName);
     }
 
-    private String extractTemplate(Object data) {
-        StringBuilder template = new StringBuilder();
+    private String normalizeName(String templateName) {
+        String result = templateName.replaceAll("\\*", "_");
+        result = result.replaceAll("\\.", "_");
+        return result;
+    }
 
-        Token token = ((SimpleNode) data).getFirstToken();
-        while (token != null && token.kind != ParserConstants.EOF) {
-            template.append(token.toString());
-            token = token.next;
+    private String extractTemplate(Template templateData) {
+        Writer writer = new StringWriter();
+        try {
+            templateData.dump(writer);
+        } catch (IOException e) {
+            return StringUtils.EMPTY;
         }
-        return template.toString();
+        return writer.toString();
     }
 
 }
