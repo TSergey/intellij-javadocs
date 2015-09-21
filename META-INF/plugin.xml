@@ -14,6 +14,7 @@
         <h3>Changes in intellij-javadoc-2.0.1</h3>
         <ul>
             <li>Fix issue related to File Locked Exception</li>
+            <li>Change template engine to freemarker</li>
         </ul>
         <h3>Changes in intellij-javadoc-2.0.0</h3>
         <ul>
