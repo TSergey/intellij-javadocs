@@ -180,7 +180,7 @@
 
         <template regexp=".+">
 /**\n
- * ${name}&lt;#if !partName?has_content&gt; ${return}&lt;/#if&gt;.\n
+ * ${name}&lt;#if isNotVoid&gt; ${return}&lt;/#if&gt;.\n
      &lt;#if element.typeParameters?has_content&gt;
          * \n
      &lt;/#if&gt;
