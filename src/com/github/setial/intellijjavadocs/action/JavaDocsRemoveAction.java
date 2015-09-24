@@ -21,6 +21,7 @@ public class JavaDocsRemoveAction extends JavaDocsGenerateAction {
         writer = ServiceManager.getService(JavaDocWriter.class);
     }
 
+    @Override
     protected void processElement(@NotNull PsiElement element) {
         writer.remove(element);
     }

@@ -3,7 +3,6 @@ package com.github.setial.intellijjavadocs.transformation;
 import com.github.setial.intellijjavadocs.model.JavaDoc;
 import com.github.setial.intellijjavadocs.model.JavaDocElements;
 import com.github.setial.intellijjavadocs.model.JavaDocTag;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -72,7 +71,7 @@ public class JavaDocBuilder {
      */
     public JavaDocBuilder addDescription(List<String> descriptions) {
         Iterator<String> iterator = descriptions.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             String description = iterator.next();
             if (isAcceptedDescription(description, iterator.hasNext())) {
                 builder.append(description);

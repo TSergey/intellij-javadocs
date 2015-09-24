@@ -87,10 +87,20 @@ public class GeneralSettings {
         this.overriddenMethods = overriddenMethods;
     }
 
+    /**
+     * Is splitted class name boolean.
+     *
+     * @return the boolean
+     */
     public boolean isSplittedClassName() {
         return splittedClassName;
     }
 
+    /**
+     * Sets splitted class name.
+     *
+     * @param splittedClassName the splitted class name
+     */
     public void setSplittedClassName(boolean splittedClassName) {
         this.splittedClassName = splittedClassName;
     }

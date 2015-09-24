@@ -7,16 +7,17 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.impl.source.javadoc.PsiDocMethodOrFieldRef;
 import com.intellij.psi.impl.source.javadoc.PsiDocParamRef;
+import com.intellij.psi.impl.source.javadoc.PsiDocTagValueImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.javadoc.PsiDocTag;
 import com.intellij.psi.javadoc.PsiDocTagValue;
-import com.intellij.psi.javadoc.PsiDocToken;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,6 +30,8 @@ import java.util.Map.Entry;
  * @author Sergey Timofiychuk
  */
 public class JavaDocUtils {
+
+    private static final List<String> MERGE_TAG_NAMES = Arrays.asList("param", "throws");
 
     /**
      * Convert java doc.
@@ -71,7 +74,7 @@ public class JavaDocUtils {
                     // the case when old tag exists
                     List<JavaDocTag> oldTagsEntry = oldTags.get(name);
                     JavaDocTag oldTag;
-                    if (!"param".equals(name)) {
+                    if (!MERGE_TAG_NAMES.contains(name)) {
                         oldTag = oldTagsEntry.get(0);
                     } else {
                         oldTag = findOldTag(oldTagsEntry, tag.getValue(), tag.getRefParam());
@@ -123,10 +126,13 @@ public class JavaDocUtils {
      */
     @NotNull
     public static JavaDocTag createJavaDocTag(@NotNull PsiDocTag docTag) {
+        String docTagRefParam = findDocTagRefParam(docTag);
+        String docTagValue = findDocTagValue(docTag);
+        List<String> docTagDescription = findDocTagDescription(docTag, docTagRefParam, docTagValue);
         return new JavaDocTag(
-                findDocTagRefParam(docTag),
-                findDocTagValue(docTag),
-                findDocTagDescription(docTag));
+                docTagRefParam,
+                docTagValue,
+                docTagDescription);
     }
 
     /**
@@ -218,18 +224,33 @@ public class JavaDocUtils {
     /**
      * Find doc tag description.
      *
-     * @param docTag the Doc tag
+     * @param docTag         the Doc tag
+     * @param docTagRefParam the doc tag ref param
+     * @param docTagValue    the doc tag value
      * @return the javadoc's tag descriptions
      */
     @NotNull
-    public static List<String> findDocTagDescription(@NotNull PsiDocTag docTag) {
+    public static List<String> findDocTagDescription(@NotNull PsiDocTag docTag, String docTagRefParam, String docTagValue) {
         List<String> descriptions = new LinkedList<String>();
-        for (PsiElement element : docTag.getDataElements()) {
-            if (element instanceof PsiDocToken) {
-                descriptions.add(element.getText());
-            }
+        List<PsiElement> elements = new LinkedList<PsiElement>(Arrays.asList(docTag.getDataElements()));
+        for (Iterator<PsiElement> iterator = elements.iterator(); iterator.hasNext(); ) {
+            PsiElement element = iterator.next();
+            removeValueIfAssignableType(docTagRefParam, PsiDocParamRef.class, iterator, element);
+            removeValueIfAssignableType(docTagValue, PsiDocTagValueImpl.class, iterator, element);
         }
+        StringBuilder descriptionBuilder = new StringBuilder();
+        for (PsiElement element : elements) {
+            descriptionBuilder.append(element.getText());
+        }
+        descriptions.add(descriptionBuilder.toString());
         return descriptions;
+    }
+
+    private static void removeValueIfAssignableType(String value, Class<? extends PsiElement> valueType,
+                                                    Iterator<PsiElement> iterator, PsiElement element) {
+        if (value != null && element.getClass().isAssignableFrom(valueType) && element.getText().equals(value)) {
+            iterator.remove();
+        }
     }
 
     /**
@@ -264,7 +285,7 @@ public class JavaDocUtils {
 
     private static boolean descriptionIsEmpty(List<String> description) {
         boolean result = true;
-        if(!CollectionUtils.isEmpty(description)) {
+        if (!CollectionUtils.isEmpty(description)) {
             for (String item : description) {
                 result = result && StringUtils.isBlank(item);
             }
@@ -272,6 +293,7 @@ public class JavaDocUtils {
         return result;
     }
 
-    private JavaDocUtils() {}
+    private JavaDocUtils() {
+    }
 
 }

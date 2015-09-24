@@ -7,6 +7,19 @@ package com.github.setial.intellijjavadocs.model.settings;
  */
 public enum Mode {
 
-    KEEP, UPDATE, REPLACE
+    /**
+     * Keep mode.
+     */
+    KEEP,
+
+    /**
+     * Update mode.
+     */
+    UPDATE,
+
+    /**
+     * Replace mode.
+     */
+    REPLACE
 
 }

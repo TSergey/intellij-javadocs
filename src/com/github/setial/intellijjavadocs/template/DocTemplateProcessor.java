@@ -32,8 +32,7 @@ public interface DocTemplateProcessor extends ProjectComponent {
     /**
      * Builds the description.
      *
-     *
-     * @param description the Description
+     * @param description     the Description
      * @param capitalizeFirst the flag shows whether first word should be capitalized
      * @return generated description
      */
@@ -49,5 +48,14 @@ public interface DocTemplateProcessor extends ProjectComponent {
      */
     @NotNull
     String buildPartialDescription(@NotNull String description);
+
+    /**
+     * Builds the description for the methods like getter, setter. The result will be a field name for get/set method.
+     *
+     * @param description the description
+     * @return generated description
+     */
+    @NotNull
+    String buildFieldDescription(@NotNull String description);
 
 }

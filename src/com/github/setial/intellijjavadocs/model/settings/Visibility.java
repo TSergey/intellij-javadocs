@@ -7,6 +7,24 @@ package com.github.setial.intellijjavadocs.model.settings;
  */
 public enum Visibility {
 
-    PUBLIC, PROTECTED, DEFAULT, PRIVATE
+    /**
+     * Public visibility.
+     */
+    PUBLIC,
+
+    /**
+     * Protected visibility.
+     */
+    PROTECTED,
+
+    /**
+     * Default visibility.
+     */
+    DEFAULT,
+
+    /**
+     * Private visibility.
+     */
+    PRIVATE
 
 }

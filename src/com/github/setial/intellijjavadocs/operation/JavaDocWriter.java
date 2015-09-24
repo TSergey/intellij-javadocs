@@ -12,7 +12,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface JavaDocWriter extends ApplicationComponent {
 
+    /**
+     * The constant WRITE_JAVADOC_COMMAND_NAME.
+     */
     String WRITE_JAVADOC_COMMAND_NAME = "JavaDocWriter";
+    /**
+     * The constant WRITE_JAVADOC_COMMAND_GROUP.
+     */
     String WRITE_JAVADOC_COMMAND_GROUP = "com.github.setial.operation";
 
     /**
