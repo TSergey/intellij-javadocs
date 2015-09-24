@@ -11,7 +11,14 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface JavaDocConfiguration extends ApplicationComponent {
 
-    String COMPONENT_VERSION = "2.0.1";
+    /**
+     * The constant COMPONENT_VERSION.
+     */
+    String COMPONENT_VERSION = "2.1.0";
+
+    /**
+     * The constant COMPONENT_NAME.
+     */
     String COMPONENT_NAME = "JavaDocConfiguration_" + COMPONENT_VERSION;
 
     /**

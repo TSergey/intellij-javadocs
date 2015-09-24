@@ -1,12 +1,25 @@
 package com.github.setial.intellijjavadocs.action;
 
 import com.intellij.ide.highlighter.JavaFileType;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.DumbAware;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiMethod;
 import com.intellij.psi.util.PsiTreeUtil;
 
 import java.util.LinkedList;
@@ -18,6 +31,8 @@ import java.util.List;
  * @author Sergey Timofiychuk
  */
 public class JavaDocsGenerateAction extends JavaDocGenerateAction implements DumbAware {
+
+    private static final Logger LOGGER = Logger.getInstance(JavaDocsGenerateAction.class);
 
     /**
      * Instantiates a new Java docs generate action.
@@ -33,6 +48,12 @@ public class JavaDocsGenerateAction extends JavaDocGenerateAction implements Dum
      */
     @Override
     public void actionPerformed(AnActionEvent e) {
+        DumbService dumbService = DumbService.getInstance(e.getProject());
+        if (dumbService.isDumb()) {
+            dumbService.showDumbModeNotification("Javadocs plugin is not available during indexing");
+            return;
+        }
+
         final PsiFile file = DataKeys.PSI_FILE.getData(e.getDataContext());
         DataContext dataContext = e.getDataContext();
 
@@ -45,7 +66,9 @@ public class JavaDocsGenerateAction extends JavaDocGenerateAction implements Dum
         } else if (project != null && files != null) {
             processFiles(files, project);
         } else {
-            // TODO show message
+            LOGGER.error("Cannot get com.intellij.openapi.editor.Editor, com.intellij.openapi.project.Project, " +
+                    "com.intellij.openapi.vfs.VirtualFile");
+            Messages.showErrorDialog("Javadocs plugin is not available", "Javadocs plugin");
         }
 
     }
@@ -86,7 +109,7 @@ public class JavaDocsGenerateAction extends JavaDocGenerateAction implements Dum
         presentation.setEnabled(false);
         DataContext dataContext = event.getDataContext();
         Project project = CommonDataKeys.PROJECT.getData(dataContext);
-        if (project == null){
+        if (project == null) {
             presentation.setEnabled(false);
             return;
         }
@@ -103,7 +126,8 @@ public class JavaDocsGenerateAction extends JavaDocGenerateAction implements Dum
                 presentation.setEnabled(true);
                 return;
             }
-        } if (files!= null && containsJavaFiles(files)) {
+        }
+        if (files != null && containsJavaFiles(files)) {
             presentation.setEnabled(true);
             return;
         }

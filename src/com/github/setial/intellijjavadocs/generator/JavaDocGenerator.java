@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * The interface Java doc generator.
  *
+ * @param <T> the type parameter
  * @author Sergey Timofiychuk
  */
 public interface JavaDocGenerator<T extends PsiElement> {

@@ -1,21 +1,28 @@
 package com.github.setial.intellijjavadocs.configuration.impl;
 
 import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
+import com.github.setial.intellijjavadocs.exception.SetupTemplateException;
 import com.github.setial.intellijjavadocs.model.settings.JavaDocSettings;
 import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.model.settings.Mode;
 import com.github.setial.intellijjavadocs.model.settings.Visibility;
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.ui.settings.ConfigPanel;
-import com.intellij.openapi.components.*;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.StoragePathMacros;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.ui.Messages;
 import org.jdom.Element;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,6 +43,8 @@ import java.util.Set;
 public class JavaDocConfigurationImpl implements JavaDocConfiguration, Configurable,
         PersistentStateComponent<Element> {
 
+    private static final Logger LOGGER = Logger.getInstance(JavaDocConfigurationImpl.class);
+
     private JavaDocSettings settings;
     private ConfigPanel configPanel;
     private DocTemplateManager templateManager;
@@ -43,7 +52,6 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, Configura
 
     /**
      * Instantiates a new Java doc configuration object.
-     *
      */
     public JavaDocConfigurationImpl() {
         templateManager = ServiceManager.getService(DocTemplateManager.class);
@@ -166,10 +174,15 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, Configura
     }
 
     private void setupTemplates() {
-        templateManager.setClassTemplates(settings.getTemplateSettings().getClassTemplates());
-        templateManager.setConstructorTemplates(settings.getTemplateSettings().getConstructorTemplates());
-        templateManager.setMethodTemplates(settings.getTemplateSettings().getMethodTemplates());
-        templateManager.setFieldTemplates(settings.getTemplateSettings().getFieldTemplates());
+        try {
+            templateManager.setClassTemplates(settings.getTemplateSettings().getClassTemplates());
+            templateManager.setConstructorTemplates(settings.getTemplateSettings().getConstructorTemplates());
+            templateManager.setMethodTemplates(settings.getTemplateSettings().getMethodTemplates());
+            templateManager.setFieldTemplates(settings.getTemplateSettings().getFieldTemplates());
+        } catch (SetupTemplateException e) {
+            LOGGER.error(e);
+            Messages.showErrorDialog("Javadocs plugin is not available, cause: " + e.getMessage(), "Javadocs plugin");
+        }
     }
 
 }

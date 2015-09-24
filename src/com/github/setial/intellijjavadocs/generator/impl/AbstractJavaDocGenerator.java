@@ -27,6 +27,7 @@ import java.util.Map;
 /**
  * The type Abstract java doc generator.
  *
+ * @param <T> the type parameter
  * @author Sergey Timofiychuk
  */
 public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements JavaDocGenerator<T> {
@@ -112,6 +113,11 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
         return psiElementFactory;
     }
 
+    /**
+     * Gets settings.
+     *
+     * @return the settings
+     */
     @NotNull
     protected JavaDocConfiguration getSettings() {
         return settings;

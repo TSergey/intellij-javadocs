@@ -7,6 +7,18 @@ package com.github.setial.intellijjavadocs.model.settings;
  */
 public enum Level {
 
-    TYPE, METHOD, FIELD
+    /**
+     * Type level.
+     */
+    TYPE,
 
+    /**
+     * Method level.
+     */
+    METHOD,
+
+    /**
+     * Field level.
+     */
+    FIELD
 }

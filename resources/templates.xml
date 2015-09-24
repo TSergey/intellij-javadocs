@@ -58,14 +58,26 @@
 
         <template regexp="^.*(public|protected|private)*.*(\w\s\w)+.+">
 /**\n
- * The ${name}.\n
+    &lt;#if element.parent.isInterface()&gt;
+
+        * The constant ${element.getName()}.\n
+    &lt;#else&gt;
+
+        * The ${name}.\n
+    &lt;/#if&gt;
  */
         </template>
 
         <template regexp=".+">
 /**\n
- * The ${name}.\n
- */
+    &lt;#if element.parent.isEnum()&gt;
+
+        *${name} ${typeName}.\n
+    &lt;#else&gt;
+
+        * The ${name}.\n
+    &lt;/#if&gt;
+*/
         </template>
 
     </field>

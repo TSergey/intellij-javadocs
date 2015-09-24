@@ -1,5 +1,6 @@
 package com.github.setial.intellijjavadocs.action;
 
+import com.github.setial.intellijjavadocs.exception.TemplateNotFoundException;
 import com.github.setial.intellijjavadocs.generator.JavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.ClassJavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.FieldJavaDocGenerator;
@@ -9,9 +10,16 @@ import com.intellij.codeInsight.CodeInsightActionHandler;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.openapi.ui.Messages;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiMethod;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilCore;
@@ -27,6 +35,8 @@ import java.util.List;
  * @author Sergey Timofiychuk
  */
 public class JavaDocGenerateAction extends BaseAction {
+
+    private static final Logger LOGGER = Logger.getInstance(JavaDocGenerateAction.class);
 
     private JavaDocWriter writer;
 
@@ -54,16 +64,24 @@ public class JavaDocGenerateAction extends BaseAction {
      */
     @Override
     public void actionPerformed(AnActionEvent e) {
+        DumbService dumbService = DumbService.getInstance(e.getProject());
+        if (dumbService.isDumb()) {
+            dumbService.showDumbModeNotification("Javadocs plugin is not available during indexing");
+            return;
+        }
+
         Editor editor = DataKeys.EDITOR.getData(e.getDataContext());
         if (editor == null) {
-            // TODO show message
+            LOGGER.error("Cannot get com.intellij.openapi.editor.Editor");
+            Messages.showErrorDialog("Javadocs plugin is not available", "Javadocs plugin");
             return;
         }
         int startPosition = editor.getSelectionModel().getSelectionStart();
         int endPosition = editor.getSelectionModel().getSelectionEnd();
         PsiFile file = DataKeys.PSI_FILE.getData(e.getDataContext());
         if (file == null) {
-            // TODO show message
+            LOGGER.error("Cannot get com.intellij.psi.PsiFile");
+            Messages.showErrorDialog("Javadocs plugin is not available", "Javadocs plugin");
             return;
         }
         List<PsiElement> elements = new LinkedList<PsiElement>();
@@ -93,10 +111,15 @@ public class JavaDocGenerateAction extends BaseAction {
     protected void processElement(@NotNull PsiElement element) {
         JavaDocGenerator generator = getGenerator(element);
         if (generator != null) {
-            @SuppressWarnings("unchecked")
-            PsiDocComment javaDoc = generator.generate(element);
-            if (javaDoc != null) {
-                writer.write(javaDoc, element);
+            try {
+                @SuppressWarnings("unchecked")
+                PsiDocComment javaDoc = generator.generate(element);
+                if (javaDoc != null) {
+                    writer.write(javaDoc, element);
+                }
+            } catch (TemplateNotFoundException e) {
+                LOGGER.warn(e);
+                Messages.showWarningDialog("Javadocs plugin is not available. Can not find suitable template", "Javadocs plugin");
             }
         }
     }

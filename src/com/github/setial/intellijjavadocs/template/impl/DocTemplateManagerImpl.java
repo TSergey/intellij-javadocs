@@ -1,5 +1,7 @@
 package com.github.setial.intellijjavadocs.template.impl;
 
+import com.github.setial.intellijjavadocs.exception.SetupTemplateException;
+import com.github.setial.intellijjavadocs.exception.TemplateNotFoundException;
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
 import com.github.setial.intellijjavadocs.utils.XmlUtils;
@@ -36,6 +38,8 @@ import java.util.regex.Pattern;
  */
 public class DocTemplateManagerImpl implements DocTemplateManager {
 
+    private static final Logger LOGGER = Logger.getInstance(DocTemplateManagerImpl.class);
+
     private static final String TEMPLATES_PATH = "/templates.xml";
     private static final String TEMPLATE = "template";
     private static final String REGEXP = "regexp";
@@ -56,10 +60,10 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
      * Instantiates a new Doc template manager object.
      */
     public DocTemplateManagerImpl() {
+        templateLoader = new StringTemplateLoader();
         config = new Configuration();
         config.setDefaultEncoding("UTF-8");
         config.setLocalizedLookup(false);
-        templateLoader = new StringTemplateLoader();
         config.setTemplateLoader(templateLoader);
     }
 
@@ -76,7 +80,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
                 readTemplates(root, CONSTRUCTOR, constructorTemplates);
             }
         } catch (Exception e) {
-            Logger.getInstance(DocTemplateManagerImpl.class).error(e);
+            LOGGER.error(e);
         }
     }
 
@@ -207,7 +211,9 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
                 break;
             }
         }
-        // TODO throw exception if not found template and show a message.
+        if (result == null) {
+            throw new TemplateNotFoundException();
+        }
         return result;
     }
 
@@ -217,8 +223,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
             try {
                 result.put(entry.getKey(), createTemplate(entry.getKey(), elementName, entry.getValue()));
             } catch (Exception e) {
-                // TODO throw runtime exception and catch it at top level app
-                throw new RuntimeException(e);
+                throw new SetupTemplateException(e);
             }
         }
         to.clear();
@@ -270,6 +275,9 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
 
     private Template createTemplate(String templateRegexp, String elementName, String templateContent) throws IOException {
         String templateName = normalizeName(elementName + templateRegexp);
+        if (templateLoader.findTemplateSource(templateName) != null) {
+            config.clearTemplateCache();
+        }
         templateLoader.putTemplate(templateName, templateContent);
         return config.getTemplate(templateName);
     }

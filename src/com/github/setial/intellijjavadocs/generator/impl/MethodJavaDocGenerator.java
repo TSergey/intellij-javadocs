@@ -62,7 +62,7 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
         }
         params.put("paramNames", paramNames);
         params.put("exceptionNames", exceptionNames);
-
+        params.put("fieldName", getDocTemplateProcessor().buildFieldDescription(element.getName()));
 
         String javaDocText = getDocTemplateProcessor().merge(template, params);
         return JavaDocUtils.toJavaDoc(javaDocText, getPsiElementFactory());

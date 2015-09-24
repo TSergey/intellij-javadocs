@@ -7,11 +7,7 @@ import com.intellij.psi.PsiClass;
 /**
  * The type Base action.
  *
- * <p>
- * Copyright (C) 2014 copyright.com
- * </p>
- *
- * @author Sergiy Tymofiychuk
+ * @author Sergey Timofiychuk
  */
 public class BaseAction extends BaseGenerateAction {
 

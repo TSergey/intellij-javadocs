@@ -54,7 +54,7 @@ public class XmlUtils {
     /**
      * Gets element.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @return the element
      */
@@ -68,8 +68,8 @@ public class XmlUtils {
      * Gets element.
      *
      * @param nameParent the name parent
-     * @param nameChild the name child
-     * @param values the values
+     * @param nameChild  the name child
+     * @param values     the values
      * @return the element
      */
     public static Element getElement(String nameParent, String nameChild, Collection<?> values) {
@@ -84,8 +84,8 @@ public class XmlUtils {
      * Gets element.
      *
      * @param nameParent the name parent
-     * @param nameChild the name child
-     * @param values the values
+     * @param nameChild  the name child
+     * @param values     the values
      * @return the element
      */
     public static Element getElement(String nameParent, String nameChild, Map<String, String> values) {
@@ -102,9 +102,10 @@ public class XmlUtils {
     /**
      * Gets value.
      *
+     * @param <T>     the type parameter
      * @param element the element
-     * @param name the name
-     * @param type the type
+     * @param name    the name
+     * @param type    the type
      * @return the value
      */
     public static <T extends Enum<T>> T getValue(Element element, String name, Class<T> type) {
@@ -122,10 +123,11 @@ public class XmlUtils {
     /**
      * Gets values.
      *
-     * @param element the element
+     * @param <T>        the type parameter
+     * @param element    the element
      * @param parentName the parent name
-     * @param childName the child name
-     * @param type the type
+     * @param childName  the child name
+     * @param type       the type
      * @return the values
      */
     public static <T extends Enum<T>> Set<T> getValues(Element element, String parentName, String childName, Class<T> type) {
@@ -144,9 +146,9 @@ public class XmlUtils {
     /**
      * Gets values.
      *
-     * @param element the element
+     * @param element    the element
      * @param parentName the parent name
-     * @param childName the child name
+     * @param childName  the child name
      * @return the values
      */
     public static Set<Element> getValues(Element element, String parentName, String childName) {
@@ -163,9 +165,9 @@ public class XmlUtils {
     /**
      * Gets map.
      *
-     * @param root the root
+     * @param root       the root
      * @param parentName the parent name
-     * @param childName the child name
+     * @param childName  the child name
      * @return the map
      */
     public static Map<String, String> getMap(Element root, String parentName, String childName) {
@@ -179,6 +181,7 @@ public class XmlUtils {
         return result;
     }
 
-    private XmlUtils() {}
+    private XmlUtils() {
+    }
 
 }

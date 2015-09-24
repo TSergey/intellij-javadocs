@@ -1,14 +1,19 @@
 package com.github.setial.intellijjavadocs.operation.impl;
 
+import com.github.setial.intellijjavadocs.exception.FileNotValidException;
+import com.github.setial.intellijjavadocs.exception.NotFoundElementException;
 import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.application.RunResult;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler.OperationStatus;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
@@ -16,7 +21,7 @@ import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiUtilBase;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * The type Java doc writer impl.
@@ -29,6 +34,8 @@ public class JavaDocWriterImpl implements JavaDocWriter {
      * The constant COMPONENT_NAME.
      */
     public static final String COMPONENT_NAME = "JavaDocWriter";
+
+    private static final Logger LOGGER = Logger.getInstance(JavaDocWriterImpl.class);
 
     @Override
     public void initComponent() {
@@ -47,32 +54,38 @@ public class JavaDocWriterImpl implements JavaDocWriter {
 
     @Override
     public void write(@NotNull PsiDocComment javaDoc, @NotNull PsiElement beforeElement) {
-        OperationStatus status = ReadonlyStatusHandler.getInstance(beforeElement.getProject()).
-                ensureFilesWritable(Arrays.asList(beforeElement.getContainingFile().getVirtualFile()));
-        if (status.hasReadonlyFiles()) {
-            // TODO show error message
-            // TODO stop execution
+        try {
+            checkFilesAccess(beforeElement);
+        } catch (FileNotValidException e) {
+            LOGGER.error(e.getMessage());
+            Messages.showErrorDialog("Javadocs plugin is not available, cause: " + e.getMessage(), "Javadocs plugin");
+            return;
         }
 
         WriteCommandAction command = new WriteJavaDocActionImpl(javaDoc, beforeElement);
         RunResult result = command.execute();
-
-        // TODO check result and show warning if there was some errors
+        if (result.hasException()) {
+            LOGGER.error(result.getThrowable());
+            Messages.showErrorDialog("Javadocs plugin is not available, cause: " + result.getThrowable().getMessage(), "Javadocs plugin");
+        }
     }
 
     @Override
     public void remove(@NotNull PsiElement beforeElement) {
-        OperationStatus status = ReadonlyStatusHandler.getInstance(beforeElement.getProject()).
-                ensureFilesWritable(Arrays.asList(beforeElement.getContainingFile().getVirtualFile()));
-        if (status.hasReadonlyFiles()) {
-            // TODO show error message
-            // TODO stop execution
+        try {
+            checkFilesAccess(beforeElement);
+        } catch (FileNotValidException e) {
+            LOGGER.error(e);
+            Messages.showErrorDialog("Javadocs plugin is not available, cause: " + e.getMessage(), "Javadocs plugin");
+            return;
         }
 
         WriteCommandAction command = new RemoveJavaDocActionImpl(beforeElement);
         RunResult result = command.execute();
-
-        // TODO check result and show warning if there was some errors
+        if (result.hasException()) {
+            LOGGER.error(result.getThrowable());
+            Messages.showErrorDialog("Javadocs plugin is not available, cause: " + result.getThrowable().getMessage(), "Javadocs plugin");
+        }
     }
 
     /**
@@ -104,7 +117,6 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         @Override
         protected void run(@NotNull Result result) throws Throwable {
             if (javaDoc == null) {
-                // TODO create result object
                 return;
             }
             if (element.getFirstChild() instanceof PsiDocComment) {
@@ -112,22 +124,12 @@ public class JavaDocWriterImpl implements JavaDocWriter {
             } else {
                 addJavaDoc(element, javaDoc);
             }
-
             ensureWhitespaceAfterJavaDoc(element);
             reformatJavaDoc(element);
         }
 
-        private void replaceJavaDoc(PsiElement theElement, PsiDocComment theJavaDoc) {
-            pushPostponedChanges(theElement);
-            theElement.getFirstChild().replace(theJavaDoc);
-        }
-
-        private void addJavaDoc(PsiElement theElement, PsiDocComment theJavaDoc) {
-            pushPostponedChanges(theElement);
-            theElement.getNode().addChild(theJavaDoc.getNode(), theElement.getFirstChild().getNode());
-        }
-
         private void ensureWhitespaceAfterJavaDoc(PsiElement element) {
+            // this method is required to create well formatted javadocs in enums
             PsiElement firstChild = element.getFirstChild();
             if (!PsiDocComment.class.isAssignableFrom(firstChild.getClass())) {
                 return;
@@ -162,17 +164,52 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         @Override
         protected void run(@NotNull Result result) throws Throwable {
             if (element.getFirstChild() instanceof PsiDocComment) {
-                pushPostponedChanges(element);
-                element.getFirstChild().delete();
+                deleteJavaDoc(this.element);
             }
-            reformatJavaDoc(element);
         }
+
+    }
+
+    private static void deleteJavaDoc(PsiElement theElement) {
+        pushPostponedChanges(theElement);
+        theElement.getFirstChild().delete();
+    }
+
+    private static void addJavaDoc(PsiElement theElement, PsiDocComment theJavaDoc) {
+        pushPostponedChanges(theElement);
+        theElement.getNode().addChild(theJavaDoc.getNode(), theElement.getFirstChild().getNode());
+    }
+
+    private static void replaceJavaDoc(PsiElement theElement, PsiDocComment theJavaDoc) {
+        deleteJavaDoc(theElement);
+        addJavaDoc(theElement, theJavaDoc);
     }
 
     private static void reformatJavaDoc(PsiElement theElement) {
         CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(theElement.getProject());
         pushPostponedChanges(theElement);
-        codeStyleManager.reformatNewlyAddedElement(theElement.getNode(), theElement.getFirstChild().getNode());
+        try {
+            int javadocTextOffset = findJavaDocTextOffset(theElement);
+            int javaCodeTextOffset = findJavaCodeTextOffset(theElement);
+            codeStyleManager.reformatText(theElement.getContainingFile(), javadocTextOffset, javaCodeTextOffset + 1);
+        } catch (NotFoundElementException e) {
+            LOGGER.info("Could not reformat javadoc since cannot find required elements", e);
+        }
+    }
+
+    private static int findJavaDocTextOffset(PsiElement theElement) {
+        PsiElement javadocElement = theElement.getFirstChild();
+        if (!(javadocElement instanceof PsiDocComment)) {
+            throw new NotFoundElementException("Cannot find element of type PsiDocComment");
+        }
+        return javadocElement.getTextOffset();
+    }
+
+    private static int findJavaCodeTextOffset(PsiElement theElement) {
+        if (theElement.getChildren().length < 2) {
+            throw new NotFoundElementException("Can not find offset of java code");
+        }
+        return theElement.getChildren()[1].getTextOffset();
     }
 
     private static void pushPostponedChanges(PsiElement element) {
@@ -180,6 +217,18 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         if (editor != null) {
             PsiDocumentManager.getInstance(element.getProject())
                     .doPostponedOperationsAndUnblockDocument(editor.getDocument());
+        }
+    }
+
+    private void checkFilesAccess(@NotNull PsiElement beforeElement) {
+        PsiFile containingFile = beforeElement.getContainingFile();
+        if (containingFile == null || !containingFile.isValid()) {
+            throw new FileNotValidException("File cannot be used to generate javadocs");
+        }
+        OperationStatus status = ReadonlyStatusHandler.getInstance(beforeElement.getProject()).
+                ensureFilesWritable(Collections.singletonList(containingFile.getVirtualFile()));
+        if (status.hasReadonlyFiles()) {
+            throw new FileNotValidException(status.getReadonlyFilesMessage());
         }
     }
 }
