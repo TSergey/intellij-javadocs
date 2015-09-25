@@ -14,11 +14,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="IntelliJ IDEA IU-129.1525 (idea_12.1.7)" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.apache.commons:commons-lang3:3.1" level="project" />
     <orderEntry type="library" name="commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="commons-beanutils:commons-beanutils:1.8.3" level="project" />
   </component>
 </module>
-
