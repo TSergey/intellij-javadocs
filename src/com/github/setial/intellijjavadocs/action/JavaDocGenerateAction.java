@@ -26,6 +26,7 @@ import com.intellij.psi.util.PsiUtilCore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -119,7 +120,9 @@ public class JavaDocGenerateAction extends BaseAction {
                 }
             } catch (TemplateNotFoundException e) {
                 LOGGER.warn(e);
-                Messages.showWarningDialog("Javadocs plugin is not available. Can not find suitable template", "Javadocs plugin");
+                String message = "Javadocs plugin is not available. Can not find suitable template for the element:\n{0}";
+                Messages.showWarningDialog(MessageFormat.format(message, e.getMessage()),
+                        "Javadocs plugin");
             }
         }
     }

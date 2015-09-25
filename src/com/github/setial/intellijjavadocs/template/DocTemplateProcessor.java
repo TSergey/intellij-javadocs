@@ -27,7 +27,7 @@ public interface DocTemplateProcessor extends ProjectComponent {
      * @return the String
      */
     @NotNull
-    String merge(@Nullable Template template, @NotNull Map<String, Object> params);
+    String merge(@NotNull Template template, @NotNull Map<String, Object> params);
 
     /**
      * Builds the description.

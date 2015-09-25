@@ -48,11 +48,7 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor {
 
     @NotNull
     @Override
-    public String merge(@Nullable Template template, @NotNull Map<String, Object> params) {
-        if (template == null) {
-            throw new TemplateNotFoundException();
-        }
-
+    public String merge(@NotNull Template template, @NotNull Map<String, Object> params) {
         StringWriter writer = new StringWriter();
         try {
             template.process(params, writer);
