@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class DocTemplateProcessorImpl implements DocTemplateProcessor {
 
-    private static final List<String> SPECIAL_SYMBOLS = Arrays.asList("_", "-");
+    private static final List<String> SPECIAL_SYMBOLS = Arrays.asList("_", "$");
 
     @Override
     public void projectOpened() {
