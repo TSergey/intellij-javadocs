@@ -212,7 +212,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
             }
         }
         if (result == null) {
-            throw new TemplateNotFoundException();
+            throw new TemplateNotFoundException(elementText);
         }
         return result;
     }
