@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="http://setial.github.com/intellij-javadocs">
     <id>com.github.setial</id>
     <name>JavaDoc</name>
-    <version>2.1.0</version>
+    <version>3.1.0</version>
     <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
         Sergey Timofiychuk
     </vendor>
@@ -11,6 +11,10 @@
       ]]></description>
 
     <change-notes><![CDATA[
+        <h3>Changes in intellij-javadoc-3.1.0</h3>
+        <ul>
+            <li>Add freemarker lib to plugin</li>
+        </ul>
         <h3>Changes in intellij-javadoc-2.1.0</h3>
         <ul>
             <li>Fix issue related to File Locked Exception</li>
@@ -87,7 +91,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="132.102"/>
+    <idea-version since-build="142.4783"/>
 
     <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->
