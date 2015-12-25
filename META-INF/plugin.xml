@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="http://setial.github.com/intellij-javadocs">
     <id>com.github.setial</id>
     <name>JavaDoc</name>
-    <version>2.1.1</version>
+    <version>2.1.2</version>
     <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
         Sergey Timofiychuk
     </vendor>
@@ -11,6 +11,10 @@
       ]]></description>
 
     <change-notes><![CDATA[
+        <h3>Changes in intellij-javadoc-2.1.2</h3>
+        <ul>
+            <li>Update freemarker version to most recent</li>
+        </ul>
         <h3>Changes in intellij-javadoc-2.1.1</h3>
         <ul>
             <li>Update supports intellij-idea versions (supports only 14.x versions)</li>
