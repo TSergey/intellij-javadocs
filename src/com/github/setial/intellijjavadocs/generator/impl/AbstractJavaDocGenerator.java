@@ -148,6 +148,10 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
         params.put("name", getDocTemplateProcessor().buildDescription(element.getName(), true));
         params.put("partName", getDocTemplateProcessor().buildPartialDescription(element.getName()));
         params.put("splitNames", StringUtils.splitByCharacterTypeCamelCase(element.getName()));
+        PathMacros macros = PathMacros.getInstance();
+        for (String name : macros.getUserMacroNames()) {
+            params.put("path" + name, macros.getValue(name));
+        }
         return params;
     }
 
