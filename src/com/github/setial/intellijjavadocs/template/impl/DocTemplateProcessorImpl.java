@@ -1,13 +1,10 @@
 package com.github.setial.intellijjavadocs.template.impl;
 
 import com.github.setial.intellijjavadocs.exception.SetupTemplateException;
-import com.github.setial.intellijjavadocs.exception.TemplateNotFoundException;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
 import com.github.setial.intellijjavadocs.utils.XmlUtils;
-import freemarker.template.Template;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -48,7 +45,7 @@ public class DocTemplateProcessorImpl implements DocTemplateProcessor {
 
     @NotNull
     @Override
-    public String merge(@NotNull Template template, @NotNull Map<String, Object> params) {
+    public String merge(@NotNull freemarker.template.Template template, @NotNull Map<String, Object> params) {
         StringWriter writer = new StringWriter();
         try {
             template.process(params, writer);

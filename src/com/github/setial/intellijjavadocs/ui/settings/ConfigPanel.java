@@ -21,7 +21,8 @@ import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 import java.util.Map.Entry;
 
 /**
@@ -56,6 +57,7 @@ public class ConfigPanel extends JPanel {
     private TemplatesTable constructorTemplatesTable;
     private TemplatesTable methodTemplatesTable;
     private TemplatesTable fieldTemplatesTable;
+    private TemplatesTable variablesTable;
 
     /**
      * Instantiates a new Config panel.
@@ -108,6 +110,8 @@ public class ConfigPanel extends JPanel {
                 settings.getTemplateSettings().getMethodTemplates());
         result = result || checkIfTableContentModified(fieldTemplatesTable.getSettings(),
                 settings.getTemplateSettings().getFieldTemplates());
+        result = result || checkIfTableContentModified(variablesTable.getSettings(),
+                settings.getTemplateSettings().getVariables());
 
         return result;
     }
@@ -158,6 +162,7 @@ public class ConfigPanel extends JPanel {
         settings.getTemplateSettings().setConstructorTemplates(constructorTemplatesTable.getSettings());
         settings.getTemplateSettings().setMethodTemplates(methodTemplatesTable.getSettings());
         settings.getTemplateSettings().setFieldTemplates(fieldTemplatesTable.getSettings());
+        settings.getTemplateSettings().setVariables(variablesTable.getSettings());
     }
 
     /**
@@ -213,6 +218,7 @@ public class ConfigPanel extends JPanel {
         constructorTemplatesTable.setSettingsModel(settings.getTemplateSettings().getConstructorTemplates());
         methodTemplatesTable.setSettingsModel(settings.getTemplateSettings().getMethodTemplates());
         fieldTemplatesTable.setSettingsModel(settings.getTemplateSettings().getFieldTemplates());
+        variablesTable.setSettingsModel(settings.getTemplateSettings().getVariables());
     }
 
     /**
@@ -257,13 +263,16 @@ public class ConfigPanel extends JPanel {
     }
 
     private void setupTemplatesPanel() {
-        classTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getClassTemplates());
+        List<String> defaultColumnNames = Arrays.asList(new String[]{"Regular expression", "Preview"});
+        List<String> variablesColumnNames = Arrays.asList(new String[]{"Key", "Value"});
+
+        classTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getClassTemplates(), defaultColumnNames);
         JPanel classTemplatesLocalPanel = ToolbarDecorator.createDecorator(classTemplatesTable).createPanel();
         JPanel classPanel = new JPanel(new BorderLayout());
         classPanel.setBorder(IdeBorderFactory.createTitledBorder("Class level", false, new Insets(0, 0, 10, 0)));
         classPanel.add(classTemplatesLocalPanel, BorderLayout.CENTER);
 
-        constructorTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getConstructorTemplates());
+        constructorTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getConstructorTemplates(), defaultColumnNames);
         JPanel constructorTemplatesLocalPanel =
                 ToolbarDecorator.createDecorator(constructorTemplatesTable).createPanel();
         JPanel constructorPanel = new JPanel(new BorderLayout());
@@ -271,25 +280,32 @@ public class ConfigPanel extends JPanel {
                 new Insets(0, 0, 10, 0)));
         constructorPanel.add(constructorTemplatesLocalPanel, BorderLayout.CENTER);
 
-        methodTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getMethodTemplates());
+        methodTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getMethodTemplates(), defaultColumnNames);
         JPanel methodTemplatesLocalPanel = ToolbarDecorator.createDecorator(methodTemplatesTable).createPanel();
         JPanel methodPanel = new JPanel(new BorderLayout());
         methodPanel.setBorder(IdeBorderFactory.createTitledBorder("Method level", false, new Insets(0, 0, 10, 0)));
         methodPanel.add(methodTemplatesLocalPanel, BorderLayout.CENTER);
 
-        fieldTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getFieldTemplates());
+        fieldTemplatesTable = new TemplatesTable(settings.getTemplateSettings().getFieldTemplates(), defaultColumnNames);
         JPanel fieldTemplatesLocalPanel = ToolbarDecorator.createDecorator(fieldTemplatesTable).createPanel();
         JPanel fieldPanel = new JPanel(new BorderLayout());
         fieldPanel.setBorder(IdeBorderFactory.createTitledBorder("Field level", false, new Insets(0, 0, 0, 0)));
         fieldPanel.add(fieldTemplatesLocalPanel, BorderLayout.CENTER);
 
+        variablesTable = new TemplatesTable(settings.getTemplateSettings().getVariables(), variablesColumnNames);
+        JPanel variablesLocalPanel = ToolbarDecorator.createDecorator(variablesTable).createPanel();
+        JPanel variablesPanel = new JPanel(new BorderLayout());
+        variablesPanel.setBorder(IdeBorderFactory.createTitledBorder("Additional variables", false, new Insets(0, 0, 0, 0)));
+        variablesPanel.add(variablesLocalPanel, BorderLayout.CENTER);
+
         JPanel templatesPanel = new JPanel();
-        templatesPanel.setLayout(new GridLayoutManager(4, 1, new Insets(10, 10, 10, 10), -1, -1));
+        templatesPanel.setLayout(new GridLayoutManager(5, 1, new Insets(10, 10, 10, 10), -1, -1));
 
         templatesPanel.add(classPanel, getConstraints(0, 0));
         templatesPanel.add(constructorPanel, getConstraints(1, 0));
         templatesPanel.add(methodPanel, getConstraints(2, 0));
         templatesPanel.add(fieldPanel, getConstraints(3, 0));
+        templatesPanel.add(variablesPanel, getConstraints(4, 0));
         tabbedPane.addTab("Templates", templatesPanel);
     }
 

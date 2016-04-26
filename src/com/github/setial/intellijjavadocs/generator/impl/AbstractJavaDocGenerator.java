@@ -17,10 +17,12 @@ import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.javadoc.PsiDocComment;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +33,8 @@ import java.util.Map;
  * @author Sergey Timofiychuk
  */
 public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements JavaDocGenerator<T> {
+
+    public static final String DATE_FORMAT = "dateFormat";
 
     private DocTemplateManager docTemplateManager;
     private DocTemplateProcessor docTemplateProcessor;
@@ -144,10 +148,15 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
      */
     protected Map<String, Object> getDefaultParameters(PomNamedTarget element) {
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put(DATE_FORMAT, "yyyy-MM-dd");
         params.put("element", element);
         params.put("name", getDocTemplateProcessor().buildDescription(element.getName(), true));
         params.put("partName", getDocTemplateProcessor().buildPartialDescription(element.getName()));
         params.put("splitNames", StringUtils.splitByCharacterTypeCamelCase(element.getName()));
+        for (Map.Entry<String, String> variable: getDocTemplateManager().getVariables().entrySet()) {
+            params.put(variable.getKey(), variable.getValue());
+        }
+        params.put("todayDate", DateFormatUtils.format(new Date(), params.get(DATE_FORMAT).toString()));
         return params;
     }
 

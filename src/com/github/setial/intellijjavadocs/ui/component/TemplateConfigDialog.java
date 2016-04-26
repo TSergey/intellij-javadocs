@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import java.awt.BorderLayout;
 import java.awt.Insets;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -27,21 +29,16 @@ public class TemplateConfigDialog extends DialogWrapper {
 
     private JTextField nameField;
     private JTextArea templateField;
-
-    /**
-     * Instantiates a new Template config dialog.
-     */
-    public TemplateConfigDialog() {
-        this(null);
-    }
+    private java.util.List<String> columnNames;
 
     /**
      * Instantiates a new Template config dialog.
      *
      * @param model the model
      */
-    public TemplateConfigDialog(Entry<String, String> model) {
+    public TemplateConfigDialog(List<String> columnNames, Entry<String, String> model) {
         super(true);
+        this.columnNames = columnNames;
         if (model != null) {
             Map<String, String> modelCopy = new HashMap<String, String>();
             modelCopy.put(model.getKey(), model.getValue());
@@ -67,12 +64,14 @@ public class TemplateConfigDialog extends DialogWrapper {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
 
+        Iterator<String> columnNamesIter = columnNames.iterator();
+
         nameField = new JTextField();
         if (model != null) {
             nameField.setText(model.getKey());
         }
         JPanel namePanel = new JPanel(new BorderLayout());
-        namePanel.setBorder(IdeBorderFactory.createTitledBorder("Template regexp", false, new Insets(0, 0, 10, 0)));
+        namePanel.setBorder(IdeBorderFactory.createTitledBorder(columnNamesIter.next(), false, new Insets(0, 0, 10, 0)));
         namePanel.add(nameField, BorderLayout.CENTER);
 
         templateField = new JTextArea();
@@ -80,7 +79,7 @@ public class TemplateConfigDialog extends DialogWrapper {
             templateField.setText(model.getValue());
         }
         JPanel templatePanel = new JPanel(new BorderLayout());
-        templatePanel.setBorder(IdeBorderFactory.createTitledBorder("Template content", false, new Insets(0, 0, 0, 0)));
+        templatePanel.setBorder(IdeBorderFactory.createTitledBorder(columnNamesIter.next(), false, new Insets(0, 0, 0, 0)));
         templatePanel.add(templateField, BorderLayout.CENTER);
 
         panel.add(namePanel, getConstraints(0, 0));
