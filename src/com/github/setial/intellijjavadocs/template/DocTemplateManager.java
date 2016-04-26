@@ -109,4 +109,19 @@ public interface DocTemplateManager extends ApplicationComponent {
      */
     void setFieldTemplates(@NotNull Map<String, String> templates);
 
+	/**
+	 * Gets variables.
+	 *
+	 * @return the variables
+	 */
+	@NotNull
+	Map<String, String> getVariables();
+
+	/**
+	 * Sets variables.
+	 *
+	 * @param variables the variables
+	 */
+	void setVariables(@NotNull Map<String, String> variables);
+
 }

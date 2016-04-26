@@ -1,6 +1,7 @@
 package com.github.setial.intellijjavadocs.model;
 
 import com.github.setial.intellijjavadocs.utils.JavaDocUtils;
+import org.apache.commons.logging.LogFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -54,7 +55,9 @@ public class JavaDoc {
      */
     @NotNull
     public String toJavaDoc() {
-        return JavaDocUtils.convertJavaDoc(this);
+        String javaDoc = JavaDocUtils.convertJavaDoc(this);
+        LogFactory.getLog(this.getClass()).debug("Generated javadoc: " + javaDoc);
+        return javaDoc;
     }
 
 }

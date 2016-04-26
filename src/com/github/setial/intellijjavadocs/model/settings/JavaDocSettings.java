@@ -29,7 +29,9 @@ public class JavaDocSettings implements Serializable {
     private static final String FIELD = "FIELD";
     private static final String FIELDS = "FIELDS";
     private static final String METHOD = "METHOD";
-    private static final String METHODS = "METHODS";
+	private static final String METHODS = "METHODS";
+	private static final String VARIABLE = "VARIABLE";
+	private static final String VARIABLES = "VARIABLES";
 
     private GeneralSettings generalSettings = new GeneralSettings();
     private TemplateSettings templateSettings = new TemplateSettings();
@@ -59,7 +61,8 @@ public class JavaDocSettings implements Serializable {
             templateSettings.setClassTemplates(XmlUtils.getMap(templates, CLASSES, CLASS));
             templateSettings.setConstructorTemplates(XmlUtils.getMap(templates, CONSTRUCTORS, CONSTRUCTOR));
             templateSettings.setFieldTemplates(XmlUtils.getMap(templates, FIELDS, FIELD));
-            templateSettings.setMethodTemplates(XmlUtils.getMap(templates, METHODS, METHOD));
+	        templateSettings.setMethodTemplates(XmlUtils.getMap(templates, METHODS, METHOD));
+	        templateSettings.setVariables(XmlUtils.getMap(templates, VARIABLES, VARIABLE));
         }
     }
 
@@ -82,7 +85,8 @@ public class JavaDocSettings implements Serializable {
         templates.addContent(XmlUtils.getElement(CLASSES, CLASS, templateSettings.getClassTemplates()));
         templates.addContent(XmlUtils.getElement(CONSTRUCTORS, CONSTRUCTOR, templateSettings.getConstructorTemplates()));
         templates.addContent(XmlUtils.getElement(METHODS, METHOD, templateSettings.getMethodTemplates()));
-        templates.addContent(XmlUtils.getElement(FIELDS, FIELD, templateSettings.getFieldTemplates()));
+	    templates.addContent(XmlUtils.getElement(FIELDS, FIELD, templateSettings.getFieldTemplates()));
+	    templates.addContent(XmlUtils.getElement(VARIABLES, VARIABLE, templateSettings.getVariables()));
     }
 
     /**

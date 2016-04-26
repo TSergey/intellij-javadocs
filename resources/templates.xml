@@ -6,6 +6,7 @@
         <template regexp="^.*(public|protected|private)*.+interface\s+\w+.*">
 /**\n
  * The interface ${name}.\n
+ * @since ${todayDate}\n
     &lt;#if element.typeParameters?has_content&gt;
         * \n
     &lt;/#if&gt;
@@ -21,12 +22,14 @@
         <template regexp="^.*(public|protected|private)*.+enum\s+\w+.*">
 /**\n
  * The enum ${name}.\n
+ * @since ${todayDate}\n
  */
         </template>
 
         <template regexp="^.*(public|protected|private)*.+class\s+\w+.*">
 /**\n
  * The type ${name}.\n
+ * @since ${todayDate}\n
     &lt;#if element.typeParameters?has_content&gt;
         * \n
     &lt;/#if&gt;
@@ -42,6 +45,7 @@
         <template regexp=".+">
 /**\n
  * The type ${name}.\n
+ * @since ${todayDate}\n
  */
         </template>
 

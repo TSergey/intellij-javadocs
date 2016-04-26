@@ -3,6 +3,7 @@ package com.github.setial.intellijjavadocs.transformation;
 import com.github.setial.intellijjavadocs.model.JavaDoc;
 import com.github.setial.intellijjavadocs.model.JavaDocElements;
 import com.github.setial.intellijjavadocs.model.JavaDocTag;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 /**
  * The type Java doc builder.
@@ -121,7 +123,10 @@ public class JavaDocBuilder {
             builder.append(tag.getValue());
         }
 
-        builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
+        String startsWithCharacterPattern = "[\\w.,'].*";
+        if (CollectionUtils.isNotEmpty(tag.getDescription()) && Pattern.matches(startsWithCharacterPattern, tag.getDescription().iterator().next())) {
+            builder.append(JavaDocElements.WHITE_SPACE.getPresentation());
+        }
         addTagDescription(tag.getDescription());
         return this;
     }

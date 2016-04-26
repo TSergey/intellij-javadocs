@@ -168,7 +168,8 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, Configura
             settings.getTemplateSettings().setClassTemplates(templateManager.getClassTemplates());
             settings.getTemplateSettings().setConstructorTemplates(templateManager.getConstructorTemplates());
             settings.getTemplateSettings().setMethodTemplates(templateManager.getMethodTemplates());
-            settings.getTemplateSettings().setFieldTemplates(templateManager.getFieldTemplates());
+	        settings.getTemplateSettings().setFieldTemplates(templateManager.getFieldTemplates());
+	        settings.getTemplateSettings().setVariables(templateManager.getVariables());
         }
         return settings;
     }
@@ -179,6 +180,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, Configura
             templateManager.setConstructorTemplates(settings.getTemplateSettings().getConstructorTemplates());
             templateManager.setMethodTemplates(settings.getTemplateSettings().getMethodTemplates());
             templateManager.setFieldTemplates(settings.getTemplateSettings().getFieldTemplates());
+            templateManager.setVariables(settings.getTemplateSettings().getVariables());
         } catch (SetupTemplateException e) {
             LOGGER.error(e);
             Messages.showErrorDialog("Javadocs plugin is not available, cause: " + e.getMessage(), "Javadocs plugin");
