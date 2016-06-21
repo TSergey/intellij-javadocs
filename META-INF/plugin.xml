@@ -171,6 +171,6 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <applicationConfigurable instance="com.github.setial.intellijjavadocs.configuration.impl.JavaDocConfigurationImpl"></applicationConfigurable>
     </extensions>
 </idea-plugin>
