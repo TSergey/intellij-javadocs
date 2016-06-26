@@ -2,6 +2,7 @@ package com.github.setial.intellijjavadocs.action;
 
 import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
 import com.intellij.codeInsight.CodeInsightActionHandler;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,7 @@ public class JavaDocRemoveAction extends JavaDocGenerateAction {
      */
     public JavaDocRemoveAction() {
         this(new JavaDocHandler());
-        writer = ServiceManager.getService(JavaDocWriter.class);
+        writer = ApplicationManager.getApplication().getComponent(JavaDocWriter.class);
     }
 
     /**

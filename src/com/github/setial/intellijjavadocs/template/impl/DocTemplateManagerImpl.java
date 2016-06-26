@@ -80,6 +80,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
                 readTemplates(root, CONSTRUCTOR, constructorTemplates);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error(e);
         }
     }
@@ -96,7 +97,6 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
 
     @Nullable
     @Override
-    @SuppressWarnings("ConstantConditions")
     public Template getClassTemplate(@NotNull PsiClass classElement) {
         StringBuilder builder = getClassSignature(classElement);
         return getMatchingTemplate(builder.toString(), classTemplates);
@@ -194,7 +194,6 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
     private void readTemplates(Element document, String elementName, Map<String, Template> templates)
             throws IOException {
         Element root = document.getChild(elementName);
-        @SuppressWarnings("unchecked")
         List<Element> elements = root.getChildren(TEMPLATE);
         for (Element element : elements) {
             String name = element.getAttribute(REGEXP).getValue();
@@ -218,16 +217,18 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
     }
 
     private void setupTemplates(Map<String, String> from, Map<String, Template> to, String elementName) {
-        Map<String, Template> result = new LinkedHashMap<String, Template>();
-        for (Entry<String, String> entry : from.entrySet()) {
-            try {
-                result.put(entry.getKey(), createTemplate(entry.getKey(), elementName, entry.getValue()));
-            } catch (Exception e) {
-                throw new SetupTemplateException(e);
+        if (from != null && !from.isEmpty()) {
+            Map<String, Template> result = new LinkedHashMap<String, Template>();
+            for (Entry<String, String> entry : from.entrySet()) {
+                try {
+                    result.put(entry.getKey(), createTemplate(entry.getKey(), elementName, entry.getValue()));
+                } catch (Exception e) {
+                    throw new SetupTemplateException(e);
+                }
             }
+            to.clear();
+            to.putAll(result);
         }
-        to.clear();
-        to.putAll(result);
     }
 
     private StringBuilder getClassSignature(PsiClass classElement) {

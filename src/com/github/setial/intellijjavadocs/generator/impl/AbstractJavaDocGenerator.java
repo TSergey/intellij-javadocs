@@ -37,10 +37,11 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
     private PsiElementFactory psiElementFactory;
     private JavaDocConfiguration settings;
 
+
     /**
      * Instantiates a new Abstract java doc generator.
      *
-     * @param project the Project
+     * @param project the project
      */
     public AbstractJavaDocGenerator(@NotNull Project project) {
         docTemplateManager = ServiceManager.getService(project, DocTemplateManager.class);

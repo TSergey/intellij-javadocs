@@ -9,6 +9,7 @@ import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
 import com.intellij.codeInsight.CodeInsightActionHandler;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
@@ -55,7 +56,7 @@ public class JavaDocGenerateAction extends BaseAction {
      */
     public JavaDocGenerateAction(CodeInsightActionHandler handler) {
         super(handler);
-        writer = ServiceManager.getService(JavaDocWriter.class);
+        writer = ApplicationManager.getApplication().getComponent(JavaDocWriter.class);
     }
 
     /**

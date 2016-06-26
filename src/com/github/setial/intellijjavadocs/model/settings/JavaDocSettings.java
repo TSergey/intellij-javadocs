@@ -13,6 +13,7 @@ import java.io.Serializable;
  */
 public class JavaDocSettings implements Serializable {
 
+    private static JavaDocSettings instance = null;
     private static final String MODE = "MODE";
     private static final String LEVELS = "LEVELS";
     private static final String LEVEL = "LEVEL";
@@ -30,9 +31,25 @@ public class JavaDocSettings implements Serializable {
     private static final String FIELDS = "FIELDS";
     private static final String METHOD = "METHOD";
     private static final String METHODS = "METHODS";
+    public static boolean loadedStoredConfig = false;
 
     private GeneralSettings generalSettings = new GeneralSettings();
     private TemplateSettings templateSettings = new TemplateSettings();
+
+    public static JavaDocSettings getInstance(Element element) {
+        if (instance == null) {
+            instance = new JavaDocSettings(element);
+        }
+        return instance;
+    }
+
+    public static JavaDocSettings getInstance() {
+        return instance;
+    }
+
+    public void setInstance(JavaDocSettings instance) {
+        this.instance = instance;
+    }
 
     /**
      * Instantiates a new Java doc settings object.
@@ -45,7 +62,7 @@ public class JavaDocSettings implements Serializable {
      *
      * @param element the element
      */
-    public JavaDocSettings(Element element) {
+    private JavaDocSettings(Element element) {
         Element general = element.getChild(GENERAL);
         if (general != null) {
             generalSettings.setMode(XmlUtils.getValue(general, MODE, Mode.class));
@@ -71,11 +88,13 @@ public class JavaDocSettings implements Serializable {
     public void addToDom(Element root) {
         Element general = new Element(GENERAL);
         root.addContent(general);
-        general.addContent(XmlUtils.getElement(MODE, generalSettings.getMode().toString()));
-        general.addContent(XmlUtils.getElement(OVERRIDDEN_METHODS, String.valueOf(generalSettings.isOverriddenMethods())));
-        general.addContent(XmlUtils.getElement(SPLITTED_CLASS_NAME, String.valueOf(generalSettings.isSplittedClassName())));
-        general.addContent(XmlUtils.getElement(LEVELS, LEVEL, generalSettings.getLevels()));
-        general.addContent(XmlUtils.getElement(VISIBILITIES, VISIBILITY, generalSettings.getVisibilities()));
+        if (generalSettings.getMode() != null) {
+            general.addContent(XmlUtils.getElement(MODE, generalSettings.getMode().toString()));
+            general.addContent(XmlUtils.getElement(OVERRIDDEN_METHODS, String.valueOf(generalSettings.isOverriddenMethods())));
+            general.addContent(XmlUtils.getElement(SPLITTED_CLASS_NAME, String.valueOf(generalSettings.isSplittedClassName())));
+            general.addContent(XmlUtils.getElement(LEVELS, LEVEL, generalSettings.getLevels()));
+            general.addContent(XmlUtils.getElement(VISIBILITIES, VISIBILITY, generalSettings.getVisibilities()));
+        }
 
         Element templates = new Element(TEMPLATES);
         root.addContent(templates);
@@ -119,4 +138,7 @@ public class JavaDocSettings implements Serializable {
         return result;
     }
 
+    public static void load() {
+        instance = new JavaDocSettings();
+    }
 }
