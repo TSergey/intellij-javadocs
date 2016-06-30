@@ -1,0 +1,23 @@
+<assembly
+        xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/2.6.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/2.6.0 http://maven.apache.org/xsd/assembly-2.6.0.xsd">
+    <id>release</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>true</useProjectArtifact>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>commons-logging:commons-logging</include>
+                <include>commons-collections:commons-collections</include>
+                <include>commons-beanutils:commons-beanutils</include>
+                <include>org.apache.commons:commons-lang3</include>
+                <include>org.freemarker:freemarker</include>
+                <include>com.yijiupi.himalaya:intellij-javadocs</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</assembly>
