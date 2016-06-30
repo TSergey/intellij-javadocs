@@ -2,3 +2,5 @@
 out
 build
 intellij-community
+/.idea/
+/target/
