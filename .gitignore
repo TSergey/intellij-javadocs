@@ -1,4 +1,6 @@
 *.class
+.idea
+.gradle
 out
 build
 intellij-community
