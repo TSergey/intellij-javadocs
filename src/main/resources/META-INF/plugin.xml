@@ -1,13 +1,14 @@
 <idea-plugin>
     <id>com.github.setial</id>
     <name>JavaDoc</name>
-    <version>4.0.1</version>
-    <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs">
+    <version>4.0.2</version>
+    <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs/">
         Sergey Timofiychuk
     </vendor>
 
     <description><![CDATA[
       Plugin that generates javadocs on java class elements, like field, method, etc.
+      Home page: http://setial.github.com/intellij-javadocs
       ]]></description>
 
     <change-notes><![CDATA[
