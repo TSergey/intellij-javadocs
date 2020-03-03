@@ -166,7 +166,7 @@ public class JavaDocUtils {
         List<String> descriptions = new LinkedList<>();
         PsiElement[] descriptionElements = docComment.getDescriptionElements();
         for (PsiElement descriptionElement : descriptionElements) {
-            descriptions.add(descriptionElement.getText());
+            descriptions.add(StringUtils.trimToEmpty(descriptionElement.getText()));
         }
         return descriptions;
     }
