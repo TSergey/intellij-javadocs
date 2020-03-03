@@ -6,6 +6,7 @@ import com.github.setial.intellijjavadocs.generator.JavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.ClassJavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.FieldJavaDocGenerator;
 import com.github.setial.intellijjavadocs.generator.impl.MethodJavaDocGenerator;
+import com.github.setial.intellijjavadocs.model.JavaDoc;
 import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
 import com.intellij.codeInsight.CodeInsightActionHandler;
 import com.intellij.ide.highlighter.JavaFileType;
@@ -145,7 +146,7 @@ public class JavaDocGenerateAction extends BaseAction {
         if (generator != null) {
             try {
                 @SuppressWarnings("unchecked")
-                PsiDocComment javaDoc = generator.generate(element);
+                JavaDoc javaDoc = generator.generate(element);
                 if (javaDoc != null) {
                     writer.write(javaDoc, element);
                 }

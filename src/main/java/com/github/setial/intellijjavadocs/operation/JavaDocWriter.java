@@ -1,7 +1,7 @@
 package com.github.setial.intellijjavadocs.operation;
 
+import com.github.setial.intellijjavadocs.model.JavaDoc;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.javadoc.PsiDocComment;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,7 +17,7 @@ public interface JavaDocWriter {
      * @param javaDoc       the Java doc
      * @param beforeElement the element to place javadoc before it
      */
-    void write(@NotNull PsiDocComment javaDoc, @NotNull PsiElement beforeElement);
+    void write(@NotNull JavaDoc javaDoc, @NotNull PsiElement beforeElement);
 
     /**
      * Remove void.

@@ -159,12 +159,12 @@
         <!-- Add your extensions here -->
         <projectService serviceInterface="com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration"
                         serviceImplementation="com.github.setial.intellijjavadocs.configuration.impl.JavaDocConfigurationImpl"/>
+        <projectService serviceInterface="com.github.setial.intellijjavadocs.operation.JavaDocWriter"
+                            serviceImplementation="com.github.setial.intellijjavadocs.operation.impl.JavaDocWriterImpl"/>
         <applicationService serviceInterface="com.github.setial.intellijjavadocs.template.DocTemplateManager"
                             serviceImplementation="com.github.setial.intellijjavadocs.template.impl.DocTemplateManagerImpl"/>
         <applicationService serviceInterface="com.github.setial.intellijjavadocs.template.DocTemplateProcessor"
                             serviceImplementation="com.github.setial.intellijjavadocs.template.impl.DocTemplateProcessorImpl"/>
-        <applicationService serviceInterface="com.github.setial.intellijjavadocs.operation.JavaDocWriter"
-                            serviceImplementation="com.github.setial.intellijjavadocs.operation.impl.JavaDocWriterImpl"/>
 
         <projectConfigurable groupId="tools" id="JavaDoc"
                              instance="com.github.setial.intellijjavadocs.ui.settings.ConfigPanel"/>

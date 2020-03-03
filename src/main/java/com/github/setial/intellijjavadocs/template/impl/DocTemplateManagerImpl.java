@@ -61,7 +61,7 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
      */
     public DocTemplateManagerImpl() {
         templateLoader = new StringTemplateLoader();
-        config = new Configuration(Configuration.VERSION_2_3_23);
+        config = new Configuration(Configuration.VERSION_2_3_29);
         config.setDefaultEncoding("UTF-8");
         config.setLocalizedLookup(false);
         config.setTemplateLoader(templateLoader);

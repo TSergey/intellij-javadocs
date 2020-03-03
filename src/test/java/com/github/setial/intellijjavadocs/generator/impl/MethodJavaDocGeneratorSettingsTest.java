@@ -20,7 +20,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-public class MethodJavaDocGeneratorTest extends LightJavaCodeInsightFixtureTestCase {
+public class MethodJavaDocGeneratorSettingsTest extends LightJavaCodeInsightFixtureTestCase {
 
     private MethodJavaDocGenerator methodJavaDocGenerator;
     private PsiElementFactory elementFactory;
@@ -49,7 +49,7 @@ public class MethodJavaDocGeneratorTest extends LightJavaCodeInsightFixtureTestC
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE, Visibility.PROTECTED, Visibility.PUBLIC));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generateJavaDoc(publicGetMethod);
+        JavaDoc javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
         assertThat(javaDoc, notNullValue());
     }
 
@@ -59,7 +59,7 @@ public class MethodJavaDocGeneratorTest extends LightJavaCodeInsightFixtureTestC
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE, Visibility.PROTECTED));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generateJavaDoc(publicGetMethod);
+        JavaDoc javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
         assertThat(javaDoc, nullValue());
     }
 
@@ -69,7 +69,7 @@ public class MethodJavaDocGeneratorTest extends LightJavaCodeInsightFixtureTestC
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE, Visibility.PROTECTED, Visibility.PUBLIC));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generateJavaDoc(publicGetMethod);
+        JavaDoc javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
         assertThat(javaDoc, nullValue());
     }
 
@@ -79,7 +79,7 @@ public class MethodJavaDocGeneratorTest extends LightJavaCodeInsightFixtureTestC
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE, Visibility.PROTECTED));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generateJavaDoc(publicGetMethod);
+        JavaDoc javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
         assertThat(javaDoc, nullValue());
     }
 
@@ -89,7 +89,7 @@ public class MethodJavaDocGeneratorTest extends LightJavaCodeInsightFixtureTestC
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE, Visibility.PROTECTED));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generateJavaDoc(protectedGetMethod);
+        JavaDoc javaDoc = methodJavaDocGenerator.generate(protectedGetMethod);
         assertThat(javaDoc, notNullValue());
     }
 
@@ -99,7 +99,7 @@ public class MethodJavaDocGeneratorTest extends LightJavaCodeInsightFixtureTestC
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generateJavaDoc(protectedGetMethod);
+        JavaDoc javaDoc = methodJavaDocGenerator.generate(protectedGetMethod);
         assertThat(javaDoc, nullValue());
     }
 }

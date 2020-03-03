@@ -52,8 +52,8 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
 
     @Nullable
     @Override
-    public final PsiDocComment generate(@NotNull T element) {
-        PsiDocComment result = null;
+    public final JavaDoc generate(@NotNull T element) {
+        JavaDoc result = null;
         PsiDocComment oldDocComment = null;
         PsiElement firstElement = element.getFirstChild();
         if (firstElement instanceof PsiDocComment) {
@@ -156,26 +156,18 @@ public abstract class AbstractJavaDocGenerator<T extends PsiElement> implements 
         return params;
     }
 
-    private PsiDocComment updateJavaDocAction(T element, PsiDocComment oldDocComment) {
-        PsiDocComment result = null;
+    private JavaDoc updateJavaDocAction(T element, PsiDocComment oldDocComment) {
         JavaDoc newJavaDoc = generateJavaDoc(element);
         JavaDoc oldJavaDoc = JavaDocUtils.createJavaDoc(oldDocComment);
         if (newJavaDoc != null) {
             newJavaDoc = JavaDocUtils.mergeJavaDocs(oldJavaDoc, newJavaDoc);
-            String javaDoc = newJavaDoc.toJavaDoc();
-            result = psiElementFactory.createDocCommentFromText(javaDoc);
         }
-        return result;
+        return newJavaDoc;
     }
 
-    private PsiDocComment replaceJavaDocAction(T element) {
+    private JavaDoc replaceJavaDocAction(T element) {
         PsiDocComment result = null;
-        JavaDoc newJavaDoc = generateJavaDoc(element);
-        if (newJavaDoc != null) {
-            String javaDoc = newJavaDoc.toJavaDoc();
-            result = psiElementFactory.createDocCommentFromText(javaDoc);
-        }
-        return result;
+        return generateJavaDoc(element);
     }
 
     private boolean checkModifiers(PsiModifierList modifiers, String modifier, Visibility visibility) {

@@ -2,6 +2,7 @@ package com.github.setial.intellijjavadocs.operation.impl;
 
 import com.github.setial.intellijjavadocs.exception.FileNotValidException;
 import com.github.setial.intellijjavadocs.exception.NotFoundElementException;
+import com.github.setial.intellijjavadocs.model.JavaDoc;
 import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
@@ -12,6 +13,7 @@ import com.intellij.openapi.vfs.ReadonlyStatusHandler;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler.OperationStatus;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.codeStyle.CodeStyleManager;
@@ -33,9 +35,14 @@ import static com.github.setial.intellijjavadocs.configuration.impl.JavaDocConfi
 public class JavaDocWriterImpl implements JavaDocWriter {
 
     private static final Logger LOGGER = Logger.getInstance(JavaDocWriterImpl.class);
+    private final PsiElementFactory psiElementFactory;
+
+    public JavaDocWriterImpl(@NotNull Project project) {
+        psiElementFactory = PsiElementFactory.getInstance(project);
+    }
 
     @Override
-    public void write(@NotNull PsiDocComment javaDoc, @NotNull PsiElement beforeElement) {
+    public void write(@NotNull JavaDoc javaDoc, @NotNull PsiElement beforeElement) {
         try {
             checkFilesAccess(beforeElement);
         } catch (FileNotValidException e) {
@@ -81,9 +88,9 @@ public class JavaDocWriterImpl implements JavaDocWriter {
      *
      * @author Sergey Timofiychuk
      */
-    private static class WriteJavaDocActionImpl implements ThrowableRunnable<RuntimeException> {
+    private class WriteJavaDocActionImpl implements ThrowableRunnable<RuntimeException> {
 
-        private PsiDocComment javaDoc;
+        private JavaDoc javaDoc;
         private PsiElement element;
 
         /**
@@ -92,7 +99,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
          * @param javaDoc the java doc
          * @param element the element
          */
-        protected WriteJavaDocActionImpl(@NotNull PsiDocComment javaDoc, @NotNull PsiElement element) {
+        protected WriteJavaDocActionImpl(@NotNull JavaDoc javaDoc, @NotNull PsiElement element) {
             this.javaDoc = javaDoc;
             this.element = element;
         }
@@ -102,10 +109,11 @@ public class JavaDocWriterImpl implements JavaDocWriter {
             if (javaDoc == null) {
                 return;
             }
+            PsiDocComment psiDocComment = psiElementFactory.createDocCommentFromText(javaDoc.toJavaDoc());
             if (element.getFirstChild() instanceof PsiDocComment) {
-                replaceJavaDoc(element, javaDoc);
+                replaceJavaDoc(element, psiDocComment);
             } else {
-                addJavaDoc(element, javaDoc);
+                addJavaDoc(element, psiDocComment);
             }
             ensureWhitespaceAfterJavaDoc(element);
             reformatJavaDoc(element);
@@ -121,7 +129,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
             if (PsiWhiteSpace.class.isAssignableFrom(nextElement.getClass())) {
                 return;
             }
-            pushPostponedChanges(element);
+            pushAllChanges(element);
             element.getNode().addChild(new PsiWhiteSpaceImpl("\n"), nextElement.getNode());
         }
     }
@@ -148,12 +156,12 @@ public class JavaDocWriterImpl implements JavaDocWriter {
     }
 
     private static void deleteJavaDoc(PsiElement theElement) {
-        pushPostponedChanges(theElement);
+        pushAllChanges(theElement);
         theElement.getFirstChild().delete();
     }
 
     private static void addJavaDoc(PsiElement theElement, PsiDocComment theJavaDoc) {
-        pushPostponedChanges(theElement);
+        pushAllChanges(theElement);
         theElement.getNode().addChild(theJavaDoc.getNode(), theElement.getFirstChild().getNode());
     }
 
@@ -164,7 +172,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
 
     private static void reformatJavaDoc(PsiElement theElement) {
         CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(theElement.getProject());
-        pushPostponedChanges(theElement);
+        pushAllChanges(theElement);
         try {
             int javadocTextOffset = findJavaDocTextOffset(theElement);
             int javaCodeTextOffset = findJavaCodeTextOffset(theElement);
@@ -189,10 +197,12 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         return theElement.getChildren()[1].getTextOffset();
     }
 
-    private static void pushPostponedChanges(PsiElement element) {
+    private static void pushAllChanges(PsiElement element) {
+        Project project = element.getProject();
+        PsiDocumentManager.getInstance(project).commitAllDocuments();
         Editor editor = PsiUtilBase.findEditor(element.getContainingFile());
         if (editor != null) {
-            PsiDocumentManager.getInstance(element.getProject())
+            PsiDocumentManager.getInstance(project)
                     .doPostponedOperationsAndUnblockDocument(editor.getDocument());
         }
     }
