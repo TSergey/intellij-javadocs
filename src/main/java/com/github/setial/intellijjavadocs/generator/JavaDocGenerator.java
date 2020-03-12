@@ -1,7 +1,7 @@
 package com.github.setial.intellijjavadocs.generator;
 
-import com.github.setial.intellijjavadocs.model.JavaDoc;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.javadoc.PsiDocComment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +20,6 @@ public interface JavaDocGenerator<T extends PsiElement> {
      * @return the Psi doc comment
      */
     @Nullable
-    JavaDoc generate(@NotNull T element);
+    PsiDocComment generate(@NotNull T element);
 
 }

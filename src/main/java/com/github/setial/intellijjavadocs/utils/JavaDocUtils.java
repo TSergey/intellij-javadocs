@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -32,7 +31,7 @@ import java.util.Map.Entry;
  */
 public class JavaDocUtils {
 
-    private static final List<String> MERGE_TAG_NAMES = Arrays.asList("param", "throws", "exception");
+    private static final List<String> MERGE_TAG_NAMES = Arrays.asList("param", "throws");
 
     /**
      * Convert java doc.
@@ -128,14 +127,8 @@ public class JavaDocUtils {
     @NotNull
     public static JavaDocTag createJavaDocTag(@NotNull PsiDocTag docTag) {
         String docTagRefParam = findDocTagRefParam(docTag);
-        String docTagValue = null;
-        List<String> docTagDescription = Collections.emptyList();
-        if (MERGE_TAG_NAMES.contains(docTag.getName())) {
-            docTagValue = findDocTagValue(docTag);
-            docTagDescription = findDocTagDescription(docTag, docTagRefParam, docTagValue);
-        } else {
-            docTagValue = findDocTagValueAndDescr(docTag);
-        }
+        String docTagValue = findDocTagValue(docTag);
+        List<String> docTagDescription = findDocTagDescription(docTag, docTagRefParam, docTagValue);
         return new JavaDocTag(
                 docTagRefParam,
                 docTagValue,
@@ -203,7 +196,7 @@ public class JavaDocUtils {
         for (PsiElement element : docTag.getDataElements()) {
             if (element instanceof PsiDocParamRef ||
                     element instanceof PsiDocMethodOrFieldRef) {
-                refParam = element.getText().trim();
+                refParam = element.getText();
                 break;
             }
         }
@@ -221,30 +214,11 @@ public class JavaDocUtils {
         String value = null;
         for (PsiElement element : docTag.getDataElements()) {
             if (element instanceof PsiDocTagValue) {
-                value = element.getText().trim();
+                value = element.getText();
                 break;
             }
         }
         return value;
-    }
-
-    /**
-     * Find doc tag value.
-     *
-     * @param docTag the Doc tag
-     * @return the javadoc's tag value
-     */
-    public static String findDocTagValueAndDescr(@NotNull PsiDocTag docTag) {
-        String tagName = docTag.getName();
-        String tagText = docTag.getText();
-        int tagNamePosition = StringUtils.indexOf(tagText, tagName);
-        String valueAndDescr = StringUtils.substring(tagText, tagNamePosition + tagName.length());
-        String trimValueAndDescr = StringUtils.trim(valueAndDescr);
-        String result = trimValueAndDescr;
-        if (trimValueAndDescr.endsWith("\n *")) {
-            result = StringUtils.replace(trimValueAndDescr, "\n *", StringUtils.EMPTY);
-        }
-        return result;
     }
 
     /**
@@ -268,7 +242,7 @@ public class JavaDocUtils {
         for (PsiElement element : elements) {
             descriptionBuilder.append(element.getText());
         }
-        descriptions.add(descriptionBuilder.toString().trim());
+        descriptions.add(descriptionBuilder.toString());
         return descriptions;
     }
 

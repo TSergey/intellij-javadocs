@@ -1,7 +1,6 @@
 package com.github.setial.intellijjavadocs.generator.impl;
 
 import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
-import com.github.setial.intellijjavadocs.model.JavaDoc;
 import com.github.setial.intellijjavadocs.model.settings.GeneralSettings;
 import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.model.settings.Mode;
@@ -13,8 +12,9 @@ import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiMethod;
+import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
-import org.junit.BeforeClass;
+import org.junit.Before;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -23,21 +23,19 @@ import static org.junit.Assert.assertThat;
 public class MethodJavaDocGeneratorSettingsTest extends LightJavaCodeInsightFixtureTestCase {
 
     private MethodJavaDocGenerator methodJavaDocGenerator;
-    private PsiElementFactory elementFactory;
     private GeneralSettings generalSettings;
-    private PsiFile psiFile;
     private PsiMethod publicGetMethod;
     private PsiMethod protectedGetMethod;
 
-    @BeforeClass
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         methodJavaDocGenerator = new MethodJavaDocGenerator(getProject());
-        elementFactory = PsiElementFactory.getInstance(getProject());
+        PsiElementFactory elementFactory = PsiElementFactory.getInstance(getProject());
         JavaDocConfiguration settings = ServiceManager.getService(getProject(), JavaDocConfiguration.class);
         generalSettings = settings.getConfiguration().getGeneralSettings();
         generalSettings.setMode(Mode.REPLACE);
-        psiFile = PsiFileFactory.getInstance(getProject()).createFileFromText(
+        PsiFile psiFile = PsiFileFactory.getInstance(getProject()).createFileFromText(
                 "Test.java", JavaFileType.INSTANCE, "public class Test {}");
         publicGetMethod = elementFactory.createMethodFromText("public String getParam(String param) {}", psiFile);
         protectedGetMethod = elementFactory.createMethodFromText("protected String getParam(String param) {}", psiFile);
@@ -49,7 +47,7 @@ public class MethodJavaDocGeneratorSettingsTest extends LightJavaCodeInsightFixt
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE, Visibility.PROTECTED, Visibility.PUBLIC));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
+        PsiDocComment javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
         assertThat(javaDoc, notNullValue());
     }
 
@@ -59,7 +57,7 @@ public class MethodJavaDocGeneratorSettingsTest extends LightJavaCodeInsightFixt
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE, Visibility.PROTECTED));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
+        PsiDocComment javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
         assertThat(javaDoc, nullValue());
     }
 
@@ -69,7 +67,7 @@ public class MethodJavaDocGeneratorSettingsTest extends LightJavaCodeInsightFixt
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE, Visibility.PROTECTED, Visibility.PUBLIC));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
+        PsiDocComment javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
         assertThat(javaDoc, nullValue());
     }
 
@@ -79,7 +77,7 @@ public class MethodJavaDocGeneratorSettingsTest extends LightJavaCodeInsightFixt
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE, Visibility.PROTECTED));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
+        PsiDocComment javaDoc = methodJavaDocGenerator.generate(publicGetMethod);
         assertThat(javaDoc, nullValue());
     }
 
@@ -89,7 +87,7 @@ public class MethodJavaDocGeneratorSettingsTest extends LightJavaCodeInsightFixt
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE, Visibility.PROTECTED));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generate(protectedGetMethod);
+        PsiDocComment javaDoc = methodJavaDocGenerator.generate(protectedGetMethod);
         assertThat(javaDoc, notNullValue());
     }
 
@@ -99,7 +97,7 @@ public class MethodJavaDocGeneratorSettingsTest extends LightJavaCodeInsightFixt
         generalSettings.setVisibilities(
                 Sets.immutableEnumSet(Visibility.DEFAULT, Visibility.PRIVATE));
 
-        JavaDoc javaDoc = methodJavaDocGenerator.generate(protectedGetMethod);
+        PsiDocComment javaDoc = methodJavaDocGenerator.generate(protectedGetMethod);
         assertThat(javaDoc, nullValue());
     }
 }
