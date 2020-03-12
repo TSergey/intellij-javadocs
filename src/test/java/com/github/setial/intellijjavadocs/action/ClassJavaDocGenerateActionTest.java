@@ -15,8 +15,8 @@ public class ClassJavaDocGenerateActionTest extends LightJavaCodeInsightFixtureT
     public static final String GENERATE_ACTION_ON_EDITOR = "com.github.setial.intellijjavadocs.action.JavaDocGenerateActionOnEditor";
     private TemplateSettings origTemplateSettings;
 
-    @Before
-    public void setup() throws Exception {
+    @Override
+    public void setUp() throws Exception {
         super.setUp();
         JavaDocConfiguration settings = ServiceManager.getService(getProject(), JavaDocConfiguration.class);
         settings.getConfiguration().getGeneralSettings().setMode(Mode.REPLACE);
@@ -62,6 +62,12 @@ public class ClassJavaDocGenerateActionTest extends LightJavaCodeInsightFixtureT
     public void testClassJavaDocsDateAttribute() {
         setupCustomClassTemplateWithDateAttribute();
         doTest("ClassJavaDocsDateAttribute");
+    }
+
+    public void testClassJavaDocsSeeReference() {
+        JavaDocConfiguration settings = ServiceManager.getService(getProject(), JavaDocConfiguration.class);
+        settings.getConfiguration().getGeneralSettings().setMode(Mode.UPDATE);
+        doTest("ClassJavaDocsSeeReference");
     }
 
     private void setupCustomClassTemplateWithDateAttribute() {

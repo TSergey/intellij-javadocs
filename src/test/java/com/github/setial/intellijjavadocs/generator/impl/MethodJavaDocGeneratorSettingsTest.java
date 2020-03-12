@@ -14,7 +14,6 @@ import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
-import org.junit.Before;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -27,7 +26,7 @@ public class MethodJavaDocGeneratorSettingsTest extends LightJavaCodeInsightFixt
     private PsiMethod publicGetMethod;
     private PsiMethod protectedGetMethod;
 
-    @Before
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         methodJavaDocGenerator = new MethodJavaDocGenerator(getProject());
