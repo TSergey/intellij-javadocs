@@ -12,6 +12,10 @@
       ]]></description>
 
     <change-notes><![CDATA[
+        <h3>Changes in intellij-javadoc-4.0.2</h3>
+        <ul>
+            <li>Compatibility with intellij-idea build 2020.1</li>
+        </ul>
         <h3>Changes in intellij-javadoc-4.0.1</h3>
         <ul>
             <li>Compatibility with intellij-idea build 2019.3.1</li>
@@ -102,7 +106,7 @@
 
     <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
     <!-- supports only intellij idea 15 -->
-    <idea-version since-build="193"/>
+    <idea-version since-build="201.6668"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
