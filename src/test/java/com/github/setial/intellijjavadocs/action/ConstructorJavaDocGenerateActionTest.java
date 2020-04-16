@@ -9,7 +9,7 @@ import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ClassJavaDocGenerateActionTest extends LightJavaCodeInsightFixtureTestCase {
+public class ConstructorJavaDocGenerateActionTest extends LightJavaCodeInsightFixtureTestCase {
 
     public static final String GENERATE_ACTION_ON_EDITOR = "com.github.setial.intellijjavadocs.action.JavaDocGenerateActionOnEditor";
     private TemplateSettings origTemplateSettings;
@@ -19,7 +19,6 @@ public class ClassJavaDocGenerateActionTest extends LightJavaCodeInsightFixtureT
         super.setUp();
         JavaDocConfiguration settings = ServiceManager.getService(getProject(), JavaDocConfiguration.class);
         settings.getConfiguration().getGeneralSettings().setMode(Mode.REPLACE);
-        settings.getConfiguration().getGeneralSettings().setSplittedClassName(true);
 
         TemplateSettings templateSettings = settings.getConfiguration().getTemplateSettings();
         if (origTemplateSettings == null) {
@@ -70,12 +69,6 @@ public class ClassJavaDocGenerateActionTest extends LightJavaCodeInsightFixtureT
         doTest("ClassJavaDocsSeeReference");
     }
 
-    public void testClassJavaDocsNotSplittedClassName() {
-        JavaDocConfiguration settings = ServiceManager.getService(getProject(), JavaDocConfiguration.class);
-        settings.getConfiguration().getGeneralSettings().setSplittedClassName(false);
-        doTest("ClassJavaDocsNotSplittedClassName");
-    }
-
     private void setupCustomClassTemplateWithDateAttribute() {
         JavaDocConfiguration settings = ServiceManager.getService(getProject(), JavaDocConfiguration.class);
         Map<String, String> classTemplates = settings.getConfiguration().getTemplateSettings().getClassTemplates();
@@ -99,7 +92,6 @@ public class ClassJavaDocGenerateActionTest extends LightJavaCodeInsightFixtureT
                 "/**\\n\n" +
                 " * The type ${name}.\\n\n" +
                 " * @author John Smith\\n\n" +
-                " * @author Alessandro van May\\n\n" +
                 " * @since 2020-02-23 \\n\n" +
                 " */");
         settings.setupTemplates();
