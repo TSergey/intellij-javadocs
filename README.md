@@ -3,7 +3,7 @@ intellij-javadocs
 
 Intellij idea javadocs generator plugin.
 
-Home page: http://setial.github.com/intellij-javadocs/
+Home page: https://setial.github.io/intellij-javadocs/
 
 Wiki: https://github.com/setial/intellij-javadocs/wiki
 
