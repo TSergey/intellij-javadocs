@@ -3,6 +3,7 @@ package com.github.setial.intellijjavadocs.operation.impl;
 import com.github.setial.intellijjavadocs.exception.FileNotValidException;
 import com.github.setial.intellijjavadocs.exception.NotFoundElementException;
 import com.github.setial.intellijjavadocs.operation.JavaDocWriter;
+import com.intellij.lang.ASTNode;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
@@ -17,7 +18,7 @@ import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
-import com.intellij.psi.util.PsiUtilBase;
+import com.intellij.psi.util.PsiEditorUtil;
 import com.intellij.util.ThrowableRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -83,8 +84,8 @@ public class JavaDocWriterImpl implements JavaDocWriter {
      */
     private static class WriteJavaDocActionImpl implements ThrowableRunnable<RuntimeException> {
 
-        private PsiDocComment javaDoc;
-        private PsiElement element;
+        private final PsiDocComment javaDoc;
+        private final PsiElement element;
 
         /**
          * Instantiates a new Write java doc action impl.
@@ -99,9 +100,6 @@ public class JavaDocWriterImpl implements JavaDocWriter {
 
         @Override
         public void run() throws RuntimeException {
-            if (javaDoc == null) {
-                return;
-            }
             if (element.getFirstChild() instanceof PsiDocComment) {
                 replaceJavaDoc(element, javaDoc);
             } else {
@@ -122,13 +120,15 @@ public class JavaDocWriterImpl implements JavaDocWriter {
                 return;
             }
             pushPostponedChanges(element);
-            element.getNode().addChild(new PsiWhiteSpaceImpl("\n"), nextElement.getNode());
+            ASTNode node = element.getNode();
+            if (node != null)
+                node.addChild(new PsiWhiteSpaceImpl("\n"), nextElement.getNode());
         }
     }
 
     private static class RemoveJavaDocActionImpl implements ThrowableRunnable<RuntimeException> {
 
-        private PsiElement element;
+        private final PsiElement element;
 
         /**
          * Instantiates a new Remove java doc action impl.
@@ -140,7 +140,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
         }
 
         @Override
-        public void run() throws RuntimeException {
+        public void run() {
             if (element.getFirstChild() instanceof PsiDocComment) {
                 deleteJavaDoc(this.element);
             }
@@ -154,7 +154,9 @@ public class JavaDocWriterImpl implements JavaDocWriter {
 
     private static void addJavaDoc(PsiElement theElement, PsiDocComment theJavaDoc) {
         pushPostponedChanges(theElement);
-        theElement.getNode().addChild(theJavaDoc.getNode(), theElement.getFirstChild().getNode());
+        ASTNode node = theElement.getNode();
+        if (node != null)
+            node.addChild(theJavaDoc.getNode(), theElement.getFirstChild().getNode());
     }
 
     private static void replaceJavaDoc(PsiElement theElement, PsiDocComment theJavaDoc) {
@@ -190,7 +192,7 @@ public class JavaDocWriterImpl implements JavaDocWriter {
     }
 
     private static void pushPostponedChanges(PsiElement element) {
-        Editor editor = PsiUtilBase.findEditor(element.getContainingFile());
+        Editor editor = PsiEditorUtil.findEditor(element.getContainingFile());
         if (editor != null) {
             PsiDocumentManager.getInstance(element.getProject())
                     .doPostponedOperationsAndUnblockDocument(editor.getDocument());
