@@ -2,13 +2,13 @@
     <id>com.github.setial</id>
     <name>JavaDoc</name>
     <version>4.1.0</version>
-    <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs/">
+    <vendor email="s.timofiychuk@gmail.com" url="http://tsergey.github.io/intellij-javadocs/">
         Sergey Timofiychuk
     </vendor>
 
     <description><![CDATA[
       Plugin that generates javadocs on java class elements, like field, method, etc.
-      Home page: http://setial.github.com/intellij-javadocs
+      Home page: http://tsergey.github.io/intellij-javadocs
       ]]></description>
 
     <change-notes><![CDATA[
@@ -59,7 +59,7 @@
         <ul>
             <li>
                 Change key mappings, since previous are reserved by intellij idea 13.<br/>
-                Details about new mapping please find on <a href="https://github.com/setial/intellij-javadocs/wiki">wiki page</a>
+                Details about new mapping please find on <a href="https://github.com/tsergey/intellij-javadocs/wiki">wiki page</a>
             </li>
             <li>Fix bug to show menu only in generate menu of java sources</li>
         </ul>
