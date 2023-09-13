@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.setial</id>
     <name>JavaDoc</name>
-    <version>4.0.2</version>
+    <version>4.1.0</version>
     <vendor email="s.timofiychuk@gmail.com" url="http://setial.github.com/intellij-javadocs/">
         Sergey Timofiychuk
     </vendor>
@@ -106,7 +106,7 @@
 
     <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
     <!-- supports only intellij idea 15 -->
-    <idea-version since-build="201.6668"/>
+    <idea-version since-build="232.8660"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -170,7 +170,7 @@
         <applicationService serviceInterface="com.github.setial.intellijjavadocs.operation.JavaDocWriter"
                             serviceImplementation="com.github.setial.intellijjavadocs.operation.impl.JavaDocWriterImpl"/>
 
-        <projectConfigurable groupId="tools" id="JavaDoc"
+        <projectConfigurable groupId="tools" id="JavaDoc" displayName="JavaDoc"
                              instance="com.github.setial.intellijjavadocs.ui.settings.ConfigPanel"/>
     </extensions>
 </idea-plugin>
