@@ -6,6 +6,7 @@ import com.github.setial.intellijjavadocs.template.DocTemplateManager;
 import com.github.setial.intellijjavadocs.template.DocTemplateProcessor;
 import com.github.setial.intellijjavadocs.utils.XmlUtils;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.JDOMUtil;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiCodeBlock;
@@ -16,15 +17,14 @@ import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.apache.commons.lang3.StringUtils;
-import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,14 +62,12 @@ public class DocTemplateManagerImpl implements DocTemplateManager {
     public DocTemplateManagerImpl() {
         templateLoader = new StringTemplateLoader();
         config = new Configuration(Configuration.VERSION_2_3_23);
-        config.setDefaultEncoding("UTF-8");
+        config.setDefaultEncoding(StandardCharsets.UTF_8.name());
         config.setLocalizedLookup(false);
         config.setTemplateLoader(templateLoader);
 
         try {
-            Document document = new SAXBuilder().build(DocTemplateProcessor.class.getResourceAsStream
-                    (TEMPLATES_PATH));
-            Element root = document.getRootElement();
+            Element root = JDOMUtil.load(DocTemplateProcessor.class.getResourceAsStream(TEMPLATES_PATH));
             if (root != null) {
                 readTemplates(root, CLASS, classTemplates);
                 readTemplates(root, FIELD, fieldTemplates);

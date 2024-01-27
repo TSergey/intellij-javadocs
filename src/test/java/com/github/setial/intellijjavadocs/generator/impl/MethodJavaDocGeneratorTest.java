@@ -8,13 +8,12 @@ import com.github.setial.intellijjavadocs.model.settings.Mode;
 import com.github.setial.intellijjavadocs.model.settings.Visibility;
 import com.google.common.collect.Sets;
 import com.intellij.ide.highlighter.JavaFileType;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiMethod;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
-import org.junit.BeforeClass;
+import org.junit.Before;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -29,12 +28,12 @@ public class MethodJavaDocGeneratorTest extends LightJavaCodeInsightFixtureTestC
     private PsiMethod publicGetMethod;
     private PsiMethod protectedGetMethod;
 
-    @BeforeClass
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         methodJavaDocGenerator = new MethodJavaDocGenerator(getProject());
         elementFactory = PsiElementFactory.getInstance(getProject());
-        JavaDocConfiguration settings = ServiceManager.getService(getProject(), JavaDocConfiguration.class);
+        JavaDocConfiguration settings = getProject().getService(JavaDocConfiguration.class);
         generalSettings = settings.getConfiguration().getGeneralSettings();
         generalSettings.setMode(Mode.REPLACE);
         psiFile = PsiFileFactory.getInstance(getProject()).createFileFromText(

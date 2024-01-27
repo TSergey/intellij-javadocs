@@ -8,8 +8,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiJavaCodeReferenceElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
-import com.intellij.psi.PsiType;
 import com.intellij.psi.PsiTypeElement;
+import com.intellij.psi.PsiTypes;
 import freemarker.template.Template;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +57,7 @@ public class MethodJavaDocGenerator extends AbstractJavaDocGenerator<PsiMethod> 
         }
         Map<String, Object> params = getDefaultParameters(element);
         if (returnElement != null) {
-            params.put("isNotVoid", !returnElement.getType().isAssignableFrom(PsiType.VOID));
+            params.put("isNotVoid", !returnElement.getType().isAssignableFrom(PsiTypes.voidType()));
             params.put("return", getDocTemplateProcessor().buildDescription(returnDescription, false));
         }
         params.put("paramNames", paramNames);

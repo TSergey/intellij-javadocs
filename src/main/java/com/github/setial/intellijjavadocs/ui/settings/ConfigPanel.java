@@ -2,7 +2,6 @@ package com.github.setial.intellijjavadocs.ui.settings;
 
 import com.github.setial.intellijjavadocs.configuration.JavaDocConfiguration;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
@@ -18,7 +17,7 @@ public class ConfigPanel implements SearchableConfigurable, Disposable {
     private ConfigPanelGUI configPanelGUI;
 
     public ConfigPanel(@NotNull Project project) {
-        javaDocConfiguration = ServiceManager.getService(project, JavaDocConfiguration.class);
+        javaDocConfiguration = project.getService(JavaDocConfiguration.class);
     }
 
     @NotNull

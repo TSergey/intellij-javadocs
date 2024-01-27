@@ -7,8 +7,8 @@ import com.github.setial.intellijjavadocs.model.settings.Level;
 import com.github.setial.intellijjavadocs.model.settings.Mode;
 import com.github.setial.intellijjavadocs.model.settings.Visibility;
 import com.github.setial.intellijjavadocs.template.DocTemplateManager;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.diagnostic.Logger;
@@ -47,7 +47,7 @@ public class JavaDocConfigurationImpl implements JavaDocConfiguration, Persisten
      * Instantiates a new Java doc configuration object.
      */
     public JavaDocConfigurationImpl() {
-        templateManager = ServiceManager.getService(DocTemplateManager.class);
+        templateManager = ApplicationManager.getApplication().getService(DocTemplateManager.class);
         initSettings();
     }
 
