@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     implementation 'commons-beanutils:commons-beanutils:1.9.4'
-    implementation 'commons-collections:commons-collections:3.2.2'
+    implementation 'org.apache.commons:commons-collections4:4.4'
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'commons-logging:commons-logging:1.2'
     implementation 'org.freemarker:freemarker:2.3.32'
@@ -23,7 +23,7 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version.set("2023.2")
+    version.set("2023.3")
     type.set("IC")
     plugins = ['java']
 }
