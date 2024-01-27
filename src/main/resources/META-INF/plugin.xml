@@ -15,6 +15,7 @@
         <h3>Changes in intellij-javadoc-4.1.1</h3>
         <ul>
             <li>Compatibility with intellij-idea build 2023.3</li>
+            <li>Remove usage of deprecated API</li>
         </ul>
         <h3>Changes in intellij-javadoc-4.1.0</h3>
         <ul>
