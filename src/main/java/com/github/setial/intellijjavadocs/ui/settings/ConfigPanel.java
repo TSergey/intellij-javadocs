@@ -5,19 +5,21 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
+import java.util.ResourceBundle;
+import javax.swing.JComponent;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.JComponent;
 
 public class ConfigPanel implements SearchableConfigurable, Disposable {
 
     private JavaDocConfiguration javaDocConfiguration;
     private ConfigPanelGUI configPanelGUI;
+    private ResourceBundle resourceBundle;
 
     public ConfigPanel(@NotNull Project project) {
         javaDocConfiguration = project.getService(JavaDocConfiguration.class);
+        resourceBundle = ResourceBundle.getBundle("messages");
     }
 
     @NotNull
@@ -29,7 +31,7 @@ public class ConfigPanel implements SearchableConfigurable, Disposable {
     @Nls(capitalization = Nls.Capitalization.Title)
     @Override
     public String getDisplayName() {
-        return "JavaDoc";
+        return resourceBundle.getString("configurable.panel.name");
     }
 
     @Nullable

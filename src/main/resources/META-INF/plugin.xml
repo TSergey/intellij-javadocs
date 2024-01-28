@@ -175,7 +175,7 @@
         <applicationService serviceInterface="com.github.setial.intellijjavadocs.operation.JavaDocWriter"
                             serviceImplementation="com.github.setial.intellijjavadocs.operation.impl.JavaDocWriterImpl"/>
 
-        <projectConfigurable groupId="tools" id="JavaDoc" displayName="JavaDoc"
+        <projectConfigurable groupId="tools" id="JavaDoc" key="configurable.panel.name" bundle="messages"
                              instance="com.github.setial.intellijjavadocs.ui.settings.ConfigPanel"/>
     </extensions>
 </idea-plugin>
