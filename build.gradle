@@ -24,6 +24,14 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version.set("2024.2")
+    updateSinceUntilBuild.set(false)
     type.set("IC")
     plugins = ['java']
+}
+
+tasks {
+    patchPluginXml {
+        sinceBuild.set("242.20224")
+        // untilBuild is not set, meaning there's no end version
+    }
 }
