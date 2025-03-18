@@ -1,37 +1,51 @@
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+
 plugins {
     id("idea")
-    id("org.jetbrains.intellij") version "1.15.0"
+    id("org.jetbrains.intellij.platform") version "2.3.0"
 }
-
 group "com.github.setial"
-version "4.1.3"
 
-sourceCompatibility = 17
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+}
 
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
+    dependencies {
+        implementation 'commons-beanutils:commons-beanutils:1.9.4'
+        implementation 'org.apache.commons:commons-collections4:4.4'
+        implementation 'org.apache.commons:commons-lang3:3.9'
+        implementation 'commons-logging:commons-logging:1.2'
+        implementation 'org.freemarker:freemarker:2.3.32'
+        testImplementation group: 'junit', name: 'junit', version: '4.13.1'
+
+        intellijPlatform {
+            intellijIdeaCommunity("2024.3.4")
+
+            bundledPlugin("com.intellij.java")
+
+            testFramework(TestFrameworkType.Plugin.Java.INSTANCE)
+        }
+    }
 }
 
-dependencies {
-    implementation 'commons-beanutils:commons-beanutils:1.9.4'
-    implementation 'org.apache.commons:commons-collections4:4.4'
-    implementation 'org.apache.commons:commons-lang3:3.9'
-    implementation 'commons-logging:commons-logging:1.2'
-    implementation 'org.freemarker:freemarker:2.3.32'
-    testImplementation group: 'junit', name: 'junit', version: '4.9'
-}
 
-// See https://github.com/JetBrains/gradle-intellij-plugin/
-intellij {
-    version.set("2024.2")
-    updateSinceUntilBuild.set(false)
-    type.set("IC")
-    plugins = ['java']
-}
-
-tasks {
-    patchPluginXml {
-        sinceBuild.set("242.20224")
-        // untilBuild is not set, meaning there's no end version
+intellijPlatform {
+    pluginConfiguration {
+        id = "com.github.setial"
+        name = "JavaDoc"
+        version = "4.1.4"
+        vendor {
+            email = "s.timofiychuk@gmail.com"
+            url = "https://tsergey.github.io/intellij-javadocs/"
+            name = "Sergey Timofiychuk"
+        }
+        ideaVersion {
+            untilBuild = provider { null }
+        }
     }
 }
