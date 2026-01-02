@@ -5,6 +5,7 @@ import com.github.setial.intellijjavadocs.model.JavaDocTag;
 import com.github.setial.intellijjavadocs.transformation.JavaDocBuilder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.impl.source.javadoc.PsiDocMethodOrFieldRef;
 import com.intellij.psi.impl.source.javadoc.PsiDocParamRef;
 import com.intellij.psi.impl.source.javadoc.PsiDocTagValueImpl;
@@ -214,8 +215,11 @@ public class JavaDocUtils {
         String value = null;
         for (PsiElement element : docTag.getDataElements()) {
             if (element instanceof PsiDocTagValue) {
-                value = element.getText();
-                break;
+                PsiElement nextSibling = element.getNextSibling();
+                if (nextSibling == null || nextSibling instanceof PsiWhiteSpace) {
+                    value = element.getText();
+                    break;
+                }
             }
         }
         return value;
