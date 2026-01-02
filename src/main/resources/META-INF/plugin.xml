@@ -5,6 +5,10 @@
       ]]></description>
 
     <change-notes><![CDATA[
+        <h3>Changes in intellij-javadoc-4.1.5</h3>
+        <ul>
+            <li>Remove JDOM normalization to prevent unwanted spaces in date formats</li>
+        </ul>
         <h3>Changes in intellij-javadoc-4.1.4</h3>
         <ul>
             <li>Compatibility with intellij-idea build 2024.3</li>

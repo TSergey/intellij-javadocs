@@ -38,7 +38,7 @@ intellijPlatform {
     pluginConfiguration {
         id = "com.github.setial"
         name = "JavaDoc"
-        version = "4.1.4"
+        version = "4.1.5"
         vendor {
             email = "s.timofiychuk@gmail.com"
             url = "https://tsergey.github.io/intellij-javadocs/"
